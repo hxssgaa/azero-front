@@ -5,9 +5,6 @@
 # dependencies
 /node_modules
 
-# public html
-/public
-
 # testing
 /coverage
 
