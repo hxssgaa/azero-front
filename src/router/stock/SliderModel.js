@@ -23,79 +23,131 @@ export default class SliderModel extends PureComponent {
     ]; // G2 对数据源格式的要求，仅仅是 JSON 数组，数组的每个元素是一个标准 JSON 对象。
 
 
-    // !!! 创建 DataSet，并设置状态量 start end
+    // 设置状态量，时间格式建议转换为时间戳，转换为时间戳时请注意区间
     const ds = new DataSet({
       state: {
-        start: '2004-01-01',
-        end: '2007-09-24'
+        start: '2015-04-07',
+        end: '2015-07-28'
       }
     });
-    // !!! 通过 ds 创建 DataView
     const dv = ds.createView();
-    dv.source(data)
-      .transform({ // !!! 根据状态量设置数据过滤规则，
-        type: 'filter',
-        callback: obj => {
-          return obj.date <= ds.state.end && obj.date >= ds.state.start;
-        }
-      });
+    dv.source(data).transform({
+      type: 'filter',
+      callback: function callback(obj) {
+        var date = obj.time;
+        return date <= ds.state.end && date >= ds.state.start;
+      }
+    }).transform({
+      type: 'map',
+      callback: function callback(obj) {
+        obj.trend = obj.start <= obj.end ? '上涨' : '下跌';
+        obj.range = [obj.start, obj.end, obj.max, obj.min];
+        return obj;
+      }
+    });
     const chart = new G2.Chart({
-      id: 'c1',
+      container: 'mountNode',
       forceFit: true,
-      height: 400,
-      animate: false
+      height: window.innerHeight - 50,
+      animate: false,
+      padding: [10, 40, 40, 40]
     });
-
-    chart.scale({
-      date: {
-        type: 'time',
-        mask: 'MM-DD',
-        alias: '日期'
+    chart.source(dv, {
+      'time': {
+        type: 'timeCat',
+        nice: false,
+        range: [0, 1]
+      },
+      trend: {
+        values: ['上涨', '下跌']
+      },
+      'volumn': {
+        alias: '成交量'
+      },
+      'start': {
+        alias: '开盘价'
+      },
+      'end': {
+        alias: '收盘价'
+      },
+      'max': {
+        alias: '最高价'
+      },
+      'min': {
+        alias: '最低价'
+      },
+      'range': {
+        alias: '股票价格'
       }
     });
+    chart.legend({
+      offset: 20
+    });
+    chart.tooltip({
+      showTitle: false,
+      itemTpl: '<li data-index={index}>' + '<span style="background-color:{color};" class="g2-tooltip-marker"></span>' + '{name}{value}</li>'
+    });
 
-    const view1 = chart.view({
-      start: {
-        x: 0,
-        y: 0
-      },
+    const kView = chart.view({
       end: {
         x: 1,
-        y: 0.45
+        y: 0.5
       }
     });
-    view1.source(dv);  // !!! 注意数据源是 ds 创建 DataView 对象
-    view1.line().position('date*aqi');
+    kView.source(dv);
+    kView.schema().position('time*range').color('trend', function(val) {
+      if (val === '上涨') {
+        return '#f04864';
+      }
 
-    const view2 = chart.view({
+      if (val === '下跌') {
+        return '#2fc25b';
+      }
+    }).shape('candle').tooltip('time*start*end*max*min', function(time, start, end, max, min) {
+      return {
+        name: time,
+        value: '<br><span style="padding-left: 16px">开盘价：' + start + '</span><br/>' + '<span style="padding-left: 16px">收盘价：' + end + '</span><br/>' + '<span style="padding-left: 16px">最高价：' + max + '</span><br/>' + '<span style="padding-left: 16px">最低价：' + min + '</span>'
+      };
+    });
+
+    const barView = chart.view({
       start: {
         x: 0,
-        y: 0.55
-      },
-      end: {
-        x: 1,
-        y: 1
+        y: 0.65
       }
     });
-    view2.source(dv); // !!! 注意数据源是 ds 创建 DataView 对象
-    view2.interval().position('date*aqi');
+    barView.source(dv, {
+      volumn: {
+        tickCount: 2
+      }
+    });
+    barView.axis('time', {
+      tickLine: null,
+      label: null
+    });
+    barView.axis('volumn', {
+      label: {
+        formatter: function formatter(val) {
+          return parseInt(val / 1000, 10) + 'k';
+        }
+      }
+    });
+    barView.interval().position('time*volumn').color('trend', function(val) {
+      if (val === '上涨') {
+        return '#f04864';
+      }
+
+      if (val === '下跌') {
+        return '#2fc25b';
+      }
+    }).tooltip('time*volumn', function(time, volumn) {
+      return {
+        name: time,
+        value: '<br/><span style="padding-left: 16px">成交量：' + volumn + '</span><br/>'
+      };
+    });
+
     chart.render();
-
-    // !!! 创建 slider 对象
-    const slider = new Slider({
-      container: 'slider',
-      start: '2004-01-01',
-      end: '2007-09-24',
-      data, // !!! 注意是原始数据，不要传入 dv
-      xAxis: 'date',
-      yAxis: 'aqi',
-      onChange: ({ startText, endText }) => {
-        // !!! 更新状态量
-        ds.setState('start', startText);
-        ds.setState('end', endText);
-      }
-    });
-    slider.render();
   };
 
   render() {
