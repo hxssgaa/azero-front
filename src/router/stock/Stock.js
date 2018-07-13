@@ -28,8 +28,8 @@ export default class Workplace extends PureComponent {
   state = {
     shape: 'spline',
     data: data.slice(0, data.length / 2 - 1),
-    width: 500,
-    height: 250,
+    width: 1050,
+    height: 500,
     plotCfg: {
       margin: [10, 100, 50, 120],
     },
