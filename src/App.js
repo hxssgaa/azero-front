@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
-import Progress from './router/week/Progress';
-import Stock from './router/week/Stock';
-import Monitor from './router/week/Monitor';
+import Progress from './router/stock/Progress';
+import Stock from './router/stock/Stock';
+import Monitor from './router/stock/Monitor';
 
 class App extends Component {
   render() {
