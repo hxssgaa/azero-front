@@ -5,6 +5,8 @@ import { BrowserRouter, Route, Link } from 'react-router-dom';
 import Progress from './router/stock/Progress';
 import Stock from './router/stock/Stock';
 import Monitor from './router/stock/Monitor';
+import Slider from './router/stock/SliderModel';
+import LineChart from './router/stock/LineChart';
 
 class App extends Component {
   render() {
@@ -29,6 +31,16 @@ class App extends Component {
         <BrowserRouter>
           <div>
             <Route path="/monitor" component={Monitor} />
+          </div>
+        </BrowserRouter>
+        <BrowserRouter>
+          <div>
+            <Route path="/slider" component={Slider} />
+          </div>
+        </BrowserRouter>
+        <BrowserRouter>
+          <div>
+            <Route path="/lineChart" component={LineChart} />
           </div>
         </BrowserRouter>
       </div>

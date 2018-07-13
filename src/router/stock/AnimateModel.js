@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 // 组件定义
 import HigherChart from './HigherChart';
 import data from './data.json';
+import G2 from '@antv/g2';
+const Animate = G2.Animate;
 
 export default class Stock extends PureComponent {
   // componentDidMount() {
