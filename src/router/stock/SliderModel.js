@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import G2 from '@antv/g2';
 import { DataSet, createView } from '@antv/data-set';
 import Slider from '@antv/g2-plugin-slider';
+import stockData from './stockData';
 
 export default class SliderModel extends PureComponent {
   componentDidMount() {
@@ -14,14 +15,7 @@ export default class SliderModel extends PureComponent {
   }
 
   renderG6Graph = () => {
-    const data = [
-      { genre: 'Sports', sold: 275 },
-      { genre: 'Strategy', sold: 115 },
-      { genre: 'Action', sold: 120 },
-      { genre: 'Shooter', sold: 350 },
-      { genre: 'Other', sold: 150 },
-    ]; // G2 对数据源格式的要求，仅仅是 JSON 数组，数组的每个元素是一个标准 JSON 对象。
-
+    const data = stockData;
 
     // 设置状态量，时间格式建议转换为时间戳，转换为时间戳时请注意区间
     const ds = new DataSet({
@@ -152,7 +146,7 @@ export default class SliderModel extends PureComponent {
 
   render() {
     return (
-      <div id="c1" />
+      <div id="mountNode" />
     );
   }
 }

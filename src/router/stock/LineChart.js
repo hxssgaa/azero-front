@@ -7,9 +7,9 @@ export default class Stock extends PureComponent {
     this.renderG6Graph();
   }
 
-  componentDidUpdate() {
-    this.renderG6Graph();
-  }
+  // componentDidUpdate() {
+  //   //   this.renderG6Graph();
+  //   // }
 
   renderG6Graph = () => {
     const data = [{
