@@ -142,6 +142,33 @@ export default class SliderModel extends PureComponent {
     });
 
     chart.render();
+
+    // 生成 slider
+    const slider = new Slider({
+      container: 'mountNode', // DOM id
+      width: 'auto',
+      height: 26,
+      padding: [20, 40, 20, 40],
+      start: ds.state.start, // 和状态量对应
+      end: ds.state.end,
+      data: data, // 源数据
+      xAxis: 'time', // 背景图的横轴对应字段，同时为数据筛选的字段
+      yAxis: 'volumn', // 背景图的纵轴对应字段，同时为数据筛选的字段
+      scales: {
+        time: {
+          type: 'timeCat',
+          nice: false
+        }
+      },
+      onChange: function onChange(_ref) {
+        const startText = _ref.startText,
+          endText = _ref.endText;
+
+        ds.setState('start', startText);
+        ds.setState('end', endText);
+      }
+    });
+    slider.render();
   };
 
   render() {
