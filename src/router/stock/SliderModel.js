@@ -5,35 +5,75 @@ import { DataSet, createView } from '@antv/data-set';
 import Slider from '@antv/g2-plugin-slider';
 import stockData from './stockData';
 
+const first = stockData.slice(0, 200);
+const second = stockData.slice(50, 100);
+const third = stockData.slice(100, 150);
+const fourth = stockData.slice(150, 200);
+const fifth = stockData.slice(200, 214);
+
 export default class SliderModel extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+    };
+  }
+
   componentDidMount() {
-    this.renderG6Graph();
+    // setInterval(() => {
+    // const stockDataTrue = getRandomArrayElements(stockData, 200);
+    // const stockDataTrue = getRandom({ 'arry': stockData, 'range': 200 });
+    // console.info(2222, stockDataTrue);
+    // this.renderG6Graph(stockData);
+    // }, 100);
+    // setInterval(() => {
+    const minData = Math.random() * 9;
+    const maxData = minData + Math.random() * 9;
+    this.renderG6Graph(stockData, minData, maxData);
+    // }, 1000);
+  }
+
+  componentWillReceiveProps() {
+    return true;
+  }
+
+  shouldComponentUpdate() {
+    return true;
   }
 
   componentDidUpdate() {
-    this.renderG6Graph();
+    // setInterval(() => {
+      const minData = Math.random() * 999;
+      const maxData = minData + Math.random() * 999;
+      this.renderG6Graph(stockData, minData, maxData);
+    // }, 1000);
   }
 
-  renderG6Graph = () => {
-    const data = stockData;
+  renderG6Graph = (stockDataModel, minData, maxData) => {
+    const data = stockDataModel;
 
     // 设置状态量，时间格式建议转换为时间戳，转换为时间戳时请注意区间
     const ds = new DataSet({
       state: {
         start: '2015-04-07',
-        end: '2015-07-28'
+        end: '2015-07-28',
+        min: minData,
+        max: maxData,
       }
     });
     const dv = ds.createView();
     dv.source(data).transform({
       type: 'filter',
       callback: function callback(obj) {
-        var date = obj.time;
+        const date = obj.time;
         return date <= ds.state.end && date >= ds.state.start;
       }
     }).transform({
       type: 'map',
       callback: function callback(obj) {
+        console.info(222, obj);
+        obj.min = ds.state.min;
+        obj.max = ds.state.max;
         obj.trend = obj.start <= obj.end ? '上涨' : '下跌';
         obj.range = [obj.start, obj.end, obj.max, obj.min];
         return obj;
@@ -89,7 +129,7 @@ export default class SliderModel extends PureComponent {
       }
     });
     kView.source(dv);
-    kView.schema().position('time*range').color('trend', function(val) {
+    kView.schema().position('time*range').color('trend', function (val) {
       if (val === '上涨') {
         return '#f04864';
       }
@@ -97,7 +137,7 @@ export default class SliderModel extends PureComponent {
       if (val === '下跌') {
         return '#2fc25b';
       }
-    }).shape('candle').tooltip('time*start*end*max*min', function(time, start, end, max, min) {
+    }).shape('candle').tooltip('time*start*end*max*min', function (time, start, end, max, min) {
       return {
         name: time,
         value: '<br><span style="padding-left: 16px">开盘价：' + start + '</span><br/>' + '<span style="padding-left: 16px">收盘价：' + end + '</span><br/>' + '<span style="padding-left: 16px">最高价：' + max + '</span><br/>' + '<span style="padding-left: 16px">最低价：' + min + '</span>'
@@ -126,7 +166,7 @@ export default class SliderModel extends PureComponent {
         }
       }
     });
-    barView.interval().position('time*volumn').color('trend', function(val) {
+    barView.interval().position('time*volumn').color('trend', function (val) {
       if (val === '上涨') {
         return '#f04864';
       }
@@ -134,7 +174,7 @@ export default class SliderModel extends PureComponent {
       if (val === '下跌') {
         return '#2fc25b';
       }
-    }).tooltip('time*volumn', function(time, volumn) {
+    }).tooltip('time*volumn', function (time, volumn) {
       return {
         name: time,
         value: '<br/><span style="padding-left: 16px">成交量：' + volumn + '</span><br/>'
@@ -163,7 +203,6 @@ export default class SliderModel extends PureComponent {
       onChange: function onChange(_ref) {
         const startText = _ref.startText,
           endText = _ref.endText;
-
         ds.setState('start', startText);
         ds.setState('end', endText);
       }
@@ -176,4 +215,31 @@ export default class SliderModel extends PureComponent {
       <div id="mountNode" />
     );
   }
+}
+
+function getRandomArrayElements(arr, count) {
+  let shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
+  while (i-- > min) {
+    index = Math.floor((i + 1) * Math.random());
+    temp = shuffled[index];
+    shuffled[index] = shuffled[i];
+    shuffled[i] = temp;
+  }
+  return shuffled.slice(min);
+}
+
+function getRandom(opt) {
+  let old_arry = opt.arry,
+    range = opt.range;
+  //防止超过数组的长度
+  range = range > old_arry.length ? old_arry.length : range;
+  let newArray = [].concat(old_arry), //拷贝原数组进行操作就不会破坏原数组
+    valArray = [];
+  for (let n = 0; n < range; n++) {
+    let r = Math.floor(Math.random() * (newArray.length));
+    valArray.push(newArray[r]);
+    //在原数组删掉，然后在下轮循环中就可以避免重复获取
+    newArray.splice(r, 1);
+  }
+  return valArray;
 }
