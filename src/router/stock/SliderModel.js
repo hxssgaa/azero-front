@@ -15,8 +15,12 @@ export default class SliderModel extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      date: '2015-01-07',
     };
+  }
+
+  static getDerivedStateFromProps() {
+    console.info(2222, 'getDerivedStateFromProps');
   }
 
   componentDidMount() {
@@ -27,38 +31,45 @@ export default class SliderModel extends PureComponent {
     // this.renderG6Graph(stockData);
     // }, 100);
     // setInterval(() => {
-    const minData = Math.random() * 9;
-    const maxData = minData + Math.random() * 9;
-    this.renderG6Graph(stockData, minData, maxData);
+    // const dateStart = '2015-01-07';
+    // const dateEnd = '2015-07-07';
+    this.renderG6Graph(stockData);
     // }, 1000);
+    // setTimeout(() => {
+    //   const dateStart = '2015-0' + Math.floor(Math.random() * 10 + 1) + '-07';
+    //   const dateEnd = '2015-11-07';
+    //   console.info(2222, dateStart);
+    //   this.renderG6Graph(stockData, dateStart, dateEnd);
+    // }, 2000);
   }
 
-  componentWillReceiveProps() {
-    return true;
-  }
-
-  shouldComponentUpdate() {
-    return true;
-  }
+  // componentWillReceiveProps() {
+  //   return true;
+  // }
 
   componentDidUpdate() {
     // setInterval(() => {
-      const minData = Math.random() * 999;
-      const maxData = minData + Math.random() * 999;
-      this.renderG6Graph(stockData, minData, maxData);
+    const dateStart = Math.random() * 999;
+    const dateEnd = dateStart + Math.random() * 999;
+    this.renderG6Graph(stockData);
+    // this.renderG6Graph(stockData, dateStart, dateEnd);
     // }, 1000);
   }
 
-  renderG6Graph = (stockDataModel, minData, maxData) => {
+  renderG6Graph = (stockDataModel) => {
     const data = stockDataModel;
+    let dateStart = '2015-01-07';
+    const dateEnd = '2015-06-07';
+    // setInterval(() => {
+    //   dateStart = '2015-0' + Math.floor(Math.random() * 10 + 1) + '-07';
+    //   console.info(2222, dateStart);
+    // }, 20000);
 
     // 设置状态量，时间格式建议转换为时间戳，转换为时间戳时请注意区间
     const ds = new DataSet({
       state: {
         start: '2015-04-07',
-        end: '2015-07-28',
-        min: minData,
-        max: maxData,
+        end: '2015-07-28'
       }
     });
     const dv = ds.createView();
@@ -71,9 +82,6 @@ export default class SliderModel extends PureComponent {
     }).transform({
       type: 'map',
       callback: function callback(obj) {
-        console.info(222, obj);
-        obj.min = ds.state.min;
-        obj.max = ds.state.max;
         obj.trend = obj.start <= obj.end ? '上涨' : '下跌';
         obj.range = [obj.start, obj.end, obj.max, obj.min];
         return obj;
@@ -121,6 +129,13 @@ export default class SliderModel extends PureComponent {
       showTitle: false,
       itemTpl: '<li data-index={index}>' + '<span style="background-color:{color};" class="g2-tooltip-marker"></span>' + '{name}{value}</li>'
     });
+    // chart.coord('polar', {
+    //   radius: 0.5, // 设置半径，值范围为 0 至 1
+    //   innerRadius: 0.3, // 空心圆的半径，值范围为 0 至 1
+    //   startAngle: -1 * Math.PI / 2, // 极坐标的起始角度，单位为弧度
+    //   endAngle: 3 * Math.PI / 2 // 极坐标的结束角度，单位为弧度
+    // });
+
 
     const kView = chart.view({
       end: {
