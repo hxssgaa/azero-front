@@ -160,70 +160,70 @@ export default class SliderModel extends PureComponent {
       };
     });
 
-    const barView = chart.view({
-      start: {
-        x: 0,
-        y: 0.65
-      }
-    });
-    barView.source(dv, {
-      volumn: {
-        tickCount: 2
-      }
-    });
-    barView.axis('time', {
-      tickLine: null,
-      label: null
-    });
-    barView.axis('volumn', {
-      label: {
-        formatter: function formatter(val) {
-          return parseInt(val / 1000, 10) + 'k';
-        }
-      }
-    });
-    barView.interval().position('time*volumn').color('trend', function (val) {
-      if (val === '上涨') {
-        return '#f04864';
-      }
-
-      if (val === '下跌') {
-        return '#2fc25b';
-      }
-    }).tooltip('time*volumn', function (time, volumn) {
-      return {
-        name: time,
-        value: '<br/><span style="padding-left: 16px">成交量：' + volumn + '</span><br/>'
-      };
-    });
+    // const barView = chart.view({
+    //   start: {
+    //     x: 0,
+    //     y: 0.65
+    //   }
+    // });
+    // barView.source(dv, {
+    //   volumn: {
+    //     tickCount: 2
+    //   }
+    // });
+    // barView.axis('time', {
+    //   tickLine: null,
+    //   label: null
+    // });
+    // barView.axis('volumn', {
+    //   label: {
+    //     formatter: function formatter(val) {
+    //       return parseInt(val / 1000, 10) + 'k';
+    //     }
+    //   }
+    // });
+    // barView.interval().position('time*volumn').color('trend', function (val) {
+    //   if (val === '上涨') {
+    //     return '#f04864';
+    //   }
+    //
+    //   if (val === '下跌') {
+    //     return '#2fc25b';
+    //   }
+    // }).tooltip('time*volumn', function (time, volumn) {
+    //   return {
+    //     name: time,
+    //     value: '<br/><span style="padding-left: 16px">成交量：' + volumn + '</span><br/>'
+    //   };
+    // });
 
     chart.render();
 
     // 生成 slider
-    const slider = new Slider({
-      container: 'mountNode', // DOM id
-      width: 'auto',
-      height: 26,
-      padding: [20, 40, 20, 40],
-      start: ds.state.start, // 和状态量对应
-      end: ds.state.end,
-      data: data, // 源数据
-      xAxis: 'time', // 背景图的横轴对应字段，同时为数据筛选的字段
-      yAxis: 'volumn', // 背景图的纵轴对应字段，同时为数据筛选的字段
-      scales: {
-        time: {
-          type: 'timeCat',
-          nice: false
-        }
-      },
-      onChange: function onChange(_ref) {
-        const startText = _ref.startText,
-          endText = _ref.endText;
-        ds.setState('start', startText);
-        ds.setState('end', endText);
-      }
-    });
-    slider.render();
+    // const slider = new Slider({
+    //   container: 'mountNode', // DOM id
+    //   width: 'auto',
+    //   height: 26,
+    //   padding: [20, 40, 20, 40],
+    //   start: ds.state.start, // 和状态量对应
+    //   end: ds.state.end,
+    //   data: data, // 源数据
+    //   xAxis: 'time', // 背景图的横轴对应字段，同时为数据筛选的字段
+    //   yAxis: 'volumn', // 背景图的纵轴对应字段，同时为数据筛选的字段
+    //   scales: {
+    //     time: {
+    //       type: 'timeCat',
+    //       nice: false
+    //     }
+    //   },
+    //   onChange: function onChange(_ref) {
+    //     const startText = _ref.startText,
+    //       endText = _ref.endText;
+    //     ds.setState('start', startText);
+    //     ds.setState('end', endText);
+    //   }
+    // });
+    // slider.render();
   };
 
   render() {

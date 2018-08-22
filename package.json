@@ -6,6 +6,7 @@
     "@antv/data-set": "^0.8.9",
     "@antv/g2": "^3.2.4",
     "@antv/g2-plugin-slider": "^2.0.3",
+    "@antv/g6": "^2.1.0-beta.13",
     "babel-eslint": "^8.1.2",
     "babel-plugin-dva-hmr": "^0.4.1",
     "babel-plugin-import": "^1.6.7",

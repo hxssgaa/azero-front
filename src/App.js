@@ -8,6 +8,7 @@ import Monitor from './router/stock/Monitor';
 import Slider from './router/stock/SliderModel';
 import LineChart from './router/stock/LineChart';
 import Fireworks from './router/stock/Fireworks';
+import Animation from './router/stock/Animation';
 
 class App extends Component {
   render() {
@@ -47,6 +48,11 @@ class App extends Component {
         <BrowserRouter>
           <div>
             <Route path="/fireworks" component={Fireworks} />
+          </div>
+        </BrowserRouter>
+        <BrowserRouter>
+          <div>
+            <Route path="/animation" component={Animation} />
           </div>
         </BrowserRouter>
       </div>
