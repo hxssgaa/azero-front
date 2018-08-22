@@ -87,6 +87,7 @@ export default class SliderModel extends PureComponent {
         return obj;
       }
     });
+
     const chart = new G2.Chart({
       container: 'mountNode',
       forceFit: true,
