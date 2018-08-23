@@ -88,8 +88,7 @@ enquireScreen(b => {
   isMobile = b;
 });
 
-@connect(({ user, global = {}, loading }) => ({
-  currentUser: user.currentUser,
+@connect(({ global = {}, loading }) => ({
   collapsed: global.collapsed,
   fetchingNotices: loading.effects['global/fetchNotices'],
   notices: global.notices,

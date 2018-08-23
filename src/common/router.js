@@ -6,22 +6,9 @@ import { getMenuData } from './menu';
 
 let routerDataCache;
 
-const modelNotExisted = (app, model) =>
-  // eslint-disable-next-line
-  !app._models.some(({ namespace }) => {
-    return namespace === model.substring(model.lastIndexOf('/') + 1);
-  });
-
 // wrapper of dynamic
 const dynamicWrapper = (app, models, component) => {
   // register models
-  models.forEach(model => {
-    if (modelNotExisted(app, model)) {
-      // eslint-disable-next-line
-      app.model(require(`../models/${model}`).default);
-    }
-  });
-
   // () => require('module')
   // transformed by babel-plugin-dynamic-import-node-sync
   if (component.toString().indexOf('.then(') < 0) {
@@ -72,7 +59,7 @@ function getFlatMenuData(menus) {
 export const getRouterData = app => {
   const routerConfig = {
     '/': {
-      component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
+      component: dynamicWrapper(app, [], () => import('../layouts/BasicLayout')),
     },
     '/futu': {
       component: dynamicWrapper(app, ['futu'], () => import('../routes/Futu')),
