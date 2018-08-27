@@ -40,7 +40,6 @@ export default {
     setup({ dispatch, history }) {
       return history.listen(({ pathname, search }) => {
         const query = queryString.parse(search);
-        console.info(333);
         if (pathname.includes('/futu')) {
           dispatch({
             type: 'fetch',

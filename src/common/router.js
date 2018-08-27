@@ -11,8 +11,6 @@ const modelNotExisted = (app, model) =>
 
 // wrapper of dynamic
 const dynamicWrapper = (app, models, component) => {
-  console.info(1111, models);
-  console.info(2222, component);
   models.forEach(model => {
     if (modelNotExisted(app, model)) {
       // eslint-disable-next-line
