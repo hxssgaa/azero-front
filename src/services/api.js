@@ -40,6 +40,10 @@ export async function fakeSubmitForm(params) {
   });
 }
 
+export async function queryFutuData() {
+  return request('/api/queryFutuData');
+}
+
 export async function fakeChartData() {
   return request('/api/fake_chart_data');
 }

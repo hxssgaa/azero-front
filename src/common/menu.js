@@ -9,75 +9,17 @@ const menuData = [
   {
     name: 'ib',
     icon: 'form',
-    path: 'form',
-    children: [
-      {
-        name: '基础表单',
-        path: 'basic-form',
-      },
-      {
-        name: '分步表单',
-        path: 'step-form',
-      },
-      {
-        name: '高级表单',
-        authority: 'admin',
-        path: 'advanced-form',
-      },
-    ],
+    path: 'ib',
   },
   {
     name: 'meta',
     icon: 'table',
-    path: 'list',
-    children: [
-      {
-        name: '查询表格',
-        path: 'table-list',
-      },
-      {
-        name: '标准列表',
-        path: 'basic-list',
-      },
-      {
-        name: '卡片列表',
-        path: 'card-list',
-      },
-      {
-        name: '搜索列表',
-        path: 'search',
-        children: [
-          {
-            name: '搜索列表（文章）',
-            path: 'articles',
-          },
-          {
-            name: '搜索列表（项目）',
-            path: 'projects',
-          },
-          {
-            name: '搜索列表（应用）',
-            path: 'applications',
-          },
-        ],
-      },
-    ],
+    path: 'meta',
   },
   {
     name: 'td',
     icon: 'profile',
-    path: 'profile',
-    children: [
-      {
-        name: '基础详情页',
-        path: 'basic',
-      },
-      {
-        name: '高级详情页',
-        path: 'advanced',
-        authority: 'admin',
-      },
-    ],
+    path: 'td',
   },
 ];
 

@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 
-@connect(({ Futu, loading }) => ({
-  Futu,
-  loading: loading.effects['Futu/fetch'],
+@connect(({ Td, loading }) => ({
+  Td,
+  loading: loading.effects['Td/fetch'],
 }))
 
-export default class FutuForm extends Component {
+export default class IdForm extends Component {
   state = {};
 
   componentDidMount() {
     console.info(1111);
     const { dispatch } = this.props;
     dispatch({
-      type: 'Futu/fetch',
+      type: 'Td/fetch',
     });
   }
 
@@ -27,7 +27,7 @@ export default class FutuForm extends Component {
   render() {
     return (
       <div>
-        11111
+        4444
       </div>
     );
   }

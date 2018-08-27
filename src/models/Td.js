@@ -2,7 +2,7 @@ import queryString from 'query-string';
 import { queryFutuData } from '../services/api';
 
 export default {
-  namespace: 'Futu',
+  namespace: 'Td',
 
   state: {
     loading: false,
@@ -42,7 +42,7 @@ export default {
     setup({ dispatch, history }) {
       return history.listen(({ pathname, search }) => {
         const query = queryString.parse(search);
-        if (pathname.includes('/futu')) {
+        if (pathname.includes('/td')) {
           dispatch({
             type: 'fetch',
             payload: query,
