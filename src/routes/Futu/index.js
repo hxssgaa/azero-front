@@ -1,28 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 
-@connect(({ chart, loading }) => ({
-  chart,
-  loading: loading.effects['futu/fetch'],
+@connect(({ futu, loading }) => ({
+  futu,
+  loading: loading.effects['Futu/fetch'],
 }))
 
 export default class FutuForm extends Component {
-  state = {
-  };
+  state = {};
 
   componentDidMount() {
+    console.info(1111);
     const { dispatch } = this.props;
     dispatch({
-      type: 'futu/fetch',
+      type: 'Futu/fetch',
     });
   }
 
-  componentWillUnmount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'futu/clear',
-    });
-  }
+  // componentWillUnmount() {
+  //   const { dispatch } = this.props;
+  //   dispatch({
+  //     type: 'futu/clear',
+  //   });
+  // }
 
   render() {
     return (
