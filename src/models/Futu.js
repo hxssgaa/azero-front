@@ -1,5 +1,5 @@
 import queryString from 'query-string';
-// import { fakeChartData } from '../services/api';
+import { queryFutuData } from '../services/api';
 
 export default {
   namespace: 'Futu',
@@ -11,13 +11,15 @@ export default {
 
   effects: {
     * fetch(_, { call, put }) {
-      console.info(4444,'kkkkk');
-      // const response = yield call(fakeChartData);
-      const response = true;
-      yield put({
-        type: 'save',
-        payload: response,
-      });
+      console.info(4444, 'kkkkk');
+      const response = yield call(queryFutuData);
+      console.info(111, response);
+
+      // const response = true;
+      // yield put({
+      //   type: 'save',
+      //   payload: response,
+      // });
     },
   },
 
