@@ -10,7 +10,6 @@ export default class FutuForm extends Component {
   state = {};
 
   componentDidMount() {
-    console.info(1111);
     const { dispatch } = this.props;
     dispatch({
       type: 'Futu/fetch',
@@ -27,7 +26,7 @@ export default class FutuForm extends Component {
   render() {
     return (
       <div>
-        11111
+        11111呃呃呃呃呃呃
       </div>
     );
   }

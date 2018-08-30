@@ -11,7 +11,7 @@ export default {
 
   effects: {
     * fetch(_, { call, put }) {
-      console.info(4444, 'kkkkk');
+      console.info(6666, 'kkkkk');
       const response = yield call(queryFutuData);
       console.info(111, response);
 
