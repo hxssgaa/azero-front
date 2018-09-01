@@ -44,6 +44,12 @@ export async function queryFutuData() {
   return request('/api/queryFutuData');
 }
 
+// query td data
+export async function queryTdData() {
+  console.info('查询td data');
+  return request('/td/startSync.do');
+}
+
 export async function fakeChartData() {
   return request('/api/fake_chart_data');
 }

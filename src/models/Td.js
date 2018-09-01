@@ -1,19 +1,19 @@
 import queryString from 'query-string';
-import { queryFutuData } from '../services/api';
+import { queryTdData } from '../services/api';
 
 export default {
   namespace: 'Td',
 
   state: {
     loading: false,
-    futu: {},
+    tdFormStore: {},
   },
 
   effects: {
     * fetch(_, { call, put }) {
-      console.info(4444, 'kkkkk');
-      const response = yield call(queryFutuData);
-      console.info(111, response);
+      console.info(1111, 'tdtdtd');
+      const response = yield call(queryTdData);
+      console.info('tdResponse', response);
 
       // const response = true;
       // yield put({

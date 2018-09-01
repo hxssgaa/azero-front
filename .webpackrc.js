@@ -1,4 +1,5 @@
 const path = require('path');
+const remoteIP = 'http://104.199.211.3:5000';
 
 export default {
   entry: 'src/index.js',
@@ -6,6 +7,15 @@ export default {
   env: {
     development: {
       extraBabelPlugins: ['dva-hmr'],
+    },
+  },
+  proxy: {
+    '**/*.do': {
+      target: remoteIP,
+      changeOrigin: true,
+      pathRewrite(path) {
+        return path;
+      },
     },
   },
   externals: {
