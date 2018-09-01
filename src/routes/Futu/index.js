@@ -26,7 +26,7 @@ export default class FutuForm extends Component {
   render() {
     return (
       <div>
-        11111呃呃呃呃呃呃
+        11111呃呃呃呃呃呃2222
       </div>
     );
   }
