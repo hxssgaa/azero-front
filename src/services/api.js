@@ -44,10 +44,19 @@ export async function queryFutuData() {
   return request('/api/queryFutuData');
 }
 
-// query td data
-export async function queryTdData() {
-  console.info('查询td data');
+// query td sync data
+export async function queryTdSyncData() {
+  return request('/td/syncStatus.do');
+}
+
+// query td start data
+export async function queryTdStartData() {
   return request('/td/startSync.do');
+}
+
+// query td stop data
+export async function queryTdStopData() {
+  return request('/td/stopSync.do');
 }
 
 export async function fakeChartData() {

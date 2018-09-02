@@ -1,5 +1,5 @@
 import queryString from 'query-string';
-import { queryTdData } from '../services/api';
+import { queryTdSyncData, queryTdStartData, queryTdStopData } from '../services/api';
 
 export default {
   namespace: 'Td',
@@ -11,7 +11,35 @@ export default {
 
   effects: {
     * fetch(_, { call, put }) {
-      const response = yield call(queryTdData);
+      const response = yield call(queryTdSyncData);
+      // console.info('tdResponse', response);
+
+      // const response = true;
+      const { success, data } = response;
+      if (success) {
+        yield put({
+          type: 'save',
+          payload: { data },
+        });
+      }
+    },
+
+    * fetchStart(_, { call, put }) {
+      const response = yield call(queryTdStartData);
+      // console.info('tdResponse', response);
+
+      // const response = true;
+      const { success, data } = response;
+      if (success) {
+        yield put({
+          type: 'save',
+          payload: data,
+        });
+      }
+    },
+
+    * fetchStop(_, { call, put }) {
+      const response = yield call(queryTdStopData);
       // console.info('tdResponse', response);
 
       // const response = true;
