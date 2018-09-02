@@ -6,20 +6,22 @@ export default {
 
   state: {
     loading: false,
-    tdFormStore: {},
+    data: {},
   },
 
   effects: {
     * fetch(_, { call, put }) {
-      console.info(1111, 'tdtdtd');
       const response = yield call(queryTdData);
-      console.info('tdResponse', response);
+      // console.info('tdResponse', response);
 
       // const response = true;
-      // yield put({
-      //   type: 'save',
-      //   payload: response,
-      // });
+      const { success, data } = response;
+      if (success) {
+        yield put({
+          type: 'save',
+          payload: data,
+        });
+      }
     },
   },
 
