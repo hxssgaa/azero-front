@@ -2,6 +2,11 @@ import { isUrl } from '../utils/utils';
 
 const menuData = [
   {
+    name: 'td',
+    icon: 'profile',
+    path: 'td',
+  },
+  {
     name: 'futu',
     icon: 'dashboard',
     path: 'futu',
@@ -15,11 +20,6 @@ const menuData = [
     name: 'meta',
     icon: 'table',
     path: 'meta',
-  },
-  {
-    name: 'td',
-    icon: 'profile',
-    path: 'td',
   },
 ];
 
