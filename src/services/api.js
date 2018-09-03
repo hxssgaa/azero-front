@@ -46,6 +46,7 @@ export async function queryFutuData() {
 
 // query td sync data
 export async function queryTdSyncData() {
+  // return request('/api/queryFutuData');
   return request('/td/syncStatus.do');
 }
 
