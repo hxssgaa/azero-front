@@ -1,0 +1,319 @@
+
+// ant 组件Select模块
+.selectClassModel(@width,@height,@top) {
+  width: @width !important;
+  height: @height;
+  font-size: 14px;
+  color: #555;
+
+  div {
+    height: @height;
+    line-height: @height;
+  }
+}
+
+// ant 组件Select模块
+.selectClassModel1(@width,@height,@top) {
+  width: @width !important;
+  height: @height;
+  font-size: 14px !important;
+  color: #555;
+  span {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 0;
+    top: @top;
+    right: 8px !important;
+    border-top: 10px solid #999;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+  }
+  span:before {
+    content: "";
+  }
+}
+
+
+// 统一处理table基础样式
+.commonBasicTableModel {
+  position: relative !important;
+  min-width: 1045px !important;
+
+  ul {
+
+    .ant-pagination-total-text {
+      float: right !important;
+      margin-left: 10px !important;
+      color: #999 !important;
+    }
+
+    span {
+      float: right;
+      margin-left: 10px;
+      color: #999;
+    }
+  }
+
+  table {
+    width: 100%;
+    position: relative;
+    min-width: 1045px !important;
+    text-align: center !important;
+  }
+
+  th {
+    text-align: center !important;
+    background-color: #f5f5f5 !important;
+
+    span {
+      text-align: center !important;
+    }
+  }
+
+  td {
+    padding: 14px 8px !important;
+    font-size: 12px !important;
+  }
+
+  .totalRowsTrueDisplay {
+    float: right;
+    margin-top: 30px;
+    margin-right: 10px;
+    color: #999;
+  }
+}
+
+// 基础boxSize
+.boxSize(@width,@height) {
+  width: @width;
+  height: @height;
+}
+
+// 通用操作按钮模块
+.commonHandleBtnModel(@background) {
+  .boxSize(50px, 22px);
+  background: @background !important;
+  padding: 0 10px !important;
+  border: none;
+
+  span {
+    font-size: 12px;
+  }
+}
+
+// 通用操作按钮--查看
+.commonHandleBtnCheckInModel {
+  .commonHandleBtnModel(#fff);
+  line-height: 20px;
+  border: 1px solid #00acff !important;
+  color: #00acff !important;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+// 搜索没有数据时
+.searchNoDataModel {
+  height: auto;
+  width: 100%;
+  border-collapse: collapse;
+
+  thead {
+    border-collapse: collapse;
+    th {
+      height: 64px;
+      background-color: #f5f5f5;
+      vertical-align: middle;
+      font-weight: normal;
+      color: #999;
+      font-size: 12px;
+    }
+  }
+}
+
+// 没有数据
+.noneDate {
+  width: 100%;
+  height: 426px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+// 没有数据的图片
+.noneDateImg {
+  width: 100px;
+  height: 100px;
+  margin-top: 100px;
+}
+
+// 没有数据
+.noneDateSource {
+  font-size: 16px;
+  color: #c2c2c2;
+  letter-spacing: 0;
+  line-height: 16px;
+  text-align: center;
+}
+
+// 统一form表单
+.formWrapper {
+  max-width: 1000px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+
+  // form表单主题
+  .formTitle {
+    display: block;
+    float: left;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+    min-width: 96px;
+    height: 36px;
+    margin-right: 15px;
+
+    .formTitleSpan {
+      display: block;
+      float: right;
+      text-align: right;
+      word-break: keep-all;
+
+      i {
+        font-style: normal;
+        font-size: 12px;
+        color: #c2c2c2;
+        letter-spacing: 0;
+        line-height: 12px;
+        text-align: left;
+      }
+    }
+
+    .formTitleLine {
+      line-height: 18px;
+    }
+
+    .formTitleRed {
+      display: block;
+      float: right;
+      color: #f00;
+      font-style: normal;
+      margin-top: 2px;
+      margin-right: 5px;
+    }
+
+  }
+
+  // select框css
+  .selectClass {
+    .selectClassModel(300px, 36px, 18px);
+  }
+
+  // 小版本select框css
+  .selectSmallClass {
+    .selectClassModel(200px, 36px, 18px);
+    float: left;
+    margin-right: 10px;
+  }
+
+  // form表单input框
+  .formInput {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+    display: block;
+    float: left;
+    font-size: 14px;
+    width: 300px;
+    height: 36px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  // form表单单位
+  .formUnit {
+    display: block;
+    width: auto;
+    height: 36px;
+    margin-left: 10px;
+    float: left;
+    text-align: left;
+    font-size: 14px;
+    color: #555;
+  }
+
+  // form错误提示块
+  .formError {
+    display: none;
+    float: left;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+    width: auto;
+    height: 36px;
+    margin-right: 50px;
+    margin-left: 10px;
+    color: #f00;
+    font-style: normal;
+    font-size: 12px;
+    text-align: left;
+  }
+
+}
+
+.clearFix:after {
+  content: " ";
+  display: block;
+  clear: both;
+  height: 0;
+}
+
+.test {
+  margin: 8px 24px 0 0;
+  width: 180px;
+  height: 30px;
+  float: right;
+}
+
+// 搜索块图标
+.searchPrefix {
+  font-size: 16px;
+  color: #999;
+}
+
+// 银行组件模块错误提示
+:global {
+  #bankTotalSingleModel .ant-form-explain {
+    display: none;
+  }
+}
+
+// 1600px布局问题
+:global {
+  @media (min-width: 1600px) {
+    .ant-col-xl-2 {
+      display: block;
+      width: 12.5%;
+    }
+
+    .ant-col-lg-offset-3 {
+      display: block;
+      width: 12.5%;
+    }
+
+    .ant-col-xl-offset-2 {
+      margin-left: 12.5%;
+    }
+
+    .ant-col-xl-22 {
+      display: block;
+      width: 87.5%;
+    }
+  }
+}

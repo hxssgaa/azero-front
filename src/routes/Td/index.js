@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Row, Col, Carousel, Progress } from 'antd';
 import { connect } from 'dva';
+import { ToDecimal } from '../../components/CommonModal/Common';
 import styles from './index.less';
 
 @connect(({ Td, loading }) => ({
@@ -100,7 +101,7 @@ export default class TdForm extends Component {
               <div>2.同步进度:</div>
             </Col>
             <Col span={12}>
-              <Progress percent={currentProgress * 100} status="active" />
+              <Progress percent={ToDecimal(currentProgress * 100)} status="active" />
             </Col>
           </Row>
         </div>
