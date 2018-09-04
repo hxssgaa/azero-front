@@ -13,25 +13,30 @@ export default {
 
   effects: {
     * fetch(_, { call, put }) {
-      // const response = yield call(queryTdSyncData);
-      // const { success, data } = response;
-      // if (success) {
-      //   yield put({
-      //     type: 'save',
-      //     payload: { data },
-      //   });
-      // }
+      const response = yield call(queryTdSyncData);
+      const { success, data } = response;
+      if (success) {
+        yield put({
+          type: 'save',
+          payload: { data },
+        });
+      }
     },
 
     * fetchProgress(_, { call, put }) {
+      const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
       const response = yield call(queryTdSyncProgressData);
-      console.info(1111, response);
-      const { success, data } = response;
+      const { success, data: { data } } = response;
       if (success) {
         yield put({
           type: 'save',
           payload: { progressData: data },
         });
+      }
+      const { pathname } = location;
+      if (pathname.includes('td')) {
+        yield delay(1000);
+        yield put({ type: 'fetchProgress' });
       }
     },
 
@@ -80,6 +85,10 @@ export default {
       return history.listen(({ pathname, search }) => {
         const query = queryString.parse(search);
         if (pathname.includes('/td')) {
+          dispatch({
+            type: 'fetch',
+            payload: query,
+          });
           dispatch({
             type: 'fetchProgress',
             payload: query,

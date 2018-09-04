@@ -9,8 +9,8 @@ export async function queryTdSyncData() {
 
 // query td sync progress data
 export async function queryTdSyncProgressData() {
-  return request('/td/getSyncProgress');
-  // return request('/td/getSyncProgress.do');
+  // return request('/td/getSyncProgress');
+  return request('/td/getSyncProgress.do');
 }
 
 // query td start data
