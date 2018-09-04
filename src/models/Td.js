@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import queryString from 'query-string';
-import { queryTdSyncData, queryTdStartData, queryTdStopData } from '../services/api';
+import { queryTdSyncData, queryTdSyncProgressData, queryTdStartData, queryTdStopData } from '../services/api';
 
 export default {
   namespace: 'Td',
@@ -8,16 +8,29 @@ export default {
   state: {
     loading: false,
     data: {},
+    progressData: {},
   },
 
   effects: {
     * fetch(_, { call, put }) {
-      const response = yield call(queryTdSyncData);
+      // const response = yield call(queryTdSyncData);
+      // const { success, data } = response;
+      // if (success) {
+      //   yield put({
+      //     type: 'save',
+      //     payload: { data },
+      //   });
+      // }
+    },
+
+    * fetchProgress(_, { call, put }) {
+      const response = yield call(queryTdSyncProgressData);
+      console.info(1111, response);
       const { success, data } = response;
       if (success) {
         yield put({
           type: 'save',
-          payload: { data },
+          payload: { progressData: data },
         });
       }
     },
@@ -25,7 +38,7 @@ export default {
     * fetchStart(_, { call, put }) {
       const response = yield call(queryTdStartData);
       if (response && response.success) {
-        yield put({ type: 'fetch'});
+        yield put({ type: 'fetch' });
         const { data: { status } } = response;
         const statusDetail = parseInt(status, 10) === 0 ? '当前数据同步成功开启' : '当前数据同步已经开启，不需要再开启';
         message.success(statusDetail);
@@ -37,7 +50,7 @@ export default {
     * fetchStop(_, { call, put }) {
       const response = yield call(queryTdStopData);
       if (response && response.success) {
-        yield put({ type: 'fetch'});
+        yield put({ type: 'fetch' });
         const { data: { status } } = response;
         const statusDetail = parseInt(status, 10) === 0 ? '正在同步，已经关闭' : '已经关闭';
         message.success(statusDetail);
@@ -68,7 +81,7 @@ export default {
         const query = queryString.parse(search);
         if (pathname.includes('/td')) {
           dispatch({
-            type: 'fetch',
+            type: 'fetchProgress',
             payload: query,
           });
         }

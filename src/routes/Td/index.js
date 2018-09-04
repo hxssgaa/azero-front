@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Row, Col } from 'antd';
+import { Button, Row, Col, Carousel, Progress } from 'antd';
 import { connect } from 'dva';
 import styles from './index.less';
 
@@ -35,9 +35,20 @@ export default class TdForm extends Component {
   };
 
   render() {
-    const { Td: { data } } = this.props;
-    console.info(111, data);
+    const { Td: { data, progressData } } = this.props;
+    const { lastSyncStocks, currentProgress, isSyncing, eta, syncedSymbol } = progressData;
     const { status } = data;
+    let lastSyncStocksModel;
+    if (lastSyncStocks) {
+      lastSyncStocksModel = lastSyncStocks.map((item, index) => {
+        const { symbol, frequency, syncDateTime } = item;
+        return (
+          <div>
+            <h3>{`symbol:${  symbol  };frequency:${  frequency  };syncDataTime:${  syncDateTime}`}</h3>
+          </div>);
+      });
+    }
+
     let light;
     let buttonDetail;
     if (parseInt(status, 10) === 0) {
@@ -50,7 +61,7 @@ export default class TdForm extends Component {
 
     return (
       <div>
-        {/* td同步数据开关 */}
+        {/* 一.td同步数据开关 */}
         <div className={styles.subProperty}>一.td同步数据开关</div>
         <Row gutter={24}>
           <Col span={10}>
@@ -74,6 +85,35 @@ export default class TdForm extends Component {
             </Button>
           </Col>
         </Row>
+
+        {/* 二.td同步数据详情 */}
+        <div className={styles.subProperty}>二.td同步数据详情</div>
+        <div>1.最新同步的25条股票数据:</div>
+        <Carousel
+          autoplay
+        >
+          {lastSyncStocksModel}
+        </Carousel>
+        <div style={{ marginTop: 20 }}>
+          <Row gutter={24}>
+            <Col span={8}>
+              <div>2.同步进度:</div>
+            </Col>
+            <Col span={12}>
+              <Progress percent={currentProgress * 100} status="active" />
+            </Col>
+          </Row>
+        </div>
+        <div style={{ marginTop: 20 }}>
+          <Row gutter={24}>
+            <Col span={8}>
+              <div style={{ height: 50, innerHeight: 50, marginTop: 18 }}>3.已经是最新状态的股票数:</div>
+            </Col>
+            <Col span={12}>
+              <div style={{ fontSize: 40, color: '#1890ff' }}>{syncedSymbol}</div>
+            </Col>
+          </Row>
+        </div>
       </div>
     );
   }
