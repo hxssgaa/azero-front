@@ -23,7 +23,7 @@ export default class TdForm extends Component {
     return true;
   }
 
-  // td同步数据按钮点击
+  // td sync data button click
   tdButtonClick = (str) => {
     const { dispatch } = this.props;
     if (str === 'open') {
