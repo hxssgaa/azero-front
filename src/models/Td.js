@@ -27,16 +27,20 @@ export default {
       const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
       const response = yield call(queryTdSyncProgressData);
       const { success, data: { data } } = response;
-      if (success) {
+      if (response && success) {
         yield put({
           type: 'save',
           payload: { progressData: data },
         });
       }
       const { pathname } = location;
+      // just send requests every second
       if (pathname.includes('td')) {
-        yield delay(1000);
-        yield put({ type: 'fetchProgress' });
+        // according to the response to judge whether it can send the requests or not
+        if (response && response.data && response.data.data.isSyncing) {
+          yield delay(1000);
+          yield put({ type: 'fetchProgress' });
+        }
       }
     },
 
