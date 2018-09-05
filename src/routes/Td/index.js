@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Row, Col, Carousel, Progress } from 'antd';
+import { Button, Row, Col, Carousel, Progress, Table } from 'antd';
 import { connect } from 'dva';
 import { ToDecimal } from '../../components/CommonModal/Common';
 import styles from './index.less';
@@ -45,10 +45,27 @@ export default class TdForm extends Component {
         const { symbol, frequency, syncDateTime } = item;
         return (
           <div>
-            <h3>{`symbol:${  symbol  };frequency:${  frequency  };syncDataTime:${  syncDateTime}`}</h3>
+            <h3>{`symbol:${  symbol  };frequency:${  frequency  };syncDateTime:${  syncDateTime}`}</h3>
           </div>);
       });
     }
+
+    const columns = [
+      {
+        title: 'Symbol',
+        dataIndex: 'symbol',
+        key: 'symbol',
+      },
+      {
+        title: 'Frequency',
+        dataIndex: 'frequency',
+        key: 'frequency',
+      },
+      {
+        title: 'SyncDateTime',
+        dataIndex: 'syncDateTime',
+        key: 'syncDateTime',
+      }];
 
     let light;
     let buttonDetail;
@@ -62,42 +79,47 @@ export default class TdForm extends Component {
 
     return (
       <div>
-        {/* 一. Td sync data switch  */}
-        <div className={styles.subProperty}>一.Td sync data switch</div>
+        {/* first. Td sync data switch  */}
+        <div className={styles.subProperty}>Td sync data switch</div>
         <Row gutter={24}>
-          <Col span={12}>
+          <Col span={12} offset={1}>
             <div
               style={{ marginRight: 20 }}
             >
               {buttonDetail + light}
             </div>
           </Col>
-          <Col span={12}>
+          <Col span={10}>
             <Button
               type="primary"
               onClick={this.tdButtonClick.bind(this, 'open')}
-              style={{ marginRight: 20 }}
+              style={{ marginRight: 20, marginBottom: 10 }}
             >open
             </Button>
             <Button
               type="primary"
               onClick={this.tdButtonClick.bind(this, 'close')}
+              style={{ marginBottom: 10 }}
             >close
             </Button>
           </Col>
         </Row>
 
-        {/* 二.Td synchronization data details */}
-        <div className={styles.subProperty}>二.Td synchronization data details</div>
-        <div>1.the latest synchronized 25 stock data:</div>
-        <Carousel
-          autoplay
-        >
-          {lastSyncStocksModel}
-        </Carousel>
-        <div style={{ marginTop: 20 }}>
+        {/* second.Td synchronization data details */}
+        <div className={styles.subProperty}>Td synchronization data details</div>
+        <div>
           <Row gutter={24}>
-            <Col span={8}>
+            <Col span={9} offset={1}>
+              <div style={{ height: 50, innerHeight: 50, marginTop: 10 }}>1.latest state of stocks :</div>
+            </Col>
+            <Col span={12}>
+              <div style={{ fontSize: 40, color: '#1890ff' }}>{syncedSymbol}</div>
+            </Col>
+          </Row>
+        </div>
+        <div style={{ marginTop: 10 }}>
+          <Row gutter={24}>
+            <Col span={9} offset={1}>
               <div>2.synchronization progress:</div>
             </Col>
             <Col span={12}>
@@ -110,14 +132,26 @@ export default class TdForm extends Component {
         </div>
         <div style={{ marginTop: 20 }}>
           <Row gutter={24}>
-            <Col span={8}>
-              <div style={{ height: 50, innerHeight: 50, marginTop: 10 }}>3.the number of stocks that are already in the latest state:</div>
+            <Col span={23} offset={1}>
+              <div style={{ marginBottom: 15, marginTop: 20 }}>3.the latest synchronized 25 stock data:</div>
             </Col>
-            <Col span={12}>
-              <div style={{ fontSize: 40, color: '#1890ff' }}>{syncedSymbol}</div>
+          </Row>
+          <Row gutter={24}>
+            <Col span={18} offset={3}>
+              <Table
+                columns={columns}
+                dataSource={lastSyncStocks}
+              />
             </Col>
           </Row>
         </div>
+
+
+        {/*<Carousel*/}
+        {/*autoplay*/}
+        {/*>*/}
+        {/*{lastSyncStocksModel}*/}
+        {/*</Carousel>*/}
       </div>
     );
   }
