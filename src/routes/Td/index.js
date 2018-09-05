@@ -63,6 +63,22 @@ export default class TdForm extends Component {
         key: 'syncDateTime',
       }];
 
+    // single model for synchronization data details
+    const singleModel = (property, detail, propertyStyle) => {
+      return (
+        <div style={Object.assign({}, propertyStyle ? {} : { marginTop: 10 })}>
+          <Row gutter={24}>
+            <Col span={9} offset={1}>
+              <div style={Object.assign({}, propertyStyle ? { height: 40, innerHeight: 40, marginTop: 10 } : {})}>{property}</div>
+            </Col>
+            <Col span={12}>
+              <div style={Object.assign({}, propertyStyle ? { fontSize: 30, color: '#1890ff' } : {})}>{detail}</div>
+            </Col>
+          </Row>
+        </div>
+      );
+    };
+
     return (
       <div>
         {/* first. Td sync data switch  */}
@@ -91,47 +107,18 @@ export default class TdForm extends Component {
             </Col>
           </Row>
         </div>
-
-
         {/* second.Td synchronization data details */}
         <div className={styles.subProperty}>Td synchronization data details</div>
-        <div>
-          <Row gutter={24}>
-            <Col span={9} offset={1}>
-              <div style={{ height: 50, innerHeight: 50, marginTop: 10 }}>1.latest state of stocks :</div>
-            </Col>
-            <Col span={12}>
-              <div style={{ fontSize: 40, color: '#1890ff' }}>{syncedSymbol}</div>
-            </Col>
-          </Row>
-        </div>
-        <div>
-          <Row gutter={24}>
-            <Col span={9} offset={1}>
-              <div style={{ height: 50, innerHeight: 50, marginTop: 10 }}>2. how long remains:</div>
-            </Col>
-            <Col span={12}>
-              <div style={{ fontSize: 40, color: '#1890ff' }}>{eta}</div>
-            </Col>
-          </Row>
-        </div>
-        <div style={{ marginTop: 10 }}>
-          <Row gutter={24}>
-            <Col span={9} offset={1}>
-              <div>3.synchronization progress:</div>
-            </Col>
-            <Col span={12}>
-              <Progress
-                percent={ToDecimal(currentProgress * 100)}
-                status="active"
-              />
-            </Col>
-          </Row>
-        </div>
+        {singleModel('1.latest state of stocks :', syncedSymbol, true)}
+        {singleModel('2. how long remains :', eta ? `${(ToDecimal(eta / 3600)).toString()  }h` : 0, true)}
+        {singleModel('3.synchronization progress :', <Progress
+          percent={ToDecimal(currentProgress * 100)}
+          status="active"
+        />, false)}
         <div style={{ marginTop: 20 }}>
           <Row gutter={24}>
             <Col span={9} offset={1}>
-              <div style={{ height: 50, innerHeight: 50, marginTop: 10 }}>4.the latest synchronized 25 stock data:</div>
+              <div style={{ height: 40, innerHeight: 40, marginTop: 10 }}>4.the latest synchronized 25 stock data :</div>
             </Col>
           </Row>
           <Row gutter={24}>

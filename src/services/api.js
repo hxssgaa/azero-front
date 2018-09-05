@@ -3,6 +3,7 @@ import request from '../utils/request';
 
 // query td sync data
 export async function queryTdSyncData() {
+  // return request('/td/getSyncProgress');
   // return request('/api/queryFutuData');
   return request('/td/syncStatus.do');
 }
