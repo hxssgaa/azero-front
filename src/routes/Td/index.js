@@ -62,6 +62,11 @@ export default class TdForm extends Component {
         key: 'frequency',
       },
       {
+        title: 'Count',
+        dataIndex: 'count',
+        key: 'count',
+      },
+      {
         title: 'SyncDateTime',
         dataIndex: 'syncDateTime',
         key: 'syncDateTime',
@@ -132,8 +137,8 @@ export default class TdForm extends Component {
         </div>
         <div style={{ marginTop: 20 }}>
           <Row gutter={24}>
-            <Col span={23} offset={1}>
-              <div style={{ marginBottom: 15, marginTop: 20 }}>3.the latest synchronized 25 stock data:</div>
+            <Col span={9} offset={1}>
+              <div style={{ height: 50, innerHeight: 50, marginTop: 10 }}>3.the latest synchronized 25 stock data:</div>
             </Col>
           </Row>
           <Row gutter={24}>
@@ -146,13 +151,6 @@ export default class TdForm extends Component {
             </Col>
           </Row>
         </div>
-
-
-        {/*<Carousel*/}
-        {/*autoplay*/}
-        {/*>*/}
-        {/*{lastSyncStocksModel}*/}
-        {/*</Carousel>*/}
       </div>
     );
   }
