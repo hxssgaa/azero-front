@@ -48,6 +48,7 @@ export default {
       const response = yield call(queryTdStartData);
       if (response && response.success) {
         yield put({ type: 'fetch' });
+        yield put({ type: 'fetchProgress' });
         const { data: { status } } = response;
         const statusDetail = parseInt(status, 10) === 0 ? '当前数据同步成功开启' : '当前数据同步已经开启，不需要再开启';
         message.success(statusDetail);

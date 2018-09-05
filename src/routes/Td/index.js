@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Button, Row, Col, Carousel, Progress, Table } from 'antd';
+import { Button, Row, Col, Progress, Table } from 'antd';
 import { connect } from 'dva';
 import { ToDecimal } from '../../components/CommonModal/Common';
+import rhombus from '../../assets/sync/rhombus.png';
+import rhombusNo from '../../assets/sync/rhombusNo.png';
 import styles from './index.less';
 
 @connect(({ Td, loading }) => ({
@@ -37,19 +39,8 @@ export default class TdForm extends Component {
 
   render() {
     const { Td: { data, progressData } } = this.props;
-    const { lastSyncStocks, currentProgress, isSyncing, eta, syncedSymbol } = progressData;
+    const { lastSyncStocks, currentProgress, eta, syncedSymbol } = progressData;
     const { status } = data;
-    let lastSyncStocksModel;
-    if (lastSyncStocks) {
-      lastSyncStocksModel = lastSyncStocks.map((item, index) => {
-        const { symbol, frequency, syncDateTime } = item;
-        return (
-          <div>
-            <h3>{`symbol:${  symbol  };frequency:${  frequency  };syncDateTime:${  syncDateTime}`}</h3>
-          </div>);
-      });
-    }
-
     const columns = [
       {
         title: 'Symbol',
@@ -72,43 +63,35 @@ export default class TdForm extends Component {
         key: 'syncDateTime',
       }];
 
-    let light;
-    let buttonDetail;
-    if (parseInt(status, 10) === 0) {
-      light = 'server is not turned on';
-      buttonDetail = 'The current server does not have synchronization data:';
-    } else if (parseInt(status, 10) === 1) {
-      light = 'Server is turned on';
-      buttonDetail = 'Current server is synchronizing data:';
-    }
-
     return (
       <div>
         {/* first. Td sync data switch  */}
         <div className={styles.subProperty}>Td sync data switch</div>
-        <Row gutter={24}>
-          <Col span={12} offset={1}>
-            <div
-              style={{ marginRight: 20 }}
-            >
-              {buttonDetail + light}
-            </div>
-          </Col>
-          <Col span={10}>
-            <Button
-              type="primary"
-              onClick={this.tdButtonClick.bind(this, 'open')}
-              style={{ marginRight: 20, marginBottom: 10 }}
-            >open
-            </Button>
-            <Button
-              type="primary"
-              onClick={this.tdButtonClick.bind(this, 'close')}
-              style={{ marginBottom: 10 }}
-            >close
-            </Button>
-          </Col>
-        </Row>
+        <div>
+          <Row gutter={24}>
+            <Col span={9} offset={1}>
+              <div>
+                {parseInt(status, 10) === 0 ? 'server is not turned on: ' : 'server is turned on:'}
+                {parseInt(status, 10) === 0 ? <img style={{ width: 16 }} alt={1} src={rhombusNo} /> : <img style={{ width: 16 }} alt={2} src={rhombus} />}
+              </div>
+            </Col>
+            <Col span={10}>
+              <Button
+                type="primary"
+                onClick={this.tdButtonClick.bind(this, 'open')}
+                style={{ marginRight: 20, marginBottom: 10 }}
+              >open
+              </Button>
+              <Button
+                type="primary"
+                onClick={this.tdButtonClick.bind(this, 'close')}
+                style={{ marginBottom: 10 }}
+              >close
+              </Button>
+            </Col>
+          </Row>
+        </div>
+
 
         {/* second.Td synchronization data details */}
         <div className={styles.subProperty}>Td synchronization data details</div>
@@ -122,10 +105,20 @@ export default class TdForm extends Component {
             </Col>
           </Row>
         </div>
+        <div>
+          <Row gutter={24}>
+            <Col span={9} offset={1}>
+              <div style={{ height: 50, innerHeight: 50, marginTop: 10 }}>2. how long remains:</div>
+            </Col>
+            <Col span={12}>
+              <div style={{ fontSize: 40, color: '#1890ff' }}>{eta}</div>
+            </Col>
+          </Row>
+        </div>
         <div style={{ marginTop: 10 }}>
           <Row gutter={24}>
             <Col span={9} offset={1}>
-              <div>2.synchronization progress:</div>
+              <div>3.synchronization progress:</div>
             </Col>
             <Col span={12}>
               <Progress
@@ -138,7 +131,7 @@ export default class TdForm extends Component {
         <div style={{ marginTop: 20 }}>
           <Row gutter={24}>
             <Col span={9} offset={1}>
-              <div style={{ height: 50, innerHeight: 50, marginTop: 10 }}>3.the latest synchronized 25 stock data:</div>
+              <div style={{ height: 50, innerHeight: 50, marginTop: 10 }}>4.the latest synchronized 25 stock data:</div>
             </Col>
           </Row>
           <Row gutter={24}>
