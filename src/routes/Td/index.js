@@ -137,10 +137,11 @@ export default class TdForm extends Component {
             </Col>
           </Row>
           <Row gutter={24}>
-            <Col span={18} offset={3}>
+            <Col span={23} offset={1}>
               <Table
                 columns={columns}
                 dataSource={lastSyncStocks}
+                pagination={false}
               />
             </Col>
           </Row>
