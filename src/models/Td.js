@@ -14,8 +14,8 @@ export default {
   effects: {
     * fetch(_, { call, put }) {
       const response = yield call(queryTdSyncData);
-      const { success, data } = response;
-      if (success) {
+      if (response && response.success) {
+        const { data } = response;
         yield put({
           type: 'save',
           payload: { data },
@@ -26,8 +26,8 @@ export default {
     * fetchProgress(_, { call, put }) {
       const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
       const response = yield call(queryTdSyncProgressData);
-      const { success, data: { data } } = response;
-      if (response && success) {
+      if (response && response.success) {
+        const { data: { data } } = response;
         yield put({
           type: 'save',
           payload: { progressData: data },

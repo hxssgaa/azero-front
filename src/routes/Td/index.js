@@ -26,6 +26,7 @@ export default class TdForm extends Component {
     return true;
   }
 
+  // on search stocks
   onSearchStocks = (value) => {
     // Service.queryTdSymbolsInfoData(value.toUpperCase())
     //   .then((res) => {
@@ -33,6 +34,7 @@ export default class TdForm extends Component {
     //   });
   };
 
+  // blur search stocks
   onBlurStocks = (e) => {
     Service.queryTdSymbolsInfoData(e.target.value.toUpperCase())
       .then((res) => {
