@@ -18,7 +18,7 @@ export default {
         const { data } = response;
         yield put({
           type: 'save',
-          payload: { syncData:data },
+          payload: { syncData: data },
         });
       }
     },
@@ -38,8 +38,11 @@ export default {
       if (pathname.includes('td')) {
         // according to the response to judge whether it can send the requests or not
         if (response && response.data && response.data.data.isSyncing) {
-          yield delay(1000);
-          yield put({ type: 'fetchProgress' });
+          const { data: { data: { currentProgress } } } = response;
+          if (parseInt(currentProgress, 10) !== 1) {
+            yield delay(1000);
+            yield put({ type: 'fetchProgress' });
+          }
         }
       }
     },
