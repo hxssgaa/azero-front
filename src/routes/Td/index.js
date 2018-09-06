@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { Button, Row, Col, Progress, Table } from 'antd';
+import { Button, Row, Col, Progress, Table, Input } from 'antd';
 import { connect } from 'dva';
 import { ToDecimal } from '../../components/CommonModal/Common';
 import rhombus from '../../assets/sync/rhombus.png';
 import rhombusNo from '../../assets/sync/rhombusNo.png';
+import * as Service from '../../services/api';
 import styles from './index.less';
+
+const { Search } = Input;
 
 @connect(({ Td, loading }) => ({
   Td,
@@ -13,7 +16,7 @@ import styles from './index.less';
 
 export default class TdForm extends Component {
   state = {
-    // buttonClick: false,
+    stockData: {},
   };
 
   componentDidMount() {
@@ -22,6 +25,29 @@ export default class TdForm extends Component {
   shouldComponentUpdate() {
     return true;
   }
+
+  onSearchStocks = (value) => {
+    // Service.queryTdSymbolsInfoData(value.toUpperCase())
+    //   .then((res) => {
+    //     console.info(3333, res);
+    //   });
+  };
+
+  onBlurStocks = (e) => {
+    Service.queryTdSymbolsInfoData(e.target.value.toUpperCase())
+      .then((res) => {
+        if (res && res.success) {
+          const { data: { data } } = res;
+          this.setState({
+            stockData: data,
+          })
+        } else {
+          this.setState({
+            stockData: {},
+          })
+        }
+      });
+  };
 
   // td sync data button click
   tdButtonClick = (str) => {
@@ -39,6 +65,7 @@ export default class TdForm extends Component {
 
   render() {
     const { Td: { data, progressData } } = this.props;
+    const { stockData } = this.state;
     const { lastSyncStocks, currentProgress, eta, syncedSymbol } = progressData;
     const { status } = data;
     const columns = [
@@ -107,7 +134,46 @@ export default class TdForm extends Component {
             </Col>
           </Row>
         </div>
-        {/* second.Td synchronization data details */}
+        {/* second.Td search stock text */}
+        <div className={styles.subProperty}>Td search stock text</div>
+        <div style={{ marginLeft: 30 }}>
+          <Row gutter={24}>
+            <Col md={12} sm={24}>
+              <Search
+                placeholder="input search stock text"
+                onBlur={this.onBlurStocks.bind(this)}
+                onSearch={this.onSearchStocks.bind(this)}
+                style={{ width: 300, marginBottom: 10 }}
+              />
+            </Col>
+          </Row>
+        </div>
+        <div style={{ marginLeft: 30 }}>
+          {Object.keys(stockData).length >= 1 ?
+            (
+              <Row gutter={24}>
+                <Col md={8} sm={24}>
+                  <div style={{ display: 'block' }}>
+                    <div style={{ width: '40%', float: 'left', fontSize: 20 }}>symbol:</div>
+                    <div style={{ width: '60%', float: 'left', fontSize: 20, color: '#1890ff' }}>{stockData.codeList.symbol}</div>
+                  </div>
+                </Col>
+                <Col md={8} sm={24}>
+                  <div style={{ display: 'block' }}>
+                    <div style={{ width: '40%', float: 'left', fontSize: 20 }}>title:</div>
+                    <div style={{ width: '60%', float: 'left', fontSize: 20, color: '#1890ff' }}>{stockData.codeList.title}</div>
+                  </div>
+                </Col>
+                <Col md={8} sm={24}>
+                  <div style={{ display: 'block' }}>
+                    <div style={{ width: '40%', float: 'left', fontSize: 20 }}>date:</div>
+                    <div style={{ width: '60%', float: 'left', fontSize: 20, color: '#1890ff' }}>{stockData.codeList.date}</div>
+                  </div>
+                </Col>
+              </Row>)
+            : null}
+        </div>
+        {/* third.Td synchronization data details */}
         <div className={styles.subProperty}>Td synchronization data details</div>
         {singleModel('1.latest state of stocks :', syncedSymbol, true)}
         {singleModel('2. how long remains :', eta ? `${(ToDecimal(eta / 3600)).toString()  }h` : 0, true)}

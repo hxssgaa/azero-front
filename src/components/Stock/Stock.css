@@ -1,0 +1,63 @@
+.cityChild {
+  width: 200px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #555;
+}
+.changeCityChild {
+  width: 200px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #555;
+}
+.cityDetails {
+  width: 800px !important;
+  font-size: 12px !important;
+  color: #555;
+}
+.cityDetails input {
+  width: 620px !important;
+}
+.cityChildWrap {
+  display: inline-block;
+  width: 200px;
+  height: 36px;
+  margin-right: 10px;
+}
+.cityChildWrap span {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  right: 8px !important;
+  border-top: 10px solid #999;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+}
+.cityChildWrap span:before {
+  content: "";
+}
+.cityWrap {
+  margin-bottom: 40px;
+}
+.cityWrap .ant-row {
+  display: inline-block;
+}
+.cityWrap label {
+  font-size: 14px;
+  color: #555 !important;
+}
+.ant-form-explain {
+  display: inline-block;
+}
+.addressSpliceBottom {
+  margin-top: 15px;
+}
+.clearFix:after {
+  content: " ";
+  display: block;
+  clear: both;
+  height: 0;
+}
