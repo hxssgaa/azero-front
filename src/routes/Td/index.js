@@ -66,10 +66,10 @@ export default class TdForm extends Component {
   };
 
   render() {
-    const { Td: { data, progressData } } = this.props;
+    const { Td: { syncData, progressData } } = this.props;
     const { stockData } = this.state;
     const { lastSyncStocks, currentProgress, eta, syncedSymbol } = progressData;
-    const { status } = data;
+    const { status } = syncData;
     const columns = [
       {
         title: 'Symbol',

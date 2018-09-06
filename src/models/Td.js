@@ -7,7 +7,7 @@ export default {
 
   state: {
     loading: false,
-    data: {},
+    syncData: {},
     progressData: {},
   },
 
@@ -18,7 +18,7 @@ export default {
         const { data } = response;
         yield put({
           type: 'save',
-          payload: { data },
+          payload: { syncData:data },
         });
       }
     },
