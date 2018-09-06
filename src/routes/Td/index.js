@@ -92,8 +92,20 @@ export default class TdForm extends Component {
         key: 'syncDateTime',
       }];
 
-    // single model for synchronization data details
-    const singleModel = (property, detail, propertyStyle) => {
+    // single search model for search input text
+    const singleSearchModel = (searchDetail) => {
+      return (
+        <Col md={8} sm={24}>
+          <div style={{ display: 'block' }}>
+            <div style={{ width: '40%', float: 'left', fontSize: 20 }}>symbol:</div>
+            <div style={{ width: '60%', float: 'left', fontSize: 20, color: '#1890ff' }}>{searchDetail}</div>
+          </div>
+        </Col>
+      );
+    };
+
+    // single sync model for synchronization data details
+    const singleSyncModel = (property, detail, propertyStyle) => {
       return (
         <div style={Object.assign({}, propertyStyle ? {} : { marginTop: 10 })}>
           <Row gutter={24}>
@@ -138,7 +150,7 @@ export default class TdForm extends Component {
         </div>
         {/* second.Td search stock text */}
         <div className={styles.subProperty}>Td search stock text</div>
-        <div style={{ marginLeft: 30 }}>
+        <div style={{ marginLeft: 40 }}>
           <Row gutter={24}>
             <Col md={12} sm={24}>
               <Search
@@ -150,36 +162,21 @@ export default class TdForm extends Component {
             </Col>
           </Row>
         </div>
-        <div style={{ marginLeft: 30 }}>
+        <div style={{ marginLeft: 40 }}>
           {Object.keys(stockData).length >= 1 ?
             (
               <Row gutter={24}>
-                <Col md={8} sm={24}>
-                  <div style={{ display: 'block' }}>
-                    <div style={{ width: '40%', float: 'left', fontSize: 20 }}>symbol:</div>
-                    <div style={{ width: '60%', float: 'left', fontSize: 20, color: '#1890ff' }}>{stockData.codeList.symbol}</div>
-                  </div>
-                </Col>
-                <Col md={8} sm={24}>
-                  <div style={{ display: 'block' }}>
-                    <div style={{ width: '40%', float: 'left', fontSize: 20 }}>title:</div>
-                    <div style={{ width: '60%', float: 'left', fontSize: 20, color: '#1890ff' }}>{stockData.codeList.title}</div>
-                  </div>
-                </Col>
-                <Col md={8} sm={24}>
-                  <div style={{ display: 'block' }}>
-                    <div style={{ width: '40%', float: 'left', fontSize: 20 }}>date:</div>
-                    <div style={{ width: '60%', float: 'left', fontSize: 20, color: '#1890ff' }}>{stockData.codeList.date}</div>
-                  </div>
-                </Col>
+                {singleSearchModel(stockData.codeList.symbol)}
+                {singleSearchModel(stockData.codeList.title)}
+                {singleSearchModel(stockData.codeList.date)}
               </Row>)
             : null}
         </div>
         {/* third.Td synchronization data details */}
         <div className={styles.subProperty}>Td synchronization data details</div>
-        {singleModel('1.latest state of stocks :', syncedSymbol, true)}
-        {singleModel('2. how long remains :', eta ? `${(ToDecimal(eta / 3600)).toString()  }h` : 0, true)}
-        {singleModel('3.synchronization progress :', <Progress
+        {singleSyncModel('1.latest state of stocks :', syncedSymbol, true)}
+        {singleSyncModel('2. how long remains :', eta ? `${(ToDecimal(eta / 3600)).toString()  }h` : 0, true)}
+        {singleSyncModel('3.synchronization progress :', <Progress
           percent={ToDecimal(currentProgress * 100)}
           status="active"
         />, false)}
