@@ -175,7 +175,7 @@ export default class TdForm extends Component {
         {/* third.Td synchronization data details */}
         <div className={styles.subProperty}>Td synchronization data details</div>
         {singleSyncModel('1.latest state of stocks :', syncedSymbol, true)}
-        {singleSyncModel('2. how long remains :', eta ? `${(ToDecimal(eta / 3600)).toString()  }h` : 0, true)}
+        {singleSyncModel('2.how long remains :', eta ? `${(ToDecimal(eta / 3600)).toString()  }h` : 0, true)}
         {singleSyncModel('3.synchronization progress :', <Progress
           percent={ToDecimal(currentProgress * 100)}
           status="active"
