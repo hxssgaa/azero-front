@@ -93,11 +93,11 @@ export default class TdForm extends Component {
       }];
 
     // single search model for search input text
-    const singleSearchModel = (searchDetail) => {
+    const singleSearchModel = (str, searchDetail) => {
       return (
         <Col md={8} sm={24}>
           <div style={{ display: 'block' }}>
-            <div style={{ width: '40%', float: 'left', fontSize: 20 }}>symbol:</div>
+            <div style={{ width: '40%', float: 'left', fontSize: 20 }}>{str}:</div>
             <div style={{ width: '60%', float: 'left', fontSize: 20, color: '#1890ff' }}>{searchDetail}</div>
           </div>
         </Col>
@@ -166,9 +166,9 @@ export default class TdForm extends Component {
           {Object.keys(stockData).length >= 1 ?
             (
               <Row gutter={24}>
-                {singleSearchModel(stockData.codeList.symbol)}
-                {singleSearchModel(stockData.codeList.title)}
-                {singleSearchModel(stockData.codeList.date)}
+                {singleSearchModel('symbol', stockData.codeList.symbol)}
+                {singleSearchModel('title', stockData.codeList.title)}
+                {singleSearchModel('date', stockData.codeList.date)}
               </Row>)
             : null}
         </div>
