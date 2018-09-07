@@ -97,7 +97,7 @@ export default class TdForm extends Component {
       return (
         <Col md={8} sm={24}>
           <div style={{ display: 'block' }}>
-            <div style={{ width: '40%', float: 'left', fontSize: 20 }}>{str}:</div>
+            <div style={{ width: '35%', float: 'left', fontSize: 20 }}>{str}:</div>
             <div style={{ width: '60%', float: 'left', fontSize: 20, color: '#1890ff' }}>{searchDetail}</div>
           </div>
         </Col>
