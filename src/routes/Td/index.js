@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Row, Col, Progress, Table, Input } from 'antd';
+import { Button,Select, Row, Col, Progress, Table } from 'antd';
 import { connect } from 'dva';
 import { ToDecimal } from '../../components/CommonModal/Common';
 import rhombus from '../../assets/sync/rhombus.png';
@@ -7,7 +7,7 @@ import rhombusNo from '../../assets/sync/rhombusNo.png';
 import * as Service from '../../services/api';
 import styles from './index.less';
 
-const { Search } = Input;
+const { Option } = Select;
 
 @connect(({ Td, loading }) => ({
   Td,
@@ -17,6 +17,7 @@ const { Search } = Input;
 export default class TdForm extends Component {
   state = {
     stockData: {},
+    syncInfo: {},
   };
 
   componentDidMount() {
@@ -28,15 +29,8 @@ export default class TdForm extends Component {
 
   // on search stocks
   onSearchStocks = (value) => {
-    // Service.queryTdSymbolsInfoData(value.toUpperCase())
-    //   .then((res) => {
-    //     console.info(3333, res);
-    //   });
-  };
-
-  // blur search stocks
-  onBlurStocks = (e) => {
-    Service.queryTdSymbolsInfoData(e.target.value.toUpperCase())
+    const valueTrue = { code: value.toUpperCase(), isFuzzy: 1 };
+    Service.queryTdSymbolsInfoData(valueTrue)
       .then((res) => {
         if (res && res.success) {
           const { data: { data } } = res;
@@ -50,6 +44,45 @@ export default class TdForm extends Component {
         }
       });
   };
+
+  // achieve the stock symbol
+  getStockChildren() {
+    const { stockData } = this.state;
+    const { codeList = [] } = stockData;
+    const children = [];
+    if (codeList.length !== 0) {
+      const len = codeList.length;
+      for (let i = 0; i < len; i += 1) {
+        children.push(<Option
+          title={codeList[i].symbol}
+          className={styles.stockSelectOption}
+          key={i}
+        >{`[${codeList[i].symbol}]${codeList[i].title}`}
+        </Option>);
+      }
+      return children;
+    }
+  }
+
+  // on search stocks
+  handleChange = (value) => {
+    const { stockData: { codeList } } = this.state;
+    const valueTrue = { code: codeList[value].symbol, isFuzzy: 0 };
+    Service.queryTdSymbolsInfoData(valueTrue)
+      .then((res) => {
+        if (res && res.success) {
+          const { data: { data } } = res;
+          this.setState({
+            syncInfo: data,
+          })
+        } else {
+          this.setState({
+            syncInfo: {},
+          })
+        }
+      });
+  };
+
 
   // td sync data button click
   tdButtonClick = (str) => {
@@ -67,7 +100,6 @@ export default class TdForm extends Component {
 
   render() {
     const { Td: { syncData, progressData } } = this.props;
-    const { stockData } = this.state;
     const { lastSyncStocks, currentProgress, eta, syncedSymbol } = progressData;
     const { status } = syncData;
     const columns = [
@@ -92,16 +124,21 @@ export default class TdForm extends Component {
         key: 'syncDateTime',
       }];
 
+    const { syncInfo } = this.state;
     // single search model for search input text
-    const singleSearchModel = (str, searchDetail) => {
-      return (
-        <Col md={8} sm={24}>
+    const searchShowModel = (info) => {
+      const syncInfoTrue = info.syncInfo;
+      const syncInfoTrueOk = Object.keys(syncInfoTrue).map((e) => {
+        return { 'time': e, 'startDate': syncInfoTrue[e].startDate, 'endDate': syncInfoTrue[e].endDate }
+      });
+      return syncInfoTrueOk.map((item, index) => {
+        const { time, startDate, endDate } = item;
+        return (
           <div style={{ display: 'block' }}>
-            <div style={{ width: '35%', float: 'left', fontSize: 20 }}>{str}:</div>
-            <div style={{ width: '60%', float: 'left', fontSize: 20, color: '#1890ff' }}>{searchDetail}</div>
-          </div>
-        </Col>
-      );
+            <div style={{ width: '12%', float: 'left', fontSize: 20 }}>{time}:</div>
+            <div style={{ width: '88%', float: 'left', fontSize: 20, color: '#1890ff' }}>{`${startDate}-${endDate}`}</div>
+          </div>)
+      });
     };
 
     // single sync model for synchronization data details
@@ -153,23 +190,25 @@ export default class TdForm extends Component {
         <div style={{ marginLeft: 40 }}>
           <Row gutter={24}>
             <Col md={12} sm={24}>
-              <Search
+              <Select
+                showSearch
+                filterOption={false}
                 placeholder="input search stock text"
-                onBlur={this.onBlurStocks.bind(this)}
                 onSearch={this.onSearchStocks.bind(this)}
-                style={{ width: 300, marginBottom: 10 }}
-              />
+                onChange={this.handleChange.bind(this)}
+                style={{ width: '100%', marginBottom: 10  }}
+              >
+                {this.getStockChildren()}
+              </Select>
             </Col>
           </Row>
         </div>
         <div style={{ marginLeft: 40 }}>
-          {Object.keys(stockData).length >= 1 ?
+          {Object.keys(syncInfo).length >= 1 ?
             (
-              <Row gutter={24}>
-                {singleSearchModel('symbol', stockData.codeList.symbol)}
-                {singleSearchModel('title', stockData.codeList.title)}
-                {singleSearchModel('date', stockData.codeList.date)}
-              </Row>)
+              <div>
+                {searchShowModel(syncInfo)}
+              </div>)
             : null}
         </div>
         {/* third.Td synchronization data details */}

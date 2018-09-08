@@ -10,10 +10,10 @@ const Search = Input.Search;
 const FormItem = Form.Item;
 const isChineseReg = /[\u4e00-\u9fa5]/g;
 
-const children = [];
-for (let i = 10; i < 36; i += 1) {
-  children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-}
+// const children = [];
+// for (let i = 10; i < 36; i += 1) {
+//   children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
+// }
 
 @connect(({ Futu, loading }) => ({
   Futu,
@@ -23,6 +23,7 @@ for (let i = 10; i < 36; i += 1) {
 export default class FutuForm extends Component {
   state = {
     stockData: {},
+    syncInfo: {},
   };
 
   componentWillMount() {
@@ -33,15 +34,44 @@ export default class FutuForm extends Component {
   //   this.delayTimeStock = this.delayTime(this.delayFetchStocks.bind(this));
   // }
 
+  shouldComponentUpdate() {
+    return true;
+  }
+
   handleChange = (value) => {
-    console.log(`selected ${value}`);
+    const { stockData: { codeList } } = this.state;
+    const valueTrue = { code: codeList[value].symbol, isFuzzy: 0 };
+    console.info(666, valueTrue);
+    Service.queryTdSymbolsInfoData(valueTrue)
+      .then((res) => {
+        if (res && res.success) {
+          const { data: { data } } = res;
+          this.setState({
+            syncInfo: data,
+          })
+        } else {
+          this.setState({
+            syncInfo: {},
+          })
+        }
+      });
   };
 
   onSearchStocks = (value) => {
-    // Service.queryTdSymbolsInfoData(value.toUpperCase())
-    //   .then((res) => {
-    //     console.info(3333, res);
-    //   });
+    const valueTrue = { code: value.toUpperCase(), isFuzzy: 1 };
+    Service.queryTdSymbolsInfoData(valueTrue)
+      .then((res) => {
+        if (res && res.success) {
+          const { data: { data } } = res;
+          this.setState({
+            stockData: data,
+          })
+        } else {
+          this.setState({
+            stockData: {},
+          })
+        }
+      });
   };
 
   onBlurStocks = (e) => {
@@ -98,79 +128,67 @@ export default class FutuForm extends Component {
   }
 
   // h
-  getStockChildrens() {
-    const datas = this.state.Stocks;
+  getStockChildren() {
+    const { stockData } = this.state;
+    const { codeList = [] } = stockData;
     const children = [];
-    if (datas.length !== 0) {
-      const len = datas.length;
+    if (codeList.length !== 0) {
+      const len = codeList.length;
       for (let i = 0; i < len; i += 1) {
-        children.push(<Option title={datas[i].StockName} className={Styles.stockSelectOption} key={datas[i].StockGuid}>{datas[i].StockName}</Option>);
+        children.push(<Option
+          title={codeList[i].symbol}
+          className={Styles.stockSelectOption}
+          key={i}
+        >{`[${codeList[i].symbol}]${codeList[i].title}`}
+        </Option>);
       }
       return children;
     }
   }
 
   render() {
-    const { form: { getFieldDecorator } } = this.props;
-    const { stockData } = this.state;
-    console.info(666, stockData);
+    const { syncInfo } = this.state;
+    // single search model for search input text
+    const searchShowModel = (info) => {
+      const syncInfoTrue = info.syncInfo;
+      const syncInfoTrueOk = Object.keys(syncInfoTrue).map((e) => {
+        return { 'time': e, 'startDate': syncInfoTrue[e].startDate, 'endDate': syncInfoTrue[e].endDate }
+      });
+      return syncInfoTrueOk.map((item, index) => {
+        const { time, startDate, endDate } = item;
+        return (
+          <div style={{ display: 'block' }}>
+            <div style={{ width: '12%', float: 'left', fontSize: 20 }}>{time}:</div>
+            <div style={{ width: '88%', float: 'left', fontSize: 20, color: '#1890ff' }}>{`startDate:${startDate};endDate:${endDate}`}</div>
+          </div>)
+      });
+    };
     return (
       <div>
         <div>
           <Row gutter={24}>
             <Col md={12} sm={24}>
               <Select
-                mode="multiple"
+                showSearch
+                filterOption={false}
                 placeholder="Please select"
                 onSearch={this.onSearchStocks.bind(this)}
                 onChange={this.handleChange.bind(this)}
                 style={{ width: '100%' }}
               >
-                <Option value="1">Option 1</Option>
-                <Option value="2">Option 2</Option>
-                <Option value="3">Option 3</Option>
+                {this.getStockChildren()}
               </Select>
             </Col>
           </Row>
         </div>
-        <div style={{ marginTop: 50 }}>
-          <Row gutter={24}>
-            <Col md={12} sm={24}>
-              <Search
-                placeholder="input search stock text"
-                onBlur={this.onBlurStocks.bind(this)}
-                onSearch={this.onSearchStocks.bind(this)}
-                style={{ width: 300 }}
-              />
-            </Col>
-          </Row>
-        </div>
-        <div>
-          {Object.keys(stockData).length >= 1 ?
+        <div style={{ marginLeft: 40 }}>
+          {Object.keys(syncInfo).length >= 1 ?
             (
-              <Row gutter={24}>
-                <Col md={8} sm={24}>
-                  <div style={{ display: 'block' }}>
-                    <div style={{ width: '40%', float: 'left', fontSize: 30 }}>symbol:</div>
-                    <div style={{ width: '60%', float: 'left', fontSize: 30, color: '#1890ff' }}>{stockData.codeList.symbol}</div>
-                  </div>
-                </Col>
-                <Col md={8} sm={24}>
-                  <div style={{ display: 'block' }}>
-                    <div style={{ width: '40%', float: 'left', fontSize: 30 }}>title:</div>
-                    <div style={{ width: '60%', float: 'left', fontSize: 30, color: '#1890ff' }}>{stockData.codeList.title}</div>
-                  </div>
-                </Col>
-                <Col md={8} sm={24}>
-                  <div style={{ display: 'block' }}>
-                    <div style={{ width: '40%', float: 'left', fontSize: 30 }}>date:</div>
-                    <div style={{ width: '60%', float: 'left', fontSize: 30, color: '#1890ff' }}>{stockData.codeList.date}</div>
-                  </div>
-                </Col>
-              </Row>)
+              <div>
+                {searchShowModel(syncInfo)}
+              </div>)
             : null}
         </div>
-
       </div>
     );
   }

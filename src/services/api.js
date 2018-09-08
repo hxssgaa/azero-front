@@ -17,11 +17,8 @@ export async function queryTdSyncProgressData() {
 // query td symbols info data
 export async function queryTdSymbolsInfoData(params) {
   // return request('/td/getSyncProgress');
-  // return request('/td/getSymbolsInfo.do');
-  const code = params;
-  console.info(4444, code);
-  // const newParams = Object.assign({}, { isFuzzy: 1 }, { code });
-  return request(`/td/getSymbolsInfo.do?isFuzzy=1&code=${code}`);
+  const { code, isFuzzy } = params;
+  return request(`/td/getSymbolsInfo.do?isFuzzy=${isFuzzy}&code=${code}`);
 }
 
 // query td start data
