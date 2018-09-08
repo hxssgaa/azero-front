@@ -18,6 +18,7 @@ export default class TdForm extends Component {
   state = {
     stockData: {},
     syncInfo: {},
+    searchLoading:false,
   };
 
   componentDidMount() {
@@ -67,6 +68,9 @@ export default class TdForm extends Component {
   // on search stocks
   handleChange = (value) => {
     const { stockData: { codeList } } = this.state;
+    this.setState({
+      searchLoading: true,
+    });
     const valueTrue = { code: codeList[value].symbol, isFuzzy: 0 };
     Service.queryTdSymbolsInfoData(valueTrue)
       .then((res) => {
@@ -74,10 +78,12 @@ export default class TdForm extends Component {
           const { data: { data } } = res;
           this.setState({
             syncInfo: data,
+            searchLoading: false,
           })
         } else {
           this.setState({
             syncInfo: {},
+            searchLoading: false,
           })
         }
       });
@@ -99,7 +105,7 @@ export default class TdForm extends Component {
   };
 
   render() {
-    const { Td: { syncData, progressData } } = this.props;
+    const { loading, Td: { syncData, progressData } } = this.props;
     const { lastSyncStocks, currentProgress, eta, syncedSymbol } = progressData;
     const { status } = syncData;
     // search column
@@ -151,7 +157,7 @@ export default class TdForm extends Component {
         key: 'syncDateTime',
       }];
 
-    const { syncInfo } = this.state;
+    const { syncInfo,searchLoading } = this.state;
     let syncInfoTrueOk = [];
     if (Object.keys(syncInfo).length >= 1) {
       const syncInfoTrue = syncInfo.syncInfo;
@@ -225,6 +231,7 @@ export default class TdForm extends Component {
             <Row gutter={24}>
               <Col span={20}>
                 <Table
+                  loading={searchLoading}
                   columns={columnSearch}
                   dataSource={syncInfoTrueOk}
                   pagination={false}
@@ -250,6 +257,7 @@ export default class TdForm extends Component {
           <Row gutter={24}>
             <Col span={23} offset={1}>
               <Table
+                loading={loading}
                 columns={columnProgress}
                 dataSource={lastSyncStocks}
                 pagination={false}
