@@ -111,9 +111,9 @@ export default class TdForm extends Component {
           const { time } = record;
           let timeStr;
           if (record.time === '1M') {
-            timeStr = '1min:';
+            timeStr = '1min';
           } else {
-            timeStr = `${time  }ins:`;
+            timeStr = `${time  }ins`;
           }
           return (<span>{ResultToSign(timeStr)}</span>);
         },
