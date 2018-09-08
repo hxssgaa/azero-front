@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Button,Select, Row, Col, Progress, Table } from 'antd';
+import { Button, Select, Row, Col, Progress, Table } from 'antd';
 import { connect } from 'dva';
-import { ToDecimal } from '../../components/CommonModal/Common';
+import { ToDecimal, ResultToSign } from '../../components/CommonModal/Common';
 import rhombus from '../../assets/sync/rhombus.png';
 import rhombusNo from '../../assets/sync/rhombusNo.png';
 import * as Service from '../../services/api';
@@ -102,7 +102,34 @@ export default class TdForm extends Component {
     const { Td: { syncData, progressData } } = this.props;
     const { lastSyncStocks, currentProgress, eta, syncedSymbol } = progressData;
     const { status } = syncData;
-    const columns = [
+    // search column
+    const columnSearch = [
+      {
+        title: 'Sync Frequency',
+        dataIndex: 'time',
+        render: (text, record) => {
+          const { time } = record;
+          let timeStr;
+          if (record.time === '1M') {
+            timeStr = '1min:';
+          } else {
+            timeStr = `${time  }ins:`;
+          }
+          return (<span>{ResultToSign(timeStr)}</span>);
+        },
+        key: 'time',
+      },
+      {
+        title: 'Sync Datetime range',
+        dataIndex: 'startDate',
+        render: (text, record) => {
+          return (<span>{ResultToSign(`${record.startDate}-${record.endDate}`)}</span>);
+        },
+        key: 'startDate',
+      }];
+
+    // progress column
+    const columnProgress = [
       {
         title: 'Symbol',
         dataIndex: 'symbol',
@@ -125,21 +152,13 @@ export default class TdForm extends Component {
       }];
 
     const { syncInfo } = this.state;
-    // single search model for search input text
-    const searchShowModel = (info) => {
-      const syncInfoTrue = info.syncInfo;
-      const syncInfoTrueOk = Object.keys(syncInfoTrue).map((e) => {
+    let syncInfoTrueOk = [];
+    if (Object.keys(syncInfo).length >= 1) {
+      const syncInfoTrue = syncInfo.syncInfo;
+      syncInfoTrueOk = Object.keys(syncInfoTrue).map((e) => {
         return { 'time': e, 'startDate': syncInfoTrue[e].startDate, 'endDate': syncInfoTrue[e].endDate }
       });
-      return syncInfoTrueOk.map((item, index) => {
-        const { time, startDate, endDate } = item;
-        return (
-          <div style={{ display: 'block' }}>
-            <div style={{ width: '12%', float: 'left', fontSize: 20 }}>{time}:</div>
-            <div style={{ width: '88%', float: 'left', fontSize: 20, color: '#1890ff' }}>{`${startDate}-${endDate}`}</div>
-          </div>)
-      });
-    };
+    }
 
     // single sync model for synchronization data details
     const singleSyncModel = (property, detail, propertyStyle) => {
@@ -196,20 +215,23 @@ export default class TdForm extends Component {
                 placeholder="input search stock text"
                 onSearch={this.onSearchStocks.bind(this)}
                 onChange={this.handleChange.bind(this)}
-                style={{ width: '100%', marginBottom: 10  }}
+                style={{ width: '100%', marginBottom: 10 }}
               >
                 {this.getStockChildren()}
               </Select>
             </Col>
           </Row>
-        </div>
-        <div style={{ marginLeft: 40 }}>
-          {Object.keys(syncInfo).length >= 1 ?
-            (
-              <div>
-                {searchShowModel(syncInfo)}
-              </div>)
-            : null}
+          {Object.keys(syncInfo).length >= 1 ? (
+            <Row gutter={24}>
+              <Col span={20}>
+                <Table
+                  columns={columnSearch}
+                  dataSource={syncInfoTrueOk}
+                  pagination={false}
+                />
+              </Col>
+            </Row>
+          ) : null}
         </div>
         {/* third.Td synchronization data details */}
         <div className={styles.subProperty}>Td synchronization data details</div>
@@ -228,7 +250,7 @@ export default class TdForm extends Component {
           <Row gutter={24}>
             <Col span={23} offset={1}>
               <Table
-                columns={columns}
+                columns={columnProgress}
                 dataSource={lastSyncStocks}
                 pagination={false}
               />
