@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import queryString from 'query-string';
-import { queryTdSyncData, queryTdSyncProgressData, queryTdStartData, queryTdStopData } from '../services/api';
+import { queryTdSyncData, queryTdSyncProgressData, queryTdStartData, queryTdStopData } from '../services/td';
 
 export default {
   namespace: 'Td',

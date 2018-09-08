@@ -4,7 +4,7 @@ import { connect } from 'dva';
 import { ToDecimal, ResultToSign } from '../../components/CommonModal/Common';
 import rhombus from '../../assets/sync/rhombus.png';
 import rhombusNo from '../../assets/sync/rhombusNo.png';
-import * as Service from '../../services/api';
+import * as Service from '../../services/td';
 import styles from './index.less';
 
 const { Option } = Select;
@@ -129,7 +129,7 @@ export default class TdForm extends Component {
         title: 'Sync Datetime range',
         dataIndex: 'startDate',
         render: (text, record) => {
-          return (<span>{ResultToSign(`${record.startDate}-${record.endDate}`)}</span>);
+          return (<a>{ResultToSign(`${record.startDate}-${record.endDate}`)}</a>);
         },
         key: 'startDate',
       }];
