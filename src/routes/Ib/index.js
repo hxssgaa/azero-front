@@ -5,10 +5,10 @@ import rhombusNo from '../../assets/sync/rhombusNo.png';
 import { connect } from 'dva';
 import * as Service from '../../services/api';
 
-// @connect(({ Ib, loading }) => ({
-//   Ib,
-//   loading: loading.effects['Ib/fetch'],
-// }))
+@connect(({ Ib, loading }) => ({
+  Ib,
+  loading: loading.effects['Ib/fetch'],
+}))
 
 export default class IbForm extends Component {
   state = {};
@@ -36,6 +36,7 @@ export default class IbForm extends Component {
   };
 
   render() {
+    console.info('laoxiang5555',this.props.Ib);
     return (
       <div>
         <div>Td sync data switch</div>

@@ -66,6 +66,19 @@ export async function queryFutuData() {
   return request('/api/queryFutuData');
 }
 
+export async function queryFutuDataLaoXiang() {
+  return request('/api/queryFutuDataLaoXiang');
+}
+
+export async function aaa() {
+  return request('/api/aaa');
+}
+
 export async function queryNotices() {
   return request('/api/notices');
+}
+
+
+export async function abc() {
+  return request('/api/laoxiang');
 }

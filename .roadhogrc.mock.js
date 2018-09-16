@@ -3,6 +3,7 @@ import { getRule, postRule } from './mock/rule';
 import { getActivities, getNotice, getFakeList } from './mock/api';
 import { getFakeChartData } from './mock/chart';
 import { futuData } from './mock/futu';
+import { laoxiangData } from './mock/laoxiangData';
 import { progressData } from './mock/progressData';
 import { getProfileBasicData } from './mock/profile';
 import { getProfileAdvancedData } from './mock/profile';
@@ -15,6 +16,8 @@ const noProxy = process.env.NO_PROXY === 'true';
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 const proxy = {
   // 支持值为 Object 和 Array
+
+
   'GET /api/currentUser': {
     $desc: '获取当前用户接口',
     $params: {
@@ -72,6 +75,9 @@ const proxy = {
   'GET /api/fake_list': getFakeList,
   'GET /api/fake_chart_data': getFakeChartData,
   'GET /api/queryFutuData': futuData,
+  'GET /api/queryFutuDataLaoXiang': futuData,
+  'GET /api/aaa': futuData,
+  'GET /api/laoxiang': laoxiangData,
   'GET /td/getSyncProgress': progressData,
   'GET /api/profile/basic': getProfileBasicData,
   'GET /api/profile/advanced': getProfileAdvancedData,
