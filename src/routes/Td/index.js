@@ -89,7 +89,6 @@ export default class TdForm extends Component {
       });
   };
 
-
   // td sync data button click
   tdButtonClick = (str) => {
     const { dispatch } = this.props;

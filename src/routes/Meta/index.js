@@ -89,7 +89,6 @@ export default class MetaForm extends Component {
       });
   };
 
-
   // Meta sync data button click
   metaButtonClick = (str) => {
     const { dispatch } = this.props;

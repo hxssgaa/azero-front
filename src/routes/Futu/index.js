@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Select, Input, Form, Row, Col } from 'antd';
+import { Select, Input, Form, Row, Col, Table, Modal } from 'antd';
 import { connect } from 'dva';
 import Stock from '../../components/Stock/Stock';
 import Styles from './index.less';
+import add from '../../../public/add.png';
 import * as Service from '../../services/api';
 
 const Option = Select.Option;
@@ -24,6 +25,7 @@ export default class FutuForm extends Component {
   state = {
     stockData: {},
     syncInfo: {},
+    visible: false,
   };
 
   componentWillMount() {
@@ -57,7 +59,43 @@ export default class FutuForm extends Component {
       });
   };
 
+  handlePopChange = (value) => {
+    const { stockData: { codeList } } = this.state;
+    const valueTrue = { code: codeList[value].symbol, isFuzzy: 0 };
+    console.info(666, valueTrue);
+    Service.queryTdSymbolsInfoData(valueTrue)
+      .then((res) => {
+        if (res && res.success) {
+          const { data: { data } } = res;
+          this.setState({
+            syncInfo: data,
+          })
+        } else {
+          this.setState({
+            syncInfo: {},
+          })
+        }
+      });
+  };
+
   onSearchStocks = (value) => {
+    // const valueTrue = { code: value.toUpperCase(), isFuzzy: 1 };
+    // Service.queryTdSymbolsInfoData(valueTrue)
+    //   .then((res) => {
+    //     if (res && res.success) {
+    //       const { data: { data } } = res;
+    //       this.setState({
+    //         stockData: data,
+    //       })
+    //     } else {
+    //       this.setState({
+    //         stockData: {},
+    //       })
+    //     }
+    //   });
+  };
+
+  onPopSearchStocks = (value) => {
     const valueTrue = { code: value.toUpperCase(), isFuzzy: 1 };
     Service.queryTdSymbolsInfoData(valueTrue)
       .then((res) => {
@@ -73,6 +111,7 @@ export default class FutuForm extends Component {
         }
       });
   };
+
 
   onBlurStocks = (e) => {
     Service.queryTdSymbolsInfoData(e.target.value.toUpperCase())
@@ -128,7 +167,25 @@ export default class FutuForm extends Component {
   }
 
   // h
-  getStockChildren() {
+  getStockChildren = (dataSource) => {
+    // const { stockData } = this.state;
+    // const { codeList = [] } = stockData;
+    const children = [];
+    if (dataSource.length !== 0) {
+      const len = dataSource.length;
+      for (let i = 0; i < len; i += 1) {
+        children.push(<Option
+          title={dataSource[i].symbol}
+          className={Styles.stockSelectOption}
+          key={i}
+        >{`[${dataSource[i].symbol}]${dataSource[i].title}`}
+        </Option>);
+      }
+      return children;
+    }
+  };
+
+  getPopStockChildren = () => {
     const { stockData } = this.state;
     const { codeList = [] } = stockData;
     const children = [];
@@ -144,25 +201,112 @@ export default class FutuForm extends Component {
       }
       return children;
     }
+  };
+
+  onImgAdd = () => {
+    console.info('3333');
+    this.setState({
+      visible: true,
+    });
+  };
+
+  showModal() {
+    this.setState({
+      visible: true,
+    });
+  }
+
+  handleOk() {
+    console.log('点击了确定');
+    this.setState({
+      visible: false,
+    });
+  }
+
+  handleCancel() {
+    this.setState({
+      visible: false,
+    });
   }
 
   render() {
-    const { syncInfo } = this.state;
+    const { visible } = this.state;
     // single search model for search input text
-    const searchShowModel = (info) => {
-      const syncInfoTrue = info.syncInfo;
-      const syncInfoTrueOk = Object.keys(syncInfoTrue).map((e) => {
-        return { 'time': e, 'startDate': syncInfoTrue[e].startDate, 'endDate': syncInfoTrue[e].endDate }
-      });
-      return syncInfoTrueOk.map((item, index) => {
-        const { time, startDate, endDate } = item;
-        return (
-          <div style={{ display: 'block' }}>
-            <div style={{ width: '12%', float: 'left', fontSize: 20 }}>{time}:</div>
-            <div style={{ width: '88%', float: 'left', fontSize: 20, color: '#1890ff' }}>{`startDate:${startDate};endDate:${endDate}`}</div>
-          </div>)
-      });
-    };
+    // const searchShowModel = (info) => {
+    //   const syncInfoTrue = info.syncInfo;
+    //   const syncInfoTrueOk = Object.keys(syncInfoTrue).map((e) => {
+    //     return { 'time': e, 'startDate': syncInfoTrue[e].startDate, 'endDate': syncInfoTrue[e].endDate }
+    //   });
+    //   return syncInfoTrueOk.map((item, index) => {
+    //     const { time, startDate, endDate } = item;
+    //     return (
+    //       <div style={{ display: 'block' }}>
+    //         <div style={{ width: '12%', float: 'left', fontSize: 20 }}>{time}:</div>
+    //         <div style={{ width: '88%', float: 'left', fontSize: 20, color: '#1890ff' }}>{`startDate:${startDate};endDate:${endDate}`}</div>
+    //       </div>)
+    //   });
+    // };
+
+    const arrayList = [{ symbol: 'US.APPL1' }, { symbol: 'US.APPL2' }, { symbol: 'US.APPL3' }, { symbol: 'US.APPL4' }, { symbol: 'US.APPL5' }];
+
+
+    const dataSource = [
+      {
+        key: '1',
+        symbol: 'US.APPL',
+        title: '苹果',
+        date: '2018-1-1',
+      },
+      {
+        key: '2',
+        symbol: 'US.HUYA',
+        title: '虎牙',
+        date: '2018-1-1',
+      },
+      {
+        key: '3',
+        symbol: 'US.APPL2',
+        title: '苹果',
+        date: '2018-1-1',
+      },
+      {
+        key: '4',
+        symbol: 'US.HUYA2',
+        title: '虎牙',
+        date: '2018-1-1',
+      },
+      {
+        key: '5',
+        symbol: 'US.APPL3',
+        title: '苹果',
+        date: '2018-1-1',
+      },
+      {
+        key: '6',
+        symbol: 'US.HUYA3',
+        title: '虎牙',
+        date: '2018-1-1',
+      },
+    ];
+
+    const columns = [
+      {
+        title: 'Symbol',
+        dataIndex: 'symbol',
+        key: 'symbol',
+      },
+      {
+        title: 'Title',
+        dataIndex: 'title',
+        key: 'title',
+      },
+      {
+        title: 'Date',
+        dataIndex: 'date',
+        key: 'date',
+      },
+    ];
+
     return (
       <div>
         <div>
@@ -176,19 +320,52 @@ export default class FutuForm extends Component {
                 onChange={this.handleChange.bind(this)}
                 style={{ width: '100%' }}
               >
-                {this.getStockChildren()}
+                {this.getStockChildren(dataSource)}
               </Select>
             </Col>
           </Row>
         </div>
-        <div style={{ marginLeft: 40 }}>
-          {Object.keys(syncInfo).length >= 1 ?
-            (
-              <div>
-                {searchShowModel(syncInfo)}
-              </div>)
-            : null}
+        <div style={{ marginTop: 20 }}>
+          <Row gutter={24}>
+            <Col md={12} sm={24}>
+              <Table
+                dataSource={dataSource}
+                columns={columns}
+              />
+            </Col>
+            <Col md={12} sm={24}>
+              <img
+                alt="0"
+                src={add}
+                style={{ width: 16, cursor: 'pointer' }}
+                onClick={this.onImgAdd.bind(this)}
+              />
+            </Col>
+          </Row>
         </div>
+        <Modal
+          title=""
+          visible={visible}
+          onOk={this.handleOk.bind(this)}
+          onCancel={this.handleCancel.bind(this)}
+          footer={false}
+        >
+          <Row gutter={24}>
+            <Col md={12} sm={24}>
+              <Select
+                showSearch
+                filterOption={false}
+                placeholder="Please select"
+                onSearch={this.onPopSearchStocks.bind(this)}
+                onChange={this.handlePopChange.bind(this)}
+                style={{ width: '100%' }}
+              >
+                {this.getPopStockChildren()}
+              </Select>
+            </Col>
+          </Row>
+        </Modal>
+
       </div>
     );
   }
