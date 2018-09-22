@@ -349,6 +349,7 @@ export default class FutuForm extends Component {
           onOk={this.handleOk.bind(this)}
           onCancel={this.handleCancel.bind(this)}
           footer={false}
+          style={{ height: 200 }}
         >
           <Row gutter={24}>
             <Col md={12} sm={24}>
@@ -365,7 +366,6 @@ export default class FutuForm extends Component {
             </Col>
           </Row>
         </Modal>
-
       </div>
     );
   }
