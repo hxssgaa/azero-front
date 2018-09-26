@@ -7,14 +7,14 @@ const menuData = [
     path: 'td',
   },
   {
-    name: 'futu',
-    icon: 'dashboard',
-    path: 'futu',
-  },
-  {
     name: 'ib',
     icon: 'form',
     path: 'ib',
+  },
+  {
+    name: 'futu',
+    icon: 'dashboard',
+    path: 'futu',
   },
   {
     name: 'meta',
