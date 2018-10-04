@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Button, Select, Row, Col, Progress, Table, Tabs } from 'antd';
+import { Button, Select, Row, Col, Progress, Table, Tabs, Modal } from 'antd';
 import { connect } from 'dva';
 import { ToDecimal, ResultToSign } from '../../components/CommonModal/Common';
 import rhombus from '../../assets/sync/rhombus.png';
 import rhombusNo from '../../assets/sync/rhombusNo.png';
+import add from '../../../public/add.png';
 import * as Service from '../../services/ib';
-import styles from './index.less';
+import * as ServiceApi from '../../services/api';
+import Styles from './index.less';
 
 const { Option } = Select;
 const TabPane = Tabs.TabPane;
@@ -18,6 +20,7 @@ const operations = <Button>Extra Action</Button>;
 
 export default class IbForm extends Component {
   state = {
+    visible: false,
     stockData: {},
     tabsIndex: "0",
     syncInfo: {},
@@ -59,7 +62,7 @@ export default class IbForm extends Component {
       for (let i = 0; i < len; i += 1) {
         children.push(<Option
           title={codeList[i].symbol}
-          className={styles.stockSelectOption}
+          className={Styles.stockSelectOption}
           key={i}
         >{`[${codeList[i].symbol}]${codeList[i].title}`}
         </Option>);
@@ -121,9 +124,101 @@ export default class IbForm extends Component {
     });
   };
 
+  onPopSearchStocks = (value) => {
+    const valueTrue = { code: value.toUpperCase(), isFuzzy: 1 };
+    ServiceApi.queryTdSymbolsInfoData(valueTrue)
+      .then((res) => {
+        if (res && res.success) {
+          const { data: { data } } = res;
+          this.setState({
+            stockData: data,
+          })
+        } else {
+          this.setState({
+            stockData: {},
+          })
+        }
+      });
+  };
+
+  handlePopChange = (value) => {
+    const { stockData: { codeList } } = this.state;
+    const valueTrue = { code: codeList[value].symbol, isFuzzy: 0 };
+    console.info(666, valueTrue);
+    ServiceApi.queryTdSymbolsInfoData(valueTrue)
+      .then((res) => {
+        if (res && res.success) {
+          const { data: { data } } = res;
+          this.setState({
+            syncInfo: data,
+          })
+        } else {
+          this.setState({
+            syncInfo: {},
+          })
+        }
+      });
+  };
+
+  getStockChildren = (dataSource) => {
+    // const { stockData } = this.state;
+    // const { codeList = [] } = stockData;
+    const children = [];
+    if (dataSource.length !== 0) {
+      const len = dataSource.length;
+      for (let i = 0; i < len; i += 1) {
+        children.push(<Option
+          title={dataSource[i].symbol}
+          className={Styles.stockSelectOption}
+          key={i}
+        >{`[${dataSource[i].symbol}]${dataSource[i].title}`}
+        </Option>);
+      }
+      return children;
+    }
+  };
+
+  getPopStockChildren = () => {
+    const { stockData } = this.state;
+    const { codeList = [] } = stockData;
+    const children = [];
+    if (codeList.length !== 0) {
+      const len = codeList.length;
+      for (let i = 0; i < len; i += 1) {
+        children.push(<Option
+          title={codeList[i].symbol}
+          className={Styles.stockSelectOption}
+          key={i}
+        >{`[${codeList[i].symbol}]${codeList[i].title}`}
+        </Option>);
+      }
+      return children;
+    }
+  };
+
+  onImgAdd = () => {
+    console.info('3333');
+    this.setState({
+      visible: true,
+    });
+  };
+
+  handleOk() {
+    console.log('点击了确定');
+    this.setState({
+      visible: false,
+    });
+  }
+
+  handleCancel() {
+    this.setState({
+      visible: false,
+    });
+  }
+
   render() {
     const { loading, Ib: { syncData, progressData } } = this.props;
-    const { syncInfo, searchLoading, tabsIndex } = this.state;
+    const { syncInfo, searchLoading, tabsIndex, visible } = this.state;
     let progressDataDetail = {};
     let syncLogs = [];
     let histDataSyncProgress = '';
@@ -147,6 +242,64 @@ export default class IbForm extends Component {
     }
 
     const { status } = syncData;
+
+    const dataSource = [
+      {
+        key: '1',
+        symbol: 'US.APPL',
+        title: '苹果',
+        date: '2018-1-1',
+      },
+      {
+        key: '2',
+        symbol: 'US.HUYA',
+        title: '虎牙',
+        date: '2018-1-1',
+      },
+      {
+        key: '3',
+        symbol: 'US.APPL2',
+        title: '苹果',
+        date: '2018-1-1',
+      },
+      {
+        key: '4',
+        symbol: 'US.HUYA2',
+        title: '虎牙',
+        date: '2018-1-1',
+      },
+      {
+        key: '5',
+        symbol: 'US.APPL3',
+        title: '苹果',
+        date: '2018-1-1',
+      },
+      {
+        key: '6',
+        symbol: 'US.HUYA3',
+        title: '虎牙',
+        date: '2018-1-1',
+      },
+    ];
+
+    const columns = [
+      {
+        title: 'Symbol',
+        dataIndex: 'symbol',
+        key: 'symbol',
+      },
+      {
+        title: 'Title',
+        dataIndex: 'title',
+        key: 'title',
+      },
+      {
+        title: 'Date',
+        dataIndex: 'date',
+        key: 'date',
+      },
+    ];
+
     // search column
     const columnSearch = [
       {
@@ -173,7 +326,7 @@ export default class IbForm extends Component {
         key: 'startDate',
       }];
 
-    // progress column
+    // histDataSyncTrack column
     const columnLogs = [
       {
         title: 'DateTime',
@@ -195,13 +348,13 @@ export default class IbForm extends Component {
         key: 'symbol',
       }];
 
-    let syncInfoTrueOk = [];
-    if (Object.keys(syncInfo).length >= 1) {
-      const syncInfoTrue = syncInfo.syncInfo;
-      syncInfoTrueOk = Object.keys(syncInfoTrue).map((e) => {
-        return { 'time': e, 'startDate': syncInfoTrue[e].startDate, 'endDate': syncInfoTrue[e].endDate }
-      });
-    }
+    // let syncInfoTrueOk = [];
+    // if (Object.keys(syncInfo).length >= 1) {
+    //   const syncInfoTrue = syncInfo.syncInfo;
+    //   syncInfoTrueOk = Object.keys(syncInfoTrue).map((e) => {
+    //     return { 'time': e, 'startDate': syncInfoTrue[e].startDate, 'endDate': syncInfoTrue[e].endDate }
+    //   });
+    // }
 
     // single sync model for synchronization data details
     const singleSyncModel = (property, detail, propertyStyle) => {
@@ -231,7 +384,7 @@ export default class IbForm extends Component {
           <TabPane tab="REAL" key="3" />
         </Tabs>
         {/* first. Ib sync data switch  */}
-        <div className={styles.subProperty}>Ib sync data switch</div>
+        <div className={Styles.subProperty}>Ib sync data switch</div>
         <div>
           <Row gutter={24}>
             <Col span={9} offset={1}>
@@ -257,7 +410,7 @@ export default class IbForm extends Component {
           </Row>
         </div>
         {/* second.Ib search stock text */}
-        <div className={styles.subProperty}>Ib search stock text</div>
+        <div className={Styles.subProperty}>Ib search stock text</div>
         <div style={{ marginLeft: 40 }}>
           <Row gutter={24}>
             <Col md={12} sm={24}>
@@ -269,29 +422,40 @@ export default class IbForm extends Component {
                 onChange={this.handleChange.bind(this)}
                 style={{ width: '100%', marginBottom: 10 }}
               >
-                {this.getStockChildren()}
+                {this.getStockChildren(dataSource)}
               </Select>
             </Col>
           </Row>
-          {Object.keys(syncInfo).length >= 1 ? (
+          <div>
             <Row gutter={24}>
-              <Col span={20}>
+              <Col md={12} sm={24}>
                 <Table
-                  loading={searchLoading}
-                  columns={columnSearch}
-                  dataSource={syncInfoTrueOk}
-                  pagination={false}
+                  dataSource={dataSource}
+                  columns={columns}
+                  pagination={{ showTotal: t => `Total ${t} Items` }}
+                />
+              </Col>
+              <Col md={12} sm={24}>
+                <img
+                  alt="0"
+                  src={add}
+                  style={{ width: 16, cursor: 'pointer' }}
+                  onClick={this.onImgAdd.bind(this)}
                 />
               </Col>
             </Row>
-          ) : null}
+          </div>
         </div>
         {/* third.Ib synchronization data details */}
-        <div className={styles.subProperty}>Ib synchronization data details</div>
-        <div>
+        <div className={Styles.subProperty}>Ib synchronization data details</div>
+        {singleSyncModel('1.synchronization progress :', <Progress
+          percent={ToDecimal(histDataSyncProgress * 100)}
+          status="active"
+        />, false)}
+        <div style={{ marginTop: 10 }}>
           <Row gutter={24}>
             <Col span={9} offset={1}>
-              <div style={{ height: 40, innerHeight: 40, marginTop: 10 }}>1.histDataSyncTrack of stocks :</div>
+              <div style={{ height: 40, innerHeight: 40, marginTop: 10 }}>2.histDataSyncTrack of stocks :</div>
             </Col>
           </Row>
           <Row gutter={24}>
@@ -305,14 +469,10 @@ export default class IbForm extends Component {
             </Col>
           </Row>
         </div>
-        {singleSyncModel('2.synchronization progress :', <Progress
-          percent={ToDecimal(histDataSyncProgress * 100)}
-          status="active"
-        />, false)}
-        <div style={{ marginTop: 20 }}>
+        <div>
           <Row gutter={24}>
             <Col span={10} offset={1}>
-              <div style={{ height: 40, innerHeight: 40, marginTop: 10 }}>3.the latest synchronized symbols stock data :</div>
+              <div style={{ height: 40, innerHeight: 40 }}>3.the latest synchronized symbols stock data :</div>
             </Col>
           </Row>
           <Row gutter={24}>
@@ -325,6 +485,29 @@ export default class IbForm extends Component {
               />
             </Col>
           </Row>
+          <Modal
+            title=""
+            visible={visible}
+            onOk={this.handleOk.bind(this)}
+            onCancel={this.handleCancel.bind(this)}
+            footer={false}
+            style={{ height: 200 }}
+          >
+            <Row gutter={24}>
+              <Col md={12} sm={24}>
+                <Select
+                  showSearch
+                  filterOption={false}
+                  placeholder="Please select"
+                  onSearch={this.onPopSearchStocks.bind(this)}
+                  onChange={this.handlePopChange.bind(this)}
+                  style={{ width: '100%' }}
+                >
+                  {this.getPopStockChildren()}
+                </Select>
+              </Col>
+            </Row>
+          </Modal>
         </div>
       </div>
     );
