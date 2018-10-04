@@ -146,10 +146,6 @@ export default class IbForm extends Component {
       }
     }
 
-    // console.info(7777, syncLogs, histDataSyncProgress, syncedSymbols);
-
-    const { currentProgress, eta, syncedSymbol } = progressDataDetail;
-
     const { status } = syncData;
     // search column
     const columnSearch = [
@@ -176,6 +172,20 @@ export default class IbForm extends Component {
         },
         key: 'startDate',
       }];
+
+    // progress column
+    const columnLogs = [
+      {
+        title: 'DateTime',
+        dataIndex: 'datetime',
+        key: 'datetime',
+      },
+      {
+        title: 'Log',
+        dataIndex: 'log',
+        key: 'log',
+      },
+    ];
 
     // progress column
     const columnProgress = [
@@ -278,16 +288,31 @@ export default class IbForm extends Component {
         </div>
         {/* third.Ib synchronization data details */}
         <div className={styles.subProperty}>Ib synchronization data details</div>
-        {singleSyncModel('1.latest state of stocks :', syncedSymbol, true)}
-        {singleSyncModel('2.how long remains :', eta ? `${(ToDecimal(eta / 3600)).toString()  }h` : 0, true)}
-        {singleSyncModel('3.synchronization progress :', <Progress
+        <div>
+          <Row gutter={24}>
+            <Col span={9} offset={1}>
+              <div style={{ height: 40, innerHeight: 40, marginTop: 10 }}>1.histDataSyncTrack of stocks :</div>
+            </Col>
+          </Row>
+          <Row gutter={24}>
+            <Col span={19} offset={1}>
+              <Table
+                loading={loading}
+                columns={columnLogs}
+                dataSource={syncLogs}
+                pagination={{ showTotal: t => `Total ${t} Items` }}
+              />
+            </Col>
+          </Row>
+        </div>
+        {singleSyncModel('2.synchronization progress :', <Progress
           percent={ToDecimal(histDataSyncProgress * 100)}
           status="active"
         />, false)}
         <div style={{ marginTop: 20 }}>
           <Row gutter={24}>
-            <Col span={9} offset={1}>
-              <div style={{ height: 40, innerHeight: 40, marginTop: 10 }}>4.the latest synchronized 25 stock data :</div>
+            <Col span={10} offset={1}>
+              <div style={{ height: 40, innerHeight: 40, marginTop: 10 }}>3.the latest synchronized symbols stock data :</div>
             </Col>
           </Row>
           <Row gutter={24}>
