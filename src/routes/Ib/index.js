@@ -372,143 +372,227 @@ export default class IbForm extends Component {
       );
     };
 
+    // first. Ib sync data switch
+
+    const firstIbSyncData = () => {
+      return (
+        <div>
+          <div className={Styles.subProperty}>Ib sync data switch</div>
+          <div>
+            <Row gutter={24}>
+              <Col span={9} offset={1}>
+                <div>
+                  {parseInt(status, 10) === 0 ? 'server is not turned on: ' : 'server is turned on:'}
+                  {parseInt(status, 10) === 0 ? <img style={{ width: 16 }} alt={1} src={rhombusNo} /> : <img style={{ width: 16 }} alt={2} src={rhombus} />}
+                </div>
+              </Col>
+              <Col span={10}>
+                <Button
+                  type="primary"
+                  onClick={this.IbButtonClick.bind(this, 'open')}
+                  style={{ marginRight: 20, marginBottom: 10 }}
+                >open
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={this.IbButtonClick.bind(this, 'close')}
+                  style={{ marginBottom: 10 }}
+                >close
+                </Button>
+              </Col>
+            </Row>
+          </div>
+        </div>
+      );
+    };
+
+    // second.Ib search stock text
+    const secondIbSyncData = () => {
+      return (
+        <div>
+          <div className={Styles.subProperty}>Ib search stock text</div>
+          <div style={{ marginLeft: 40 }}>
+            <Row gutter={24}>
+              <Col md={12} sm={24}>
+                <Select
+                  showSearch
+                  filterOption={false}
+                  placeholder="input search stock text"
+                  onSearch={this.onSearchStocks.bind(this)}
+                  onChange={this.handleChange.bind(this)}
+                  style={{ width: '100%', marginBottom: 10 }}
+                >
+                  {this.getStockChildren(dataSource)}
+                </Select>
+              </Col>
+            </Row>
+            <div>
+              <Row gutter={24}>
+                <Col md={20} sm={24}>
+                  <Table
+                    dataSource={stocks}
+                    columns={columns}
+                    pagination={{ showTotal: t => `Total ${t} Items` }}
+                  />
+                </Col>
+                <Col md={4} sm={24}>
+                  <img
+                    alt="0"
+                    src={add}
+                    style={{ width: 16, cursor: 'pointer' }}
+                    onClick={this.onImgAdd.bind(this)}
+                  />
+                </Col>
+              </Row>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // third.Ib synchronization data details
+    const thirdIbSyncData = () => {
+      return (
+        <div>
+          <div className={Styles.subProperty}>Ib synchronization data details</div>
+          {singleSyncModel('1.synchronization progress :', <Progress
+            percent={ToDecimal(histDataSyncProgress * 100)}
+            status="active"
+          />, false)}
+          <div style={{ marginTop: 10 }}>
+            <Row gutter={24}>
+              <Col span={9} offset={1}>
+                <div style={{ height: 40, innerHeight: 40, marginTop: 10 }}>2.histDataSyncTrack of stocks :</div>
+              </Col>
+            </Row>
+            <Row gutter={24}>
+              <Col span={19} offset={1}>
+                <Table
+                  loading={loading}
+                  columns={columnLogs}
+                  dataSource={syncLogs}
+                  pagination={{ showTotal: t => `Total ${t} Items` }}
+                />
+              </Col>
+            </Row>
+          </div>
+          <div>
+            <Row gutter={24}>
+              <Col span={11} offset={1}>
+                <div style={{ height: 40, innerHeight: 40 }}>3.the latest synchronized symbols stock data :</div>
+              </Col>
+            </Row>
+            <Row gutter={24}>
+              <Col span={16} offset={1}>
+                <Table
+                  loading={loading}
+                  columns={columnProgress}
+                  dataSource={syncedSymbols}
+                  pagination={{ showTotal: t => `Total ${t} Items` }}
+                />
+              </Col>
+            </Row>
+          </div>
+        </div>
+      );
+    };
+
+    // third.Ib synchronization data details
+    const thirdIbSyncRealData = () => {
+      return (
+        <div>
+          <div className={Styles.subProperty}>Ib synchronization data details</div>
+          <div style={{ marginTop: 10 }}>
+            <Row gutter={24}>
+              <Col span={9} offset={1}>
+                <div style={{ height: 40, innerHeight: 40, marginTop: 10 }}>1.histDataSyncTrack of stocks :</div>
+              </Col>
+            </Row>
+            <Row gutter={24}>
+              <Col span={19} offset={1}>
+                <Table
+                  loading={loading}
+                  columns={columnLogs}
+                  dataSource={syncLogs}
+                  pagination={{ showTotal: t => `Total ${t} Items` }}
+                />
+              </Col>
+            </Row>
+          </div>
+          <div>
+            <Row gutter={24}>
+              <Col span={11} offset={1}>
+                <div style={{ height: 40, innerHeight: 40 }}>2.the latest synchronized symbols stock data :</div>
+              </Col>
+            </Row>
+            <Row gutter={24}>
+              <Col span={16} offset={1}>
+                <Table
+                  loading={loading}
+                  columns={columnProgress}
+                  dataSource={syncedSymbols}
+                  pagination={{ showTotal: t => `Total ${t} Items` }}
+                />
+              </Col>
+            </Row>
+          </div>
+        </div>
+      );
+    };
+
     return (
       <div>
         <Tabs
           defaultActiveKey="0"
           onChange={this.tabsOnClick.bind(this)}
         >
-          <TabPane tab="1M" key="0" />
-          <TabPane tab="1S" key="1" />
-          <TabPane tab="TICK" key="2" />
-          <TabPane tab="REAL" key="3" />
+          <TabPane tab="1M" key="0">
+            {/* first. Ib sync data switch  */}
+            {firstIbSyncData()}
+            {/* second.Ib search stock text */}
+            {secondIbSyncData()}
+            {/* third.Ib synchronization data details */}
+            {thirdIbSyncData()}
+          </TabPane>
+          <TabPane tab="1S" key="1">
+            {firstIbSyncData()}
+            {secondIbSyncData()}
+            {thirdIbSyncData()}
+          </TabPane>
+          <TabPane tab="TICK" key="2">
+            {firstIbSyncData()}
+            {secondIbSyncData()}
+            {thirdIbSyncData()}
+          </TabPane>
+          <TabPane tab="REAL" key="3">
+            {firstIbSyncData()}
+            {secondIbSyncData()}
+            {thirdIbSyncRealData()}
+          </TabPane>
         </Tabs>
-        {/* first. Ib sync data switch  */}
-        <div className={Styles.subProperty}>Ib sync data switch</div>
-        <div>
-          <Row gutter={24}>
-            <Col span={9} offset={1}>
-              <div>
-                {parseInt(status, 10) === 0 ? 'server is not turned on: ' : 'server is turned on:'}
-                {parseInt(status, 10) === 0 ? <img style={{ width: 16 }} alt={1} src={rhombusNo} /> : <img style={{ width: 16 }} alt={2} src={rhombus} />}
-              </div>
-            </Col>
-            <Col span={10}>
-              <Button
-                type="primary"
-                onClick={this.IbButtonClick.bind(this, 'open')}
-                style={{ marginRight: 20, marginBottom: 10 }}
-              >open
-              </Button>
-              <Button
-                type="primary"
-                onClick={this.IbButtonClick.bind(this, 'close')}
-                style={{ marginBottom: 10 }}
-              >close
-              </Button>
-            </Col>
-          </Row>
-        </div>
-        {/* second.Ib search stock text */}
-        <div className={Styles.subProperty}>Ib search stock text</div>
-        <div style={{ marginLeft: 40 }}>
+        <Modal
+          title=""
+          visible={visible}
+          onOk={this.handleOk.bind(this)}
+          onCancel={this.handleCancel.bind(this)}
+          footer={false}
+          style={{ height: 200 }}
+        >
           <Row gutter={24}>
             <Col md={12} sm={24}>
               <Select
                 showSearch
                 filterOption={false}
-                placeholder="input search stock text"
-                onSearch={this.onSearchStocks.bind(this)}
-                onChange={this.handleChange.bind(this)}
-                style={{ width: '100%', marginBottom: 10 }}
+                placeholder="Please select"
+                onSearch={this.onPopSearchStocks.bind(this)}
+                onChange={this.handlePopChange.bind(this)}
+                style={{ width: '100%' }}
               >
-                {this.getStockChildren(dataSource)}
+                {this.getPopStockChildren()}
               </Select>
             </Col>
           </Row>
-          <div>
-            <Row gutter={24}>
-              <Col md={20} sm={24}>
-                <Table
-                  dataSource={stocks}
-                  columns={columns}
-                  pagination={{ showTotal: t => `Total ${t} Items` }}
-                />
-              </Col>
-              <Col md={4} sm={24}>
-                <img
-                  alt="0"
-                  src={add}
-                  style={{ width: 16, cursor: 'pointer' }}
-                  onClick={this.onImgAdd.bind(this)}
-                />
-              </Col>
-            </Row>
-          </div>
-        </div>
-        {/* third.Ib synchronization data details */}
-        <div className={Styles.subProperty}>Ib synchronization data details</div>
-        {singleSyncModel('1.synchronization progress :', <Progress
-          percent={ToDecimal(histDataSyncProgress * 100)}
-          status="active"
-        />, false)}
-        <div style={{ marginTop: 10 }}>
-          <Row gutter={24}>
-            <Col span={9} offset={1}>
-              <div style={{ height: 40, innerHeight: 40, marginTop: 10 }}>2.histDataSyncTrack of stocks :</div>
-            </Col>
-          </Row>
-          <Row gutter={24}>
-            <Col span={19} offset={1}>
-              <Table
-                loading={loading}
-                columns={columnLogs}
-                dataSource={syncLogs}
-                pagination={{ showTotal: t => `Total ${t} Items` }}
-              />
-            </Col>
-          </Row>
-        </div>
-        <div>
-          <Row gutter={24}>
-            <Col span={10} offset={1}>
-              <div style={{ height: 40, innerHeight: 40 }}>3.the latest synchronized symbols stock data :</div>
-            </Col>
-          </Row>
-          <Row gutter={24}>
-            <Col span={16} offset={1}>
-              <Table
-                loading={loading}
-                columns={columnProgress}
-                dataSource={syncedSymbols}
-                pagination={{ showTotal: t => `Total ${t} Items` }}
-              />
-            </Col>
-          </Row>
-          <Modal
-            title=""
-            visible={visible}
-            onOk={this.handleOk.bind(this)}
-            onCancel={this.handleCancel.bind(this)}
-            footer={false}
-            style={{ height: 200 }}
-          >
-            <Row gutter={24}>
-              <Col md={12} sm={24}>
-                <Select
-                  showSearch
-                  filterOption={false}
-                  placeholder="Please select"
-                  onSearch={this.onPopSearchStocks.bind(this)}
-                  onChange={this.handlePopChange.bind(this)}
-                  style={{ width: '100%' }}
-                >
-                  {this.getPopStockChildren()}
-                </Select>
-              </Col>
-            </Row>
-          </Modal>
-        </div>
+        </Modal>
       </div>
     );
   }

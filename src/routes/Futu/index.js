@@ -247,10 +247,6 @@ export default class FutuForm extends Component {
     //   });
     // };
 
-
-
-
-
     const dataSource = [
       {
         key: '1',
@@ -367,11 +363,6 @@ export default class FutuForm extends Component {
             </Col>
           </Row>
         </Modal>
-        <div className={Styles.fatherContainer}>
-          <div className={Styles.oneItem} />
-          <div className={Styles.twoItem} />
-          <div className={Styles.threeItem} />
-        </div>
       </div>
     );
   }
