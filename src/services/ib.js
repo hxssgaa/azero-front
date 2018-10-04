@@ -25,6 +25,14 @@ export async function queryIbSymbolsInfoData(params) {
   return request(`/td/getSymbolsInfo.do?isFuzzy=${isFuzzy}&code=${code}`);
 }
 
+
+export async function queryIbSyncSymbols() {
+  // return request('/td/getSyncProgress');
+  // return request('/api/queryFutuData');
+  // const { code, isFuzzy } = params;
+  return request('/ib/getSyncSymbols.do');
+}
+
 export async function queryIbConfigSyncSymbols() {
   // return request('/td/getSyncProgress');
   return request('/api/queryFutuData');

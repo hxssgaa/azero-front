@@ -217,7 +217,7 @@ export default class IbForm extends Component {
   }
 
   render() {
-    const { loading, Ib: { syncData, progressData } } = this.props;
+    const { loading, Ib: { syncData, progressData, syncedSymbolsData: { stocks } } } = this.props;
     const { syncInfo, searchLoading, tabsIndex, visible } = this.state;
     let progressDataDetail = {};
     let syncLogs = [];
@@ -428,14 +428,14 @@ export default class IbForm extends Component {
           </Row>
           <div>
             <Row gutter={24}>
-              <Col md={12} sm={24}>
+              <Col md={20} sm={24}>
                 <Table
-                  dataSource={dataSource}
+                  dataSource={stocks}
                   columns={columns}
                   pagination={{ showTotal: t => `Total ${t} Items` }}
                 />
               </Col>
-              <Col md={12} sm={24}>
+              <Col md={4} sm={24}>
                 <img
                   alt="0"
                   src={add}

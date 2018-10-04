@@ -4,6 +4,7 @@ import {
   queryIbSyncData,
   queryIbSyncProgressData,
   queryIbConfigSyncSymbols,
+  queryIbSyncSymbols,
   queryIbStartData,
   queryIbStopData,
 } from '../services/ib';
@@ -14,6 +15,7 @@ export default {
   state: {
     loading: false,
     syncData: {},
+    syncedSymbolsData: {},
     progressData: {},
   },
 
@@ -23,11 +25,25 @@ export default {
       const response = yield call(queryIbSyncData, payloadTrue);
       // const responseTest = yield call(queryIbConfigSyncSymbols, payload);
       // console.info('queryIbConfigSyncSymbols', responseTest);
+      yield put({ type: 'fetchSyncSymbol' });
       if (response && response.success) {
         const { data } = response;
         yield put({
           type: 'save',
           payload: { syncData: data },
+        });
+      }
+    },
+
+    * fetchSyncSymbol(_, { call, put }) {
+      const response = yield call(queryIbSyncSymbols);
+      // const responseTest = yield call(queryIbConfigSyncSymbols, payload);
+      // console.info('queryIbConfigSyncSymbols', responseTest);
+      if (response && response.success) {
+        const { data } = response;
+        yield put({
+          type: 'save',
+          payload: { syncedSymbolsData: data },
         });
       }
     },
