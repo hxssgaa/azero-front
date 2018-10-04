@@ -5,7 +5,7 @@ import {
   queryIbSyncProgressData,
   queryIbConfigSyncSymbols,
   queryIbStartData,
-  queryIbStopData
+  queryIbStopData,
 } from '../services/ib';
 
 export default {

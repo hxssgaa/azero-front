@@ -132,7 +132,9 @@ export default class IbForm extends Component {
       } else if (tabsIndex === '1') {
         progressDataDetail = progressData['1S'];
       } else if (tabsIndex === '2') {
-        progressDataDetail = progressData['TICK'];
+        progressDataDetail = progressData.TICK;
+      } else if (tabsIndex === '3') {
+        progressDataDetail = progressData.REAL;
       }
       const { histDataSyncTrack } = progressDataDetail;
       if (Object.keys(histDataSyncTrack).length >= 1) {
@@ -214,6 +216,7 @@ export default class IbForm extends Component {
           <TabPane tab="1M" key="0" />
           <TabPane tab="1S" key="1" />
           <TabPane tab="TICK" key="2" />
+          <TabPane tab="REAL" key="3" />
         </Tabs>
         {/* first. Ib sync data switch  */}
         <div className={styles.subProperty}>Ib sync data switch</div>
