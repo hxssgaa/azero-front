@@ -95,20 +95,22 @@ export default class IbForm extends Component {
   // Ib sync data button click
   IbButtonClick = (str) => {
     const { dispatch } = this.props;
+    const { tabsIndex } = this.state;
     if (str === 'open') {
       dispatch({
         type: 'Ib/fetchStart',
+        payload: tabsIndex,
       });
     } else if (str === 'close') {
       dispatch({
         type: 'Ib/fetchStop',
+        payload: tabsIndex,
       });
     }
   };
 
   // Ib tabs click
   tabsOnClick = (key) => {
-    console.log(11111, key);
     const { dispatch } = this.props;
     this.setState({
       tabsIndex: key,
@@ -294,9 +296,7 @@ export default class IbForm extends Component {
                 loading={loading}
                 columns={columnProgress}
                 dataSource={syncedSymbols}
-                pagination={{
-                  showTotal: t => `Total ${t} Items`,
-                }}
+                pagination={{ showTotal: t => `Total ${t} Items` }}
               />
             </Col>
           </Row>

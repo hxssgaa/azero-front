@@ -19,11 +19,10 @@ export default {
 
   effects: {
     * fetch({ payload }, { call, put }) {
-      console.info(1111, payload);
       const payloadTrue = Object.keys(payload).length >= 1 ? payload : '0';
       const response = yield call(queryIbSyncData, payloadTrue);
-      const responseTest = yield call(queryIbConfigSyncSymbols, payload);
-      console.info('queryIbConfigSyncSymbols', responseTest);
+      // const responseTest = yield call(queryIbConfigSyncSymbols, payload);
+      // console.info('queryIbConfigSyncSymbols', responseTest);
       if (response && response.success) {
         const { data } = response;
         yield put({
@@ -58,10 +57,10 @@ export default {
       }
     },
 
-    * fetchStart(_, { call, put }) {
-      const response = yield call(queryIbStartData);
+    * fetchStart({ payload }, { call, put }) {
+      const response = yield call(queryIbStartData, payload);
       if (response && response.success) {
-        yield put({ type: 'fetch' });
+        yield put({ type: 'fetch', payload });
         yield put({ type: 'fetchProgress' });
         const { data: { status } } = response;
         const statusDetail = parseInt(status, 10) === 0 ? '当前数据同步成功开启' : '当前数据同步已经开启，不需要再开启';
@@ -71,10 +70,10 @@ export default {
       }
     },
 
-    * fetchStop(_, { call, put }) {
-      const response = yield call(queryIbStopData);
+    * fetchStop({ payload }, { call, put }) {
+      const response = yield call(queryIbStopData, payload);
       if (response && response.success) {
-        yield put({ type: 'fetch' });
+        yield put({ type: 'fetch', payload });
         const { data: { status } } = response;
         const statusDetail = parseInt(status, 10) === 0 ? '正在同步，已经关闭' : '已经关闭';
         message.success(statusDetail);

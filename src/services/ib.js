@@ -39,12 +39,12 @@ export async function queryIbConfigSyncSymbols() {
 }
 
 // query ib start data
-export async function queryIbStartData() {
-  return request('/ib/startSync.do?type=1');
+export async function queryIbStartData(payload) {
+  return request(`/ib/startSync.do?type=${payload}`);
 }
 
 // query td stop data
-export async function queryIbStopData() {
-  return request('/api/queryFutuData');
-  return request('/td/stopSync.do');
+export async function queryIbStopData(payload) {
+  // return request('/api/queryFutuData');
+  return request(`/ib/stopSync.do?type=${payload}`);
 }
