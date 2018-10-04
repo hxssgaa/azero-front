@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Select, Row, Col, Progress, Table } from 'antd';
+import { Button, Select, Row, Col, Progress, Table, Tabs } from 'antd';
 import { connect } from 'dva';
 import { ToDecimal, ResultToSign } from '../../components/CommonModal/Common';
 import rhombus from '../../assets/sync/rhombus.png';
@@ -8,6 +8,8 @@ import * as Service from '../../services/ib';
 import styles from './index.less';
 
 const { Option } = Select;
+const TabPane = Tabs.TabPane;
+const operations = <Button>Extra Action</Button>;
 
 @connect(({ Ib, loading }) => ({
   Ib,
@@ -17,8 +19,9 @@ const { Option } = Select;
 export default class IbForm extends Component {
   state = {
     stockData: {},
+    tabsIndex: "0",
     syncInfo: {},
-    searchLoading:false,
+    searchLoading: false,
   };
 
   componentDidMount() {
@@ -103,9 +106,46 @@ export default class IbForm extends Component {
     }
   };
 
+  // Ib tabs click
+  tabsOnClick = (key) => {
+    console.log(11111, key);
+    const { dispatch } = this.props;
+    this.setState({
+      tabsIndex: key,
+    });
+    dispatch({
+      type: 'Ib/fetch',
+      payload: key,
+    });
+  };
+
   render() {
     const { loading, Ib: { syncData, progressData } } = this.props;
-    const { lastSyncStocks, currentProgress, eta, syncedSymbol } = progressData;
+    const { syncInfo, searchLoading, tabsIndex } = this.state;
+    let progressDataDetail = {};
+    let syncLogs = [];
+    let histDataSyncProgress = '';
+    let syncedSymbols = [];
+    if (Object.keys(progressData).length >= 1) {
+      if (tabsIndex === '0') {
+        progressDataDetail = progressData['1M'];
+      } else if (tabsIndex === '1') {
+        progressDataDetail = progressData['1S'];
+      } else if (tabsIndex === '2') {
+        progressDataDetail = progressData['TICK'];
+      }
+      const { histDataSyncTrack } = progressDataDetail;
+      if (Object.keys(histDataSyncTrack).length >= 1) {
+        syncLogs = histDataSyncTrack.syncLogs;
+        histDataSyncProgress = histDataSyncTrack.histDataSyncProgress;
+        syncedSymbols = histDataSyncTrack.syncedSymbols;
+      }
+    }
+
+    // console.info(7777, syncLogs, histDataSyncProgress, syncedSymbols);
+
+    const { currentProgress, eta, syncedSymbol } = progressDataDetail;
+
     const { status } = syncData;
     // search column
     const columnSearch = [
@@ -139,24 +179,8 @@ export default class IbForm extends Component {
         title: 'Symbol',
         dataIndex: 'symbol',
         key: 'symbol',
-      },
-      {
-        title: 'Frequency',
-        dataIndex: 'frequency',
-        key: 'frequency',
-      },
-      {
-        title: 'Count',
-        dataIndex: 'count',
-        key: 'count',
-      },
-      {
-        title: 'SyncDateTime',
-        dataIndex: 'syncDateTime',
-        key: 'syncDateTime',
       }];
 
-    const { syncInfo,searchLoading } = this.state;
     let syncInfoTrueOk = [];
     if (Object.keys(syncInfo).length >= 1) {
       const syncInfoTrue = syncInfo.syncInfo;
@@ -174,7 +198,7 @@ export default class IbForm extends Component {
               <div style={Object.assign({}, propertyStyle ? { height: 40, innerHeight: 40, marginTop: 10 } : {})}>{property}</div>
             </Col>
             <Col span={12}>
-              <div style={Object.assign({}, propertyStyle ? { fontSize: 30, color: '#1890ff' } : {})}>{detail}</div>
+              <div style={Object.assign({}, propertyStyle ? { fontSize: 30, color: '#3b78e7' } : {})}>{detail}</div>
             </Col>
           </Row>
         </div>
@@ -183,6 +207,14 @@ export default class IbForm extends Component {
 
     return (
       <div>
+        <Tabs
+          defaultActiveKey="0"
+          onChange={this.tabsOnClick.bind(this)}
+        >
+          <TabPane tab="1M" key="0" />
+          <TabPane tab="1S" key="1" />
+          <TabPane tab="TICK" key="2" />
+        </Tabs>
         {/* first. Ib sync data switch  */}
         <div className={styles.subProperty}>Ib sync data switch</div>
         <div>
@@ -244,7 +276,7 @@ export default class IbForm extends Component {
         {singleSyncModel('1.latest state of stocks :', syncedSymbol, true)}
         {singleSyncModel('2.how long remains :', eta ? `${(ToDecimal(eta / 3600)).toString()  }h` : 0, true)}
         {singleSyncModel('3.synchronization progress :', <Progress
-          percent={ToDecimal(currentProgress * 100)}
+          percent={ToDecimal(histDataSyncProgress * 100)}
           status="active"
         />, false)}
         <div style={{ marginTop: 20 }}>
@@ -254,12 +286,14 @@ export default class IbForm extends Component {
             </Col>
           </Row>
           <Row gutter={24}>
-            <Col span={23} offset={1}>
+            <Col span={16} offset={1}>
               <Table
                 loading={loading}
                 columns={columnProgress}
-                dataSource={lastSyncStocks}
-                pagination={false}
+                dataSource={syncedSymbols}
+                pagination={{
+                  showTotal: t => `Total ${t} Items`,
+                }}
               />
             </Col>
           </Row>

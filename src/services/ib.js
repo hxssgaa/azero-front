@@ -1,17 +1,20 @@
 import request from '../utils/request';
 
 // query td sync data
-export async function queryIbSyncData() {
+export async function queryIbSyncData(payload) {
   // return request('/td/getSyncProgress');
-  return request('/api/queryFutuData');
-  return request('/td/syncStatus.do');
+  // return request('/api/queryFutuData');
+  // const { type = '0' } = payload;
+  // console.info(111, payload);
+  // const payloadTrue = !payload ? '0' : payload;
+  return request(`/ib/getSyncStatus.do?type=${payload}`);
 }
 
 // query td sync progress data
 export async function queryIbSyncProgressData() {
   // return request('/td/getSyncProgress');
-  return request('/api/queryFutuData');
-  return request('/td/getSyncProgress.do');
+  // return request('/api/queryFutuData');
+  return request('/ib/getProgress.do');
 }
 
 // query td symbols info data
@@ -35,10 +38,9 @@ export async function queryIbConfigSyncSymbols() {
   });
 }
 
-// query td start data
+// query ib start data
 export async function queryIbStartData() {
-  return request('/api/queryFutuData');
-  return request('/td/startSync.do');
+  return request('/ib/startSync.do?type=1');
 }
 
 // query td stop data

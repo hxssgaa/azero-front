@@ -1,10 +1,12 @@
 import { message } from 'antd';
 import queryString from 'query-string';
-import { queryIbSyncData,
+import {
+  queryIbSyncData,
   queryIbSyncProgressData,
   queryIbConfigSyncSymbols,
   queryIbStartData,
-  queryIbStopData } from '../services/ib';
+  queryIbStopData
+} from '../services/ib';
 
 export default {
   namespace: 'Ib',
@@ -16,9 +18,11 @@ export default {
   },
 
   effects: {
-    * fetch(_, { call, put }) {
-      const response = yield call(queryIbSyncData);
-      const responseTest = yield call(queryIbConfigSyncSymbols);
+    * fetch({ payload }, { call, put }) {
+      console.info(1111, payload);
+      const payloadTrue = Object.keys(payload).length >= 1 ? payload : '0';
+      const response = yield call(queryIbSyncData, payloadTrue);
+      const responseTest = yield call(queryIbConfigSyncSymbols, payload);
       console.info('queryIbConfigSyncSymbols', responseTest);
       if (response && response.success) {
         const { data } = response;
@@ -29,9 +33,10 @@ export default {
       }
     },
 
-    * fetchProgress(_, { call, put }) {
+    * fetchProgress({ payload }, { call, put }) {
       const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-      const response = yield call(queryIbSyncProgressData);
+      const response = yield call(queryIbSyncProgressData, payload);
+      // console.info('1111ibProgress', response);
       if (response && response.success) {
         const { data: { data } } = response;
         yield put({
@@ -41,14 +46,14 @@ export default {
       }
       const { pathname } = location;
       // just send requests every second
-      if (pathname.includes('Ib')) {
+      if (pathname.includes('ib')) {
         // according to the response to judge whether it can send the requests or not
-        if (response && response.data && response.data.data.isSyncing) {
-          const { data: { data: { currentProgress } } } = response;
-          if (parseInt(currentProgress, 10) !== 1) {
-            yield delay(1000);
-            yield put({ type: 'fetchProgress' });
-          }
+        if (response && response.data && response.data.data) {
+          // const { data: { data: { currentProgress } } } = response;
+          // if (parseInt(currentProgress, 10) !== 1) {
+          yield delay(1000);
+          yield put({ type: 'fetchProgress' });
+          // }
         }
       }
     },

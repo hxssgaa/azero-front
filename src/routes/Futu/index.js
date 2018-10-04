@@ -247,7 +247,8 @@ export default class FutuForm extends Component {
     //   });
     // };
 
-    const arrayList = [{ symbol: 'US.APPL1' }, { symbol: 'US.APPL2' }, { symbol: 'US.APPL3' }, { symbol: 'US.APPL4' }, { symbol: 'US.APPL5' }];
+
+
 
 
     const dataSource = [
@@ -366,6 +367,11 @@ export default class FutuForm extends Component {
             </Col>
           </Row>
         </Modal>
+        <div className={Styles.fatherContainer}>
+          <div className={Styles.oneItem} />
+          <div className={Styles.twoItem} />
+          <div className={Styles.threeItem} />
+        </div>
       </div>
     );
   }

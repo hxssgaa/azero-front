@@ -1,5 +1,5 @@
 const path = require('path');
-const remoteIP = 'http://35.188.249.6:5000';
+const remoteIP = 'http://35.221.63.154:5000';
 
 export default {
   entry: 'src/index.js',
