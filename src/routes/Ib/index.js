@@ -466,7 +466,7 @@ export default class IbForm extends Component {
               </Col>
             </Row>
             <Row gutter={24}>
-              <Col span={19} offset={1}>
+              <Col span={23} offset={1}>
                 <Table
                   loading={loading}
                   columns={columnLogs}
