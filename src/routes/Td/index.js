@@ -18,7 +18,7 @@ export default class TdForm extends Component {
   state = {
     stockData: {},
     syncInfo: {},
-    searchLoading:false,
+    searchLoading: false,
   };
 
   componentDidMount() {
@@ -156,7 +156,7 @@ export default class TdForm extends Component {
         key: 'syncDateTime',
       }];
 
-    const { syncInfo,searchLoading } = this.state;
+    const { syncInfo, searchLoading } = this.state;
     let syncInfoTrueOk = [];
     if (Object.keys(syncInfo).length >= 1) {
       const syncInfoTrue = syncInfo.syncInfo;
@@ -193,7 +193,7 @@ export default class TdForm extends Component {
                 {parseInt(status, 10) === 0 ? <img style={{ width: 16 }} alt={1} src={rhombusNo} /> : <img style={{ width: 16 }} alt={2} src={rhombus} />}
               </div>
             </Col>
-            <Col span={10}>
+            <Col span={14}>
               <Button
                 type="primary"
                 onClick={this.tdButtonClick.bind(this, 'open')}
@@ -211,9 +211,9 @@ export default class TdForm extends Component {
         </div>
         {/* second.Td search stock text */}
         <div className={styles.subProperty}>Td search stock text</div>
-        <div style={{ marginLeft: 40 }}>
+        <div style={{ marginLeft: 20 }}>
           <Row gutter={24}>
-            <Col md={12} sm={24}>
+            <Col span={16}>
               <Select
                 showSearch
                 filterOption={false}
@@ -228,7 +228,7 @@ export default class TdForm extends Component {
           </Row>
           {Object.keys(syncInfo).length >= 1 ? (
             <Row gutter={24}>
-              <Col span={20}>
+              <Col span={24}>
                 <Table
                   loading={searchLoading}
                   columns={columnSearch}

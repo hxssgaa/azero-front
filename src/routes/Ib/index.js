@@ -385,7 +385,7 @@ export default class IbForm extends Component {
                   {parseInt(status, 10) === 0 ? <img style={{ width: 16 }} alt={1} src={rhombusNo} /> : <img style={{ width: 16 }} alt={2} src={rhombus} />}
                 </div>
               </Col>
-              <Col span={10}>
+              <Col span={14}>
                 <Button
                   type="primary"
                   onClick={this.IbButtonClick.bind(this, 'open')}
@@ -410,9 +410,9 @@ export default class IbForm extends Component {
       return (
         <div>
           <div className={Styles.subProperty}>Ib search stock text</div>
-          <div style={{ marginLeft: 40 }}>
+          <div style={{ marginLeft: 20 }}>
             <Row gutter={24}>
-              <Col md={12} sm={24}>
+              <Col span={16}>
                 <Select
                   showSearch
                   filterOption={false}
@@ -427,14 +427,14 @@ export default class IbForm extends Component {
             </Row>
             <div>
               <Row gutter={24}>
-                <Col md={20} sm={24}>
+                <Col span={20}>
                   <Table
                     dataSource={stocks}
                     columns={columns}
                     pagination={{ showTotal: t => `Total ${t} Items` }}
                   />
                 </Col>
-                <Col md={4} sm={24}>
+                <Col span={4}>
                   <img
                     alt="0"
                     src={add}
