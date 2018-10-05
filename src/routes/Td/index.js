@@ -214,7 +214,7 @@ export default class TdForm extends Component {
               xxl={{ span: 9, offset: 1 }}
             >
               <div>
-                {parseInt(status, 10) === 0 ? 'server is not turned on: ' : 'server is turned on:'}
+                {parseInt(status, 10) === 0 ? 'not turned on:' : 'turned on:'}
                 {parseInt(status, 10) === 0 ? <img style={{ width: 16 }} alt={1} src={rhombusNo} /> : <img style={{ width: 16 }} alt={2} src={rhombus} />}
               </div>
             </Col>
