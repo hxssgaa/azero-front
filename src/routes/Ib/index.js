@@ -287,16 +287,19 @@ export default class IbForm extends Component {
         title: 'Symbol',
         dataIndex: 'symbol',
         key: 'symbol',
+        width: '25%',
       },
       {
         title: 'Title',
         dataIndex: 'title',
         key: 'title',
+        width: '45%',
       },
       {
         title: 'Date',
         dataIndex: 'date',
         key: 'date',
+        width: '30%',
       },
     ];
 
@@ -412,7 +415,7 @@ export default class IbForm extends Component {
       return (
         <div>
           <div className={Styles.subProperty}>Ib search stock text</div>
-          <div style={{ marginLeft: 20 }}>
+          <div style={{ marginLeft: 10 }}>
             <Row gutter={24}>
               <Col span={16}>
                 <Select
