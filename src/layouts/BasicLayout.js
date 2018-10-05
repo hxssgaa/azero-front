@@ -268,7 +268,7 @@ export default class BasicLayout extends React.PureComponent {
             <GlobalFooter
               copyright={
                 <Fragment>
-                  Copyright <Icon type="copyright" /> 2018 azero出品
+                  Copyright <Icon type="copyright" /> 2018 azero exhibition
                 </Fragment>
               }
             />
