@@ -64,11 +64,11 @@ export const getRouterData = (app) => {
     '/ib': {
       component: dynamicWrapper(app, ['Ib'], () => import('../routes/Ib')),
     },
-    '/futu': {
-      component: dynamicWrapper(app, ['Futu'], () => import('../routes/Futu')),
-    },
     '/meta': {
       component: dynamicWrapper(app, ['Meta'], () => import('../routes/Meta')),
+    },
+    '/futu': {
+      component: dynamicWrapper(app, ['Futu'], () => import('../routes/Futu')),
     },
     '/exception/403': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),

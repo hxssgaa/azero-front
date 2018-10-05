@@ -12,14 +12,14 @@ const menuData = [
     path: 'ib',
   },
   {
-    name: 'futu',
-    icon: 'dashboard',
-    path: 'futu',
-  },
-  {
     name: 'meta',
     icon: 'table',
     path: 'meta',
+  },
+  {
+    name: 'futu',
+    icon: 'dashboard',
+    path: 'futu',
   },
 ];
 

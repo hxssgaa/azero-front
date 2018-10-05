@@ -373,7 +373,6 @@ export default class IbForm extends Component {
     };
 
     // first. Ib sync data switch
-
     const firstIbSyncData = () => {
       return (
         <div>
