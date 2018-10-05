@@ -1,15 +1,27 @@
 import React, { Component } from 'react';
-import { Select, Input, Form, Row, Col, Table, Modal } from 'antd';
+import { Select, Input, Form, Row, Col, Table, Modal, Tabs } from 'antd';
 import { connect } from 'dva';
 import Stock from '../../components/Stock/Stock';
 import Styles from './index.less';
 import add from '../../../public/add.png';
 import * as Service from '../../services/api';
+import { StickyContainer, Sticky } from 'react-sticky';
+
+console.info(111, StickyContainer);
 
 const Option = Select.Option;
+const TabPane = Tabs.TabPane;
 const Search = Input.Search;
 const FormItem = Form.Item;
 const isChineseReg = /[\u4e00-\u9fa5]/g;
+
+const renderTabBar = (props, DefaultTabBar) => (
+  <Sticky bottomOffset={80}>
+    {({ style }) => (
+      <DefaultTabBar {...props} style={{ ...style, zIndex: 10, background: '#000' }} />
+    )}
+  </Sticky>
+);
 
 // const children = [];
 // for (let i = 10; i < 36; i += 1) {
@@ -230,140 +242,321 @@ export default class FutuForm extends Component {
   }
 
   render() {
-    const { visible } = this.state;
-    // single search model for search input text
-    // const searchShowModel = (info) => {
-    //   const syncInfoTrue = info.syncInfo;
-    //   const syncInfoTrueOk = Object.keys(syncInfoTrue).map((e) => {
-    //     return { 'time': e, 'startDate': syncInfoTrue[e].startDate, 'endDate': syncInfoTrue[e].endDate }
-    //   });
-    //   return syncInfoTrueOk.map((item, index) => {
-    //     const { time, startDate, endDate } = item;
-    //     return (
-    //       <div style={{ display: 'block' }}>
-    //         <div style={{ width: '12%', float: 'left', fontSize: 20 }}>{time}:</div>
-    //         <div style={{ width: '88%', float: 'left', fontSize: 20, color: '#1890ff' }}>{`startDate:${startDate};endDate:${endDate}`}</div>
-    //       </div>)
-    //   });
-    // };
-
-    const dataSource = [
-      {
-        key: '1',
-        symbol: 'US.APPL',
-        title: '苹果',
-        date: '2018-1-1',
-      },
-      {
-        key: '2',
-        symbol: 'US.HUYA',
-        title: '虎牙',
-        date: '2018-1-1',
-      },
-      {
-        key: '3',
-        symbol: 'US.APPL2',
-        title: '苹果',
-        date: '2018-1-1',
-      },
-      {
-        key: '4',
-        symbol: 'US.HUYA2',
-        title: '虎牙',
-        date: '2018-1-1',
-      },
-      {
-        key: '5',
-        symbol: 'US.APPL3',
-        title: '苹果',
-        date: '2018-1-1',
-      },
-      {
-        key: '6',
-        symbol: 'US.HUYA3',
-        title: '虎牙',
-        date: '2018-1-1',
-      },
-    ];
-
-    const columns = [
-      {
-        title: 'Symbol',
-        dataIndex: 'symbol',
-        key: 'symbol',
-      },
-      {
-        title: 'Title',
-        dataIndex: 'title',
-        key: 'title',
-      },
-      {
-        title: 'Date',
-        dataIndex: 'date',
-        key: 'date',
-      },
-    ];
-
     return (
-      <div>
-        <div>
-          <Row gutter={24}>
-            <Col md={12} sm={24}>
-              <Select
-                showSearch
-                filterOption={false}
-                placeholder="Please select"
-                onSearch={this.onSearchStocks.bind(this)}
-                onChange={this.handleChange.bind(this)}
-                style={{ width: '100%' }}
-              >
-                {this.getStockChildren(dataSource)}
-              </Select>
-            </Col>
-          </Row>
-        </div>
-        <div style={{ marginTop: 20 }}>
-          <Row gutter={24}>
-            <Col md={12} sm={24}>
-              <Table
-                dataSource={dataSource}
-                columns={columns}
-              />
-            </Col>
-            <Col md={12} sm={24}>
-              <img
-                alt="0"
-                src={add}
-                style={{ width: 16, cursor: 'pointer' }}
-                onClick={this.onImgAdd.bind(this)}
-              />
-            </Col>
-          </Row>
-        </div>
-        <Modal
-          title=""
-          visible={visible}
-          onOk={this.handleOk.bind(this)}
-          onCancel={this.handleCancel.bind(this)}
-          footer={false}
-          style={{ height: 200 }}
-        >
-          <Row gutter={24}>
-            <Col md={12} sm={24}>
-              <Select
-                showSearch
-                filterOption={false}
-                placeholder="Please select"
-                onSearch={this.onPopSearchStocks.bind(this)}
-                onChange={this.handlePopChange.bind(this)}
-                style={{ width: '100%' }}
-              >
-                {this.getPopStockChildren()}
-              </Select>
-            </Col>
-          </Row>
-        </Modal>
-      </div>
+      <StickyContainer>
+        {/* Other elements can be in between `StickyContainer` and `Sticky`,
+        but certain styles can break the positioning logic used. */}
+        <Sticky>
+          {({
+              style,
+
+              // the following are also available but unused in this example
+              isSticky,
+              wasSticky,
+              distanceFromTop,
+              distanceFromBottom,
+              calculatedHeight
+            }) => (
+            <header style={style}>
+              111111111
+            </header>
+          )}
+        </Sticky>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+        <div>22222</div>
+      </StickyContainer>
     );
   }
+
+  // render() {
+  //   const { visible } = this.state;
+  //   // single search model for search input text
+  //   // const searchShowModel = (info) => {
+  //   //   const syncInfoTrue = info.syncInfo;
+  //   //   const syncInfoTrueOk = Object.keys(syncInfoTrue).map((e) => {
+  //   //     return { 'time': e, 'startDate': syncInfoTrue[e].startDate, 'endDate': syncInfoTrue[e].endDate }
+  //   //   });
+  //   //   return syncInfoTrueOk.map((item, index) => {
+  //   //     const { time, startDate, endDate } = item;
+  //   //     return (
+  //   //       <div style={{ display: 'block' }}>
+  //   //         <div style={{ width: '12%', float: 'left', fontSize: 20 }}>{time}:</div>
+  //   //         <div style={{ width: '88%', float: 'left', fontSize: 20, color: '#1890ff' }}>{`startDate:${startDate};endDate:${endDate}`}</div>
+  //   //       </div>)
+  //   //   });
+  //   // };
+  //
+  //   const dataSource = [
+  //     {
+  //       key: '1',
+  //       symbol: 'US.APPL',
+  //       title: '苹果',
+  //       date: '2018-1-1',
+  //     },
+  //     {
+  //       key: '2',
+  //       symbol: 'US.HUYA',
+  //       title: '虎牙',
+  //       date: '2018-1-1',
+  //     },
+  //     {
+  //       key: '3',
+  //       symbol: 'US.APPL2',
+  //       title: '苹果',
+  //       date: '2018-1-1',
+  //     },
+  //     {
+  //       key: '4',
+  //       symbol: 'US.HUYA2',
+  //       title: '虎牙',
+  //       date: '2018-1-1',
+  //     },
+  //     {
+  //       key: '5',
+  //       symbol: 'US.APPL3',
+  //       title: '苹果',
+  //       date: '2018-1-1',
+  //     },
+  //     {
+  //       key: '6',
+  //       symbol: 'US.HUYA3',
+  //       title: '虎牙',
+  //       date: '2018-1-1',
+  //     },
+  //   ];
+  //
+  //   const columns = [
+  //     {
+  //       title: 'Symbol',
+  //       dataIndex: 'symbol',
+  //       key: 'symbol',
+  //     },
+  //     {
+  //       title: 'Title',
+  //       dataIndex: 'title',
+  //       key: 'title',
+  //     },
+  //     {
+  //       title: 'Date',
+  //       dataIndex: 'date',
+  //       key: 'date',
+  //     },
+  //   ];
+  //
+  //   return (
+  //     <div>
+  //       <StickyContainer>
+  //         <Sticky>{({ style }) => <h1 style={style}>Sticky element</h1>}</Sticky>
+  //       </StickyContainer>
+  //       {/*<StickyContainer>*/}
+  //         {/*<Tabs defaultActiveKey="1" renderTabBar={renderTabBar}>*/}
+  //           {/*<TabPane tab="Tab 1" key="1" style={{ height: 200 }}>Content of Tab Pane 1</TabPane>*/}
+  //           {/*<TabPane tab="Tab 2" key="2">Content of Tab Pane 2</TabPane>*/}
+  //           {/*<TabPane tab="Tab 3" key="3">Content of Tab Pane 3</TabPane>*/}
+  //         {/*</Tabs>*/}
+  //       {/*</StickyContainer>*/}
+  //       <div>
+  //         <Row gutter={24}>
+  //           <Col md={12} sm={24}>
+  //             <Select
+  //               showSearch
+  //               filterOption={false}
+  //               placeholder="Please select"
+  //               onSearch={this.onSearchStocks.bind(this)}
+  //               onChange={this.handleChange.bind(this)}
+  //               style={{ width: '100%' }}
+  //             >
+  //               {this.getStockChildren(dataSource)}
+  //             </Select>
+  //           </Col>
+  //         </Row>
+  //       </div>
+  //       <div style={{ marginTop: 20 }}>
+  //         <Row gutter={24}>
+  //           <Col md={12} sm={24}>
+  //             <Table
+  //               dataSource={dataSource}
+  //               columns={columns}
+  //             />
+  //           </Col>
+  //           <Col md={12} sm={24}>
+  //             <img
+  //               alt="0"
+  //               src={add}
+  //               style={{ width: 16, cursor: 'pointer' }}
+  //               onClick={this.onImgAdd.bind(this)}
+  //             />
+  //           </Col>
+  //         </Row>
+  //       </div>
+  //       <div>
+  //         <Row gutter={24}>
+  //           <Col md={12} sm={24}>
+  //             <Select
+  //               showSearch
+  //               filterOption={false}
+  //               placeholder="Please select"
+  //               onSearch={this.onSearchStocks.bind(this)}
+  //               onChange={this.handleChange.bind(this)}
+  //               style={{ width: '100%' }}
+  //             >
+  //               {this.getStockChildren(dataSource)}
+  //             </Select>
+  //           </Col>
+  //         </Row>
+  //       </div>
+  //       <div style={{ marginTop: 20 }}>
+  //         <Row gutter={24}>
+  //           <Col md={12} sm={24}>
+  //             <Table
+  //               dataSource={dataSource}
+  //               columns={columns}
+  //             />
+  //           </Col>
+  //           <Col md={12} sm={24}>
+  //             <img
+  //               alt="0"
+  //               src={add}
+  //               style={{ width: 16, cursor: 'pointer' }}
+  //               onClick={this.onImgAdd.bind(this)}
+  //             />
+  //           </Col>
+  //         </Row>
+  //       </div>
+  //       <div>
+  //         <Row gutter={24}>
+  //           <Col md={12} sm={24}>
+  //             <Select
+  //               showSearch
+  //               filterOption={false}
+  //               placeholder="Please select"
+  //               onSearch={this.onSearchStocks.bind(this)}
+  //               onChange={this.handleChange.bind(this)}
+  //               style={{ width: '100%' }}
+  //             >
+  //               {this.getStockChildren(dataSource)}
+  //             </Select>
+  //           </Col>
+  //         </Row>
+  //       </div>
+  //       <div style={{ marginTop: 20 }}>
+  //         <Row gutter={24}>
+  //           <Col md={12} sm={24}>
+  //             <Table
+  //               dataSource={dataSource}
+  //               columns={columns}
+  //             />
+  //           </Col>
+  //           <Col md={12} sm={24}>
+  //             <img
+  //               alt="0"
+  //               src={add}
+  //               style={{ width: 16, cursor: 'pointer' }}
+  //               onClick={this.onImgAdd.bind(this)}
+  //             />
+  //           </Col>
+  //         </Row>
+  //       </div>
+  //       <div>
+  //         <Row gutter={24}>
+  //           <Col md={12} sm={24}>
+  //             <Select
+  //               showSearch
+  //               filterOption={false}
+  //               placeholder="Please select"
+  //               onSearch={this.onSearchStocks.bind(this)}
+  //               onChange={this.handleChange.bind(this)}
+  //               style={{ width: '100%' }}
+  //             >
+  //               {this.getStockChildren(dataSource)}
+  //             </Select>
+  //           </Col>
+  //         </Row>
+  //       </div>
+  //       <div style={{ marginTop: 20 }}>
+  //         <Row gutter={24}>
+  //           <Col md={12} sm={24}>
+  //             <Table
+  //               dataSource={dataSource}
+  //               columns={columns}
+  //             />
+  //           </Col>
+  //           <Col md={12} sm={24}>
+  //             <img
+  //               alt="0"
+  //               src={add}
+  //               style={{ width: 16, cursor: 'pointer' }}
+  //               onClick={this.onImgAdd.bind(this)}
+  //             />
+  //           </Col>
+  //         </Row>
+  //       </div>
+  //       <Modal
+  //         title=""
+  //         visible={visible}
+  //         onOk={this.handleOk.bind(this)}
+  //         onCancel={this.handleCancel.bind(this)}
+  //         footer={false}
+  //         style={{ height: 200 }}
+  //       >
+  //         <Row gutter={24}>
+  //           <Col md={12} sm={24}>
+  //             <Select
+  //               showSearch
+  //               filterOption={false}
+  //               placeholder="Please select"
+  //               onSearch={this.onPopSearchStocks.bind(this)}
+  //               onChange={this.handlePopChange.bind(this)}
+  //               style={{ width: '100%' }}
+  //             >
+  //               {this.getPopStockChildren()}
+  //             </Select>
+  //           </Col>
+  //         </Row>
+  //       </Modal>
+  //     </div>
+  //   );
+  // }
 }
