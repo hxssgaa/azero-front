@@ -332,11 +332,13 @@ export default class IbForm extends Component {
         title: 'DateTime',
         dataIndex: 'datetime',
         key: 'datetime',
+        width: '25%',
       },
       {
         title: 'Log',
         dataIndex: 'log',
         key: 'log',
+        width: '75%',
       },
     ];
 
