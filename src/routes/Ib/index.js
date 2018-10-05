@@ -513,7 +513,7 @@ export default class IbForm extends Component {
                 <Table
                   loading={loading}
                   columns={columnLogs}
-                  dataSource={syncLogs}
+                  dataSource={syncLogs.reverse()}
                   pagination={{ showTotal: t => `Total ${t} Items` }}
                 />
               </Col>
