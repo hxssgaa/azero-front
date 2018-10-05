@@ -5,7 +5,7 @@ import {
   queryMetaSyncProgressData,
   queryMetaConfigSyncSymbols,
   queryMetaStartData,
-  queryMetaStopData
+  queryMetaStopData,
 } from '../services/meta';
 
 export default {

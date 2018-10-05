@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Select, Input, Form, Row, Col, Table, Modal, Tabs } from 'antd';
 import { connect } from 'dva';
+import { StickyContainer, Sticky } from 'react-sticky';
 import Stock from '../../components/Stock/Stock';
 import Styles from './index.less';
 import add from '../../../public/add.png';
 import * as Service from '../../services/api';
-import { StickyContainer, Sticky } from 'react-sticky';
 
 console.info(111, StickyContainer);
 
@@ -255,11 +255,11 @@ export default class FutuForm extends Component {
               wasSticky,
               distanceFromTop,
               distanceFromBottom,
-              calculatedHeight
+              calculatedHeight,
             }) => (
-            <header style={style}>
+              <header style={style}>
               111111111
-            </header>
+              </header>
           )}
         </Sticky>
         <div>22222</div>

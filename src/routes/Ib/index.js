@@ -497,7 +497,7 @@ export default class IbForm extends Component {
       );
     };
 
-    // third.Ib synchronization data details
+    // third.Ib synchronization data details(real model)
     const thirdIbSyncRealData = () => {
       return (
         <div>
