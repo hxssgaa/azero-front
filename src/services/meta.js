@@ -3,8 +3,8 @@ import request from '../utils/request';
 // query td sync data
 export async function queryMetaSyncData() {
   // return request('/td/getSyncProgress');
-  return request('/api/queryFutuData');
-  return request('/td/syncStatus.do');
+  // return request('/api/queryFutuData');
+  return request('/meta/getSyncSizeInfo.do');
 }
 
 // query td sync progress data

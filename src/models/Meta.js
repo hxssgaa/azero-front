@@ -1,10 +1,12 @@
 import { message } from 'antd';
 import queryString from 'query-string';
-import { queryMetaSyncData,
+import {
+  queryMetaSyncData,
   queryMetaSyncProgressData,
   queryMetaConfigSyncSymbols,
   queryMetaStartData,
-  queryMetaStopData } from '../services/meta';
+  queryMetaStopData
+} from '../services/meta';
 
 export default {
   namespace: 'Meta',
@@ -17,15 +19,26 @@ export default {
 
   effects: {
     * fetch(_, { call, put }) {
+      const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
       const response = yield call(queryMetaSyncData);
-      const responseTest = yield call(queryMetaConfigSyncSymbols);
-      console.info('queryMetaConfigSyncSymbols', responseTest);
       if (response && response.success) {
         const { data } = response;
         yield put({
           type: 'save',
           payload: { syncData: data },
         });
+      }
+      const { pathname } = location;
+      // just send requests every second
+      if (pathname.includes('meta')) {
+        // according to the response to judge whether it can send the requests or not
+        if (response && response.data) {
+          // const { data: { data: { currentProgress } } } = response;
+          // if (parseInt(currentProgress, 10) !== 1) {
+          yield delay(1000);
+          yield put({ type: 'fetch' });
+          // }
+        }
       }
     },
 
