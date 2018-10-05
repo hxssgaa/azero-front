@@ -174,10 +174,24 @@ export default class TdForm extends Component {
       return (
         <div style={Object.assign({}, propertyStyle ? {} : { marginTop: 10 })}>
           <Row gutter={24}>
-            <Col span={9} offset={1}>
-              <div style={Object.assign({}, propertyStyle ? { height: 40, innerHeight: 40, marginTop: 10 } : {})}>{property}</div>
+            <Col
+              xs={{ span: 15 }}
+              sm={{ span: 15 }}
+              md={{ span: 9, offset: 1 }}
+              lg={{ span: 9, offset: 1 }}
+              xl={{ span: 9, offset: 1 }}
+              xxl={{ span: 9, offset: 1 }}
+            >
+              <div style={Object.assign({}, propertyStyle ? { height: 30, innerHeight: 30, marginTop: 10 } : {})}>{property}</div>
             </Col>
-            <Col span={12}>
+            <Col
+              xs={{ span: 9 }}
+              sm={{ span: 9 }}
+              md={{ span: 14 }}
+              lg={{ span: 14 }}
+              xl={{ span: 14 }}
+              xxl={{ span: 14 }}
+            >
               <div style={Object.assign({}, propertyStyle ? { fontSize: 30, color: '#3b78e7' } : {})}>{detail}</div>
             </Col>
           </Row>
@@ -191,17 +205,31 @@ export default class TdForm extends Component {
         <div className={styles.subProperty}>Td sync data switch</div>
         <div>
           <Row gutter={24}>
-            <Col span={9} offset={1}>
+            <Col
+              xs={{ span: 12 }}
+              sm={{ span: 12 }}
+              md={{ span: 9, offset: 1 }}
+              lg={{ span: 9, offset: 1 }}
+              xl={{ span: 9, offset: 1 }}
+              xxl={{ span: 9, offset: 1 }}
+            >
               <div>
                 {parseInt(status, 10) === 0 ? 'server is not turned on: ' : 'server is turned on:'}
                 {parseInt(status, 10) === 0 ? <img style={{ width: 16 }} alt={1} src={rhombusNo} /> : <img style={{ width: 16 }} alt={2} src={rhombus} />}
               </div>
             </Col>
-            <Col span={14}>
+            <Col
+              xs={{ span: 12 }}
+              sm={{ span: 12 }}
+              md={{ span: 14 }}
+              lg={{ span: 14 }}
+              xl={{ span: 14 }}
+              xxl={{ span: 14 }}
+            >
               <Button
                 type="primary"
                 onClick={this.tdButtonClick.bind(this, 'open')}
-                style={{ marginRight: 20, marginBottom: 10 }}
+                style={{ marginRight: 10, marginBottom: 10 }}
               >open
               </Button>
               <Button
@@ -253,12 +281,26 @@ export default class TdForm extends Component {
         />, false)}
         <div style={{ marginTop: 20 }}>
           <Row gutter={24}>
-            <Col span={9} offset={1}>
-              <div style={{ height: 40, innerHeight: 40, marginTop: 10 }}>4.the latest synchronized 25 stock data :</div>
+            <Col
+              xs={{ span: 24 }}
+              sm={{ span: 24 }}
+              md={{ span: 9, offset: 1 }}
+              lg={{ span: 9, offset: 1 }}
+              xl={{ span: 9, offset: 1 }}
+              xxl={{ span: 9, offset: 1 }}
+            >
+              <div style={{ height: 30, innerHeight: 30, marginTop: 10 }}>4.the latest synchronized 25 stock data :</div>
             </Col>
           </Row>
           <Row gutter={24}>
-            <Col span={23} offset={1}>
+            <Col
+              xs={{ span: 24 }}
+              sm={{ span: 24 }}
+              md={{ span: 23, offset: 1 }}
+              lg={{ span: 23, offset: 1 }}
+              xl={{ span: 23, offset: 1 }}
+              xxl={{ span: 23, offset: 1 }}
+            >
               <Table
                 loading={loading}
                 columns={columnProgress}

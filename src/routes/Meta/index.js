@@ -35,10 +35,10 @@ export default class MetaForm extends Component {
         <div className={styles.subProperty}>Get how much capacity used in syncing:</div>
         <div style={{ marginTop: 10 }}>
           <Row gutter={24}>
-            <Col span={9} offset={1}>
-              <div style={{ height: 120, lineHeight: '120px' }}>synchronization capacity :</div>
+            <Col span={13} offset={1}>
+              <div style={{ height: 120, lineHeight: '120px', textAlign: 'center' }}>synchronization capacity :</div>
             </Col>
-            <Col span={12}>
+            <Col span={10}>
               <Progress
                 percent={ToDecimal((usedSizeTrue / totalSizeTrue) * 100)}
                 status="active"

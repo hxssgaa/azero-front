@@ -366,10 +366,24 @@ export default class IbForm extends Component {
       return (
         <div style={Object.assign({}, propertyStyle ? {} : { marginTop: 10 })}>
           <Row gutter={24}>
-            <Col span={9} offset={1}>
-              <div style={Object.assign({}, propertyStyle ? { height: 40, innerHeight: 40, marginTop: 10 } : {})}>{property}</div>
+            <Col
+              xs={{ span: 7 }}
+              sm={{ span: 7 }}
+              md={{ span: 9, offset: 1 }}
+              lg={{ span: 9, offset: 1 }}
+              xl={{ span: 9, offset: 1 }}
+              xxl={{ span: 9, offset: 1 }}
+            >
+              <div style={Object.assign({}, propertyStyle ? { height: 30, innerHeight: 30, marginTop: 10 } : {})}>{property}</div>
             </Col>
-            <Col span={12}>
+            <Col
+              xs={{ span: 15 }}
+              sm={{ span: 15 }}
+              md={{ span: 14 }}
+              lg={{ span: 14 }}
+              xl={{ span: 14 }}
+              xxl={{ span: 14 }}
+            >
               <div style={Object.assign({}, propertyStyle ? { fontSize: 30, color: '#3b78e7' } : {})}>{detail}</div>
             </Col>
           </Row>
@@ -384,13 +398,27 @@ export default class IbForm extends Component {
           <div className={Styles.subProperty}>Ib sync data switch</div>
           <div>
             <Row gutter={24}>
-              <Col span={9} offset={1}>
+              <Col
+                xs={{ span: 12 }}
+                sm={{ span: 12 }}
+                md={{ span: 9, offset: 1 }}
+                lg={{ span: 9, offset: 1 }}
+                xl={{ span: 9, offset: 1 }}
+                xxl={{ span: 9, offset: 1 }}
+              >
                 <div>
                   {parseInt(status, 10) === 0 ? 'server is not turned on: ' : 'server is turned on:'}
                   {parseInt(status, 10) === 0 ? <img style={{ width: 16 }} alt={1} src={rhombusNo} /> : <img style={{ width: 16 }} alt={2} src={rhombus} />}
                 </div>
               </Col>
-              <Col span={14}>
+              <Col
+                xs={{ span: 12 }}
+                sm={{ span: 12 }}
+                md={{ span: 14 }}
+                lg={{ span: 14 }}
+                xl={{ span: 14 }}
+                xxl={{ span: 14 }}
+              >
                 <Button
                   type="primary"
                   onClick={this.IbButtonClick.bind(this, 'open')}
@@ -459,18 +487,32 @@ export default class IbForm extends Component {
       return (
         <div>
           <div className={Styles.subProperty}>Ib synchronization data details</div>
-          {singleSyncModel('1.synchronization progress :', <Progress
+          {singleSyncModel('1.progress :', <Progress
             percent={ToDecimal(histDataSyncProgress * 100)}
             status="active"
           />, false)}
           <div style={{ marginTop: 10 }}>
             <Row gutter={24}>
-              <Col span={9} offset={1}>
-                <div style={{ height: 40, innerHeight: 40, marginTop: 10 }}>2.histDataSyncTrack of stocks :</div>
+              <Col
+                xs={{ span: 24 }}
+                sm={{ span: 24 }}
+                md={{ span: 9, offset: 1 }}
+                lg={{ span: 9, offset: 1 }}
+                xl={{ span: 9, offset: 1 }}
+                xxl={{ span: 9, offset: 1 }}
+              >
+                <div style={{ height: 30, innerHeight: 30, marginTop: 10 }}>2.histDataSyncTrack of stocks :</div>
               </Col>
             </Row>
             <Row gutter={24}>
-              <Col span={23} offset={1}>
+              <Col
+                xs={{ span: 24 }}
+                sm={{ span: 24 }}
+                md={{ span: 23, offset: 1 }}
+                lg={{ span: 23, offset: 1 }}
+                xl={{ span: 23, offset: 1 }}
+                xxl={{ span: 23, offset: 1 }}
+              >
                 <Table
                   loading={loading}
                   columns={columnLogs}
@@ -482,12 +524,26 @@ export default class IbForm extends Component {
           </div>
           <div>
             <Row gutter={24}>
-              <Col span={11} offset={1}>
-                <div style={{ height: 40, innerHeight: 40 }}>3.the latest synchronized symbols stock data :</div>
+              <Col
+                xs={{ span: 24 }}
+                sm={{ span: 24 }}
+                md={{ span: 11, offset: 1 }}
+                lg={{ span: 11, offset: 1 }}
+                xl={{ span: 11, offset: 1 }}
+                xxl={{ span: 11, offset: 1 }}
+              >
+                <div style={{ height: 30, innerHeight: 30 }}>3.the latest synchronized symbols stock data :</div>
               </Col>
             </Row>
             <Row gutter={24}>
-              <Col span={16} offset={1}>
+              <Col
+                xs={{ span: 24 }}
+                sm={{ span: 24 }}
+                md={{ span: 23, offset: 1 }}
+                lg={{ span: 23, offset: 1 }}
+                xl={{ span: 23, offset: 1 }}
+                xxl={{ span: 23, offset: 1 }}
+              >
                 <Table
                   loading={loading}
                   columns={columnProgress}
@@ -509,7 +565,7 @@ export default class IbForm extends Component {
           <div style={{ marginTop: 10 }}>
             <Row gutter={24}>
               <Col span={9} offset={1}>
-                <div style={{ height: 40, innerHeight: 40, marginTop: 10 }}>1.histDataSyncTrack of stocks :</div>
+                <div style={{ height: 30, innerHeight: 30, marginTop: 10 }}>1.histDataSyncTrack of stocks :</div>
               </Col>
             </Row>
             <Row gutter={24}>
@@ -526,11 +582,11 @@ export default class IbForm extends Component {
           <div>
             <Row gutter={24}>
               <Col span={11} offset={1}>
-                <div style={{ height: 40, innerHeight: 40 }}>2.the latest synchronized symbols stock data :</div>
+                <div style={{ height: 30, innerHeight: 30 }}>2.the latest synchronized symbols stock data :</div>
               </Col>
             </Row>
             <Row gutter={24}>
-              <Col span={16} offset={1}>
+              <Col span={18} offset={1}>
                 <Table
                   loading={loading}
                   columns={columnProgress}
