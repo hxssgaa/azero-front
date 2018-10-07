@@ -176,7 +176,7 @@ export default class TdForm extends Component {
           <Row gutter={24}>
             <Col
               xs={{ span: 15 }}
-              sm={{ span: 15 }}
+              sm={{ span: 12 }}
               md={{ span: 9, offset: 1 }}
               lg={{ span: 9, offset: 1 }}
               xl={{ span: 9, offset: 1 }}
@@ -186,7 +186,7 @@ export default class TdForm extends Component {
             </Col>
             <Col
               xs={{ span: 9 }}
-              sm={{ span: 9 }}
+              sm={{ span: 12 }}
               md={{ span: 14 }}
               lg={{ span: 14 }}
               xl={{ span: 14 }}
