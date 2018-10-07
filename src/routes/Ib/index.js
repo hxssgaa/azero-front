@@ -672,14 +672,14 @@ export default class IbForm extends Component {
           style={{ height: 200 }}
         >
           <Row gutter={24}>
-            <Col md={12} sm={24}>
+            <Col span={24}>
               <Select
                 showSearch
                 filterOption={false}
                 placeholder="Please select"
                 onSearch={this.onPopSearchStocks.bind(this)}
                 onChange={this.handlePopChange.bind(this)}
-                style={{ width: '100%' }}
+                style={{ width: '90%' }}
               >
                 {this.getPopStockChildren()}
               </Select>
