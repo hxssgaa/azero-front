@@ -293,15 +293,20 @@ export default class IbForm extends Component {
         title: 'Title',
         dataIndex: 'title',
         key: 'title',
-        width: '45%',
+        width: '42%',
       },
       {
         title: 'Date',
         dataIndex: 'date',
         key: 'date',
-        width: '30%',
+        width: '33%',
       },
     ];
+
+    // const test = [1, 3, 4, 5, 6];
+    // const maxIndex = test.findIndex(val => val === Math.max(...test));
+    //
+    // console.info(111,maxIndex);
 
     // search column
     const columnSearch = [
@@ -488,7 +493,7 @@ export default class IbForm extends Component {
         <div>
           <div className={Styles.subProperty}>Ib synchronization data details</div>
           {singleSyncModel('1.progress :', <Progress
-            percent={ToDecimal(histDataSyncProgress * 100)}
+            percent={parseFloat(ToDecimal(histDataSyncProgress * 100))}
             status="active"
           />, false)}
           <div style={{ marginTop: 10 }}>
