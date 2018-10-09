@@ -316,22 +316,22 @@ export default class IbForm extends Component {
         title: 'Symbol',
         dataIndex: 'symbol',
         key: 'symbol',
-        width: '22%',
+        width: '25%',
       },
       {
         title: 'Title',
         dataIndex: 'title',
         key: 'title',
-        width: '39%',
+        width: '35%',
       },
       {
         title: 'Date',
         dataIndex: 'date',
         key: 'date',
-        width: '30%',
+        width: '28%',
       },
       {
-        title: 'Action',
+        title: 'Ope',
         dataIndex: '',
         key: 'x',
         render: (text, record) => (
@@ -343,11 +343,11 @@ export default class IbForm extends Component {
               okText="confirm"
               cancelText="cancel"
             >
-              <a href="">Delete</a>
+              <a style={{ cursor: 'point' }} href="">Del</a>
             </Popconfirm>
           </div>
         ),
-        width: '9%',
+        width: '12%',
       },
 
     ];
