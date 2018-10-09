@@ -16,7 +16,7 @@ export async function queryTdSyncProgressData() {
 
 // query td symbols info data
 export async function queryTdSymbolsInfoData(params) {
-  return request('/td/getSyncProgress');
+  // return request('/td/getSyncProgress');
   const { code, isFuzzy } = params;
   return request(`/td/getSymbolsInfo.do?isFuzzy=${isFuzzy}&code=${code}`);
 }

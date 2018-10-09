@@ -33,11 +33,11 @@ export async function queryIbSyncSymbols() {
   return request('/ib/getSyncSymbols.do');
 }
 
-export async function queryIbConfigSyncSymbols() {
+export async function queryIbConfigSyncSymbols(codeList) {
   // return request('/td/getSyncProgress');
-  return request('/api/queryFutuData');
+  // return request('/api/queryFutuData');
   // const { code, isFuzzy } = params;
-  const newParams = Object.assign({}, { codeList: [{ symbol: 'US.HUYA' }, { symbol: 'US.HMI' }] });
+  const newParams = Object.assign({}, { codeList });
   return request('/ib/configSyncSymbols.do', {
     method: 'POST',
     body: {

@@ -7,8 +7,6 @@ import Styles from './index.less';
 import add from '../../../public/add.png';
 import * as Service from '../../services/api';
 
-console.info(111, StickyContainer);
-
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
 const Search = Input.Search;
@@ -242,6 +240,19 @@ export default class FutuForm extends Component {
   }
 
   render() {
+
+    // const array = [1, 2, 55, 5, 3, 1, 2, 3, 2, 2, 2, 3];
+    //
+    // const result = [];
+    // array.forEach((item, index) => {
+    //   if (result.indexOf(array[index]) === -1) {
+    //     result.push(array[index]);
+    //   }
+    // });
+    //
+    // console.info(111, result);
+
+
     return (
       <StickyContainer>
         {/* Other elements can be in between `StickyContainer` and `Sticky`,
@@ -257,51 +268,11 @@ export default class FutuForm extends Component {
               distanceFromBottom,
               calculatedHeight,
             }) => (
-              <header style={style}>
+            <header style={style}>
               111111111
-              </header>
+            </header>
           )}
         </Sticky>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
-        <div>22222</div>
         <div>22222</div>
         <div>22222</div>
         <div>22222</div>

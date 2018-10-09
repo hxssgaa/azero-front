@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Select, Row, Col, Progress, Table, Tabs, Modal } from 'antd';
+import { Button, Select, Row, Col, Progress, Table, Tabs, Modal, message, Popconfirm } from 'antd';
 import { connect } from 'dva';
 import { ToDecimal, ResultToSign } from '../../components/CommonModal/Common';
 import rhombus from '../../assets/sync/rhombus.png';
@@ -22,6 +22,7 @@ export default class IbForm extends Component {
   state = {
     visible: false,
     stockData: {},
+    stockPopData: {},
     tabsIndex: "0",
     syncInfo: {},
     searchLoading: false,
@@ -125,39 +126,41 @@ export default class IbForm extends Component {
   };
 
   onPopSearchStocks = (value) => {
+    console.info(2222, value);
     const valueTrue = { code: value.toUpperCase(), isFuzzy: 1 };
     ServiceApi.queryTdSymbolsInfoData(valueTrue)
       .then((res) => {
         if (res && res.success) {
           const { data: { data } } = res;
           this.setState({
-            stockData: data,
+            stockPopData: data,
           })
         } else {
           this.setState({
-            stockData: {},
+            stockPopData: {},
           })
         }
       });
   };
 
   handlePopChange = (value) => {
-    const { stockData: { codeList } } = this.state;
-    const valueTrue = { code: codeList[value].symbol, isFuzzy: 0 };
-    console.info(666, valueTrue);
-    ServiceApi.queryTdSymbolsInfoData(valueTrue)
-      .then((res) => {
-        if (res && res.success) {
-          const { data: { data } } = res;
-          this.setState({
-            syncInfo: data,
-          })
-        } else {
-          this.setState({
-            syncInfo: {},
-          })
-        }
-      });
+    const { stockPopData: { codeList }, tabsIndex } = this.state;
+    const achieveSymbol = codeList[value].symbol;
+    const { Ib: { syncedSymbolsData: { stocks } }, dispatch } = this.props;
+    const stocksSymbols = stocks.map((item, index) => {
+      return { 'symbol': item.symbol }
+    });
+    const stockAchieveJudge = stocksSymbols.some((item, index) => {
+      if (achieveSymbol === item.symbol) return true; else return false;
+    });
+    if (!stockAchieveJudge) {
+      stocksSymbols.push({ 'symbol': achieveSymbol });
+    }
+    console.info(9999, stocksSymbols);
+    dispatch({
+      type: 'Ib/fetchAdd',
+      payload: { stocksSymbols, tabsIndex },
+    });
   };
 
   getStockChildren = (dataSource) => {
@@ -179,8 +182,8 @@ export default class IbForm extends Component {
   };
 
   getPopStockChildren = () => {
-    const { stockData } = this.state;
-    const { codeList = [] } = stockData;
+    const { stockPopData } = this.state;
+    const { codeList = [] } = stockPopData;
     const children = [];
     if (codeList.length !== 0) {
       const len = codeList.length;
@@ -210,6 +213,32 @@ export default class IbForm extends Component {
     });
   }
 
+  onSymbolStockDelete = (record) => {
+    console.info('删除', record);
+    const achieveSymbol = record.symbol;
+    const { Ib: { syncedSymbolsData: { stocks } }, dispatch } = this.props;
+    const stocksSymbols = stocks.map((item, index) => {
+      return { 'symbol': item.symbol }
+    });
+
+    let stockIndex = 0;
+    stocksSymbols.findIndex((item, index) => {
+      if (achieveSymbol === item.symbol) {
+        stockIndex = index;
+      }
+    });
+    stocksSymbols.splice(stockIndex, 1);
+    // console.info(9999, stocksSymbols);
+    dispatch({
+      type: 'Ib/fetchAdd',
+      payload: { stocksSymbols },
+    });
+  };
+
+  // 取消删除按钮
+  onSymbolStockCancelBtn = () => {
+  };
+
   handleCancel() {
     this.setState({
       visible: false,
@@ -218,7 +247,7 @@ export default class IbForm extends Component {
 
   render() {
     const { loading, Ib: { syncData, progressData, syncedSymbolsData: { stocks } } } = this.props;
-    const { syncInfo, searchLoading, tabsIndex, visible } = this.state;
+    const { tabsIndex, visible } = this.state;
     let progressDataDetail = {};
     let syncLogs = [];
     let histDataSyncProgress = '';
@@ -287,20 +316,40 @@ export default class IbForm extends Component {
         title: 'Symbol',
         dataIndex: 'symbol',
         key: 'symbol',
-        width: '25%',
+        width: '22%',
       },
       {
         title: 'Title',
         dataIndex: 'title',
         key: 'title',
-        width: '42%',
+        width: '39%',
       },
       {
         title: 'Date',
         dataIndex: 'date',
         key: 'date',
-        width: '33%',
+        width: '30%',
       },
+      {
+        title: 'Action',
+        dataIndex: '',
+        key: 'x',
+        render: (text, record) => (
+          <div>
+            <Popconfirm
+              title="are you sure to delete this symbol?"
+              onConfirm={() => this.onSymbolStockDelete(record)}
+              onCancel={this.onSymbolStockCancelBtn}
+              okText="confirm"
+              cancelText="cancel"
+            >
+              <a href="">Delete</a>
+            </Popconfirm>
+          </div>
+        ),
+        width: '9%',
+      },
+
     ];
 
     // const test = [1, 3, 4, 5, 6];

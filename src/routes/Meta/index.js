@@ -40,7 +40,7 @@ export default class MetaForm extends Component {
             </Col>
             <Col span={10}>
               <Progress
-                percent={ToDecimal((usedSizeTrue / totalSizeTrue) * 100)}
+                percent={parseFloat(ToDecimal((usedSizeTrue / totalSizeTrue) * 100))}
                 status="active"
                 type="circle"
                 format={percent => `${percent}% capacity`}

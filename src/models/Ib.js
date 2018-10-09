@@ -23,8 +23,6 @@ export default {
     * fetch({ payload }, { call, put }) {
       const payloadTrue = Object.keys(payload).length >= 1 ? payload : '0';
       const response = yield call(queryIbSyncData, payloadTrue);
-      // const responseTest = yield call(queryIbConfigSyncSymbols, payload);
-      // console.info('queryIbConfigSyncSymbols', responseTest);
       yield put({ type: 'fetchSyncSymbol' });
       if (response && response.success) {
         const { data } = response;
@@ -37,8 +35,6 @@ export default {
 
     * fetchSyncSymbol(_, { call, put }) {
       const response = yield call(queryIbSyncSymbols);
-      // const responseTest = yield call(queryIbConfigSyncSymbols, payload);
-      // console.info('queryIbConfigSyncSymbols', responseTest);
       if (response && response.success) {
         const { data } = response;
         yield put({
@@ -51,7 +47,6 @@ export default {
     * fetchProgress({ payload }, { call, put }) {
       const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
       const response = yield call(queryIbSyncProgressData, payload);
-      // console.info('1111ibProgress', response);
       if (response && response.success) {
         const { data: { data } } = response;
         yield put({
@@ -70,6 +65,14 @@ export default {
           yield put({ type: 'fetchProgress' });
           // }
         }
+      }
+    },
+
+    * fetchAdd({ payload }, { call, put }) {
+      const { stocksSymbols } = payload;
+      const response = yield call(queryIbConfigSyncSymbols, stocksSymbols);
+      if (response && response.success) {
+        yield put({ type: 'fetchSyncSymbol' });
       }
     },
 
