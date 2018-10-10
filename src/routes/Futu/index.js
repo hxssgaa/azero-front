@@ -268,9 +268,9 @@ export default class FutuForm extends Component {
               distanceFromBottom,
               calculatedHeight,
             }) => (
-            <header style={style}>
+              <header style={style}>
               111111111
-            </header>
+              </header>
           )}
         </Sticky>
         <div>22222</div>

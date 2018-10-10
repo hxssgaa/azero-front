@@ -229,13 +229,12 @@ export default class TdForm extends Component {
               <Button
                 type="primary"
                 onClick={this.tdButtonClick.bind(this, 'open')}
-                style={{ marginRight: 10, marginBottom: 10 }}
+                style={{ marginRight: 10 }}
               >open
               </Button>
               <Button
                 type="primary"
                 onClick={this.tdButtonClick.bind(this, 'close')}
-                style={{ marginBottom: 10 }}
               >close
               </Button>
             </Col>

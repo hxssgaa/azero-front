@@ -500,13 +500,12 @@ export default class IbForm extends Component {
                 <Button
                   type="primary"
                   onClick={this.IbButtonClick.bind(this, 'open')}
-                  style={{ marginRight: 20, marginBottom: 10 }}
+                  style={{ marginRight: 20}}
                 >open
                 </Button>
                 <Button
                   type="primary"
                   onClick={this.IbButtonClick.bind(this, 'close')}
-                  style={{ marginBottom: 10 }}
                 >close
                 </Button>
               </Col>
