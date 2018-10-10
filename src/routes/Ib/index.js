@@ -639,10 +639,10 @@ export default class IbForm extends Component {
               <Col
                 xs={{ span: 24 }}
                 sm={{ span: 24 }}
-                md={{ span: 16, offset: 1 }}
-                lg={{ span: 16, offset: 1 }}
-                xl={{ span: 16, offset: 1 }}
-                xxl={{ span: 16, offset: 1 }}
+                md={{ span: 18, offset: 1 }}
+                lg={{ span: 18, offset: 1 }}
+                xl={{ span: 18, offset: 1 }}
+                xxl={{ span: 18, offset: 1 }}
               >
                 <Table
                   loading={loading}
@@ -679,10 +679,10 @@ export default class IbForm extends Component {
               <Col
                 xs={{ span: 24 }}
                 sm={{ span: 24 }}
-                md={{ span: 14 }}
-                lg={{ span: 14 }}
-                xl={{ span: 14 }}
-                xxl={{ span: 14 }}
+                md={{ span: 23, offset: 1 }}
+                lg={{ span: 23, offset: 1 }}
+                xl={{ span: 23, offset: 1 }}
+                xxl={{ span: 23, offset: 1 }}
               >
                 <Table
                   loading={loading}
