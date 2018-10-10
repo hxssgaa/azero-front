@@ -94,8 +94,9 @@ export default class IbForm extends Component {
 
   // on search stocks
   handleChange = (value) => {
-    const { stockData: { codeList } } = this.state;
-    console.info('搜索OnChange', value);
+    const { stockData } = this.state;
+    const achieveSymbol = stockData[value].symbol;
+    console.info('搜索OnChange', achieveSymbol);
     // this.setState({
     //   searchLoading: true,
     // });
@@ -165,7 +166,7 @@ export default class IbForm extends Component {
   };
 
   handlePopChange = (value) => {
-    console.info(1111,value);
+    console.info(1111, value);
     const { stockPopData: { codeList }, tabsIndex } = this.state;
     const achieveSymbol = codeList[value].symbol;
     const { Ib: { syncedSymbolsData: { stocks } }, dispatch } = this.props;
@@ -500,7 +501,7 @@ export default class IbForm extends Component {
                 <Button
                   type="primary"
                   onClick={this.IbButtonClick.bind(this, 'open')}
-                  style={{ marginRight: 20}}
+                  style={{ marginRight: 20 }}
                 >open
                 </Button>
                 <Button
