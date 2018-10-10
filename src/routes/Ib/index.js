@@ -165,6 +165,7 @@ export default class IbForm extends Component {
   };
 
   handlePopChange = (value) => {
+    console.info(1111,value);
     const { stockPopData: { codeList }, tabsIndex } = this.state;
     const achieveSymbol = codeList[value].symbol;
     const { Ib: { syncedSymbolsData: { stocks } }, dispatch } = this.props;
@@ -522,7 +523,14 @@ export default class IbForm extends Component {
           <div className={Styles.subProperty}>Ib search stock text</div>
           <div>
             <Row gutter={24}>
-              <Col span={16}>
+              <Col
+                xs={{ span: 16 }}
+                sm={{ span: 16 }}
+                md={{ span: 16, offset: 1 }}
+                lg={{ span: 16, offset: 1 }}
+                xl={{ span: 16, offset: 1 }}
+                xxl={{ span: 16, offset: 1 }}
+              >
                 <Select
                   showSearch
                   filterOption={false}
@@ -540,12 +548,13 @@ export default class IbForm extends Component {
                 <Col
                   xs={{ span: 21 }}
                   sm={{ span: 21 }}
-                  md={{ span: 20 }}
-                  lg={{ span: 20 }}
-                  xl={{ span: 20 }}
-                  xxl={{ span: 20 }}
+                  md={{ span: 19, offset: 1 }}
+                  lg={{ span: 19, offset: 1 }}
+                  xl={{ span: 19, offset: 1 }}
+                  xxl={{ span: 19, offset: 1 }}
                 >
                   <Table
+                    loading={loading}
                     dataSource={stockData}
                     columns={columns}
                     pagination={{ showTotal: t => `Total ${t} Items` }}
@@ -764,7 +773,7 @@ export default class IbForm extends Component {
                 filterOption={false}
                 placeholder="Please select"
                 onSearch={this.onPopSearchStocks.bind(this)}
-                onChange={this.handlePopChange.bind(this)}
+                onSelect={this.handlePopChange.bind(this)}
                 style={{ width: '90%' }}
               >
                 {this.getPopStockChildren()}

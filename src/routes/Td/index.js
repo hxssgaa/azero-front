@@ -139,25 +139,25 @@ export default class TdForm extends Component {
         title: 'Symbol',
         dataIndex: 'symbol',
         key: 'symbol',
-        width: '24%',
+        width: '27%',
       },
       {
-        title: 'Frequency',
+        title: 'Freq',
         dataIndex: 'frequency',
         key: 'frequency',
-        width: '24%',
+        width: '14%',
       },
       {
-        title: 'Count',
+        title: 'Cnt',
         dataIndex: 'count',
         key: 'count',
-        width: '18%',
+        width: '13%',
       },
       {
         title: 'SyncDateTime',
         dataIndex: 'syncDateTime',
         key: 'syncDateTime',
-        width: '34%',
+        width: '46%',
       }];
 
     const { syncInfo, searchLoading } = this.state;
@@ -243,9 +243,16 @@ export default class TdForm extends Component {
         </div>
         {/* second.Td search stock text */}
         <div className={styles.subProperty}>Td search stock text</div>
-        <div style={{ marginLeft: 10 }}>
+        <div>
           <Row gutter={24}>
-            <Col span={16}>
+            <Col
+              xs={{ span: 16 }}
+              sm={{ span: 16 }}
+              md={{ span: 16, offset: 1 }}
+              lg={{ span: 16, offset: 1 }}
+              xl={{ span: 16, offset: 1 }}
+              xxl={{ span: 16, offset: 1 }}
+            >
               <Select
                 showSearch
                 filterOption={false}
