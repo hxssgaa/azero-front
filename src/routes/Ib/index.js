@@ -346,13 +346,13 @@ export default class IbForm extends Component {
         title: 'Title',
         dataIndex: 'title',
         key: 'title',
-        width: '35%',
+        width: '33%',
       },
       {
         title: 'Date',
         dataIndex: 'date',
         key: 'date',
-        width: '28%',
+        width: '30%',
       },
       {
         title: 'Ope',
@@ -520,7 +520,7 @@ export default class IbForm extends Component {
       return (
         <div>
           <div className={Styles.subProperty}>Ib search stock text</div>
-          <div style={{ marginLeft: 10 }}>
+          <div>
             <Row gutter={24}>
               <Col span={16}>
                 <Select
@@ -537,14 +537,28 @@ export default class IbForm extends Component {
             </Row>
             <div>
               <Row gutter={24}>
-                <Col span={20}>
+                <Col
+                  xs={{ span: 21 }}
+                  sm={{ span: 21 }}
+                  md={{ span: 20 }}
+                  lg={{ span: 20 }}
+                  xl={{ span: 20 }}
+                  xxl={{ span: 20 }}
+                >
                   <Table
                     dataSource={stockData}
                     columns={columns}
                     pagination={{ showTotal: t => `Total ${t} Items` }}
                   />
                 </Col>
-                <Col span={4}>
+                <Col
+                  xs={{ span: 3 }}
+                  sm={{ span: 3 }}
+                  md={{ span: 4 }}
+                  lg={{ span: 4 }}
+                  xl={{ span: 4 }}
+                  xxl={{ span: 4 }}
+                >
                   <img
                     alt="0"
                     src={add}
