@@ -21,7 +21,7 @@ const operations = <Button>Extra Action</Button>;
 export default class IbForm extends Component {
   state = {
     visible: false,
-    stockData: {},
+    stockData: (this.props.Ib && this.props.Ib.syncedSymbolsData && this.props.Ib.syncedSymbolsData.stocks) ? this.props.Ib.syncedSymbolsData.stocks : [],
     stockPopData: {},
     tabsIndex: "0",
     syncInfo: {},
@@ -29,6 +29,15 @@ export default class IbForm extends Component {
   };
 
   componentDidMount() {
+    // console.info(1111, this.props.Ib.syncedSymbolsData.stocks);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // console.info(22222, nextProps);
+    const { Ib: { syncedSymbolsData: { stocks } } } = this.props;
+    this.setState({
+      stockData: stocks,
+    })
   }
 
   shouldComponentUpdate() {
@@ -37,63 +46,75 @@ export default class IbForm extends Component {
 
   // on search stocks
   onSearchStocks = (value) => {
+    console.info('搜索', value);
     const valueTrue = { code: value.toUpperCase(), isFuzzy: 1 };
-    Service.queryIbSymbolsInfoData(valueTrue)
-      .then((res) => {
-        if (res && res.success) {
-          const { data: { data } } = res;
-          this.setState({
-            stockData: data,
-          })
-        } else {
-          this.setState({
-            stockData: {},
-          })
-        }
-      });
+    const { Ib: { syncedSymbolsData: { stocks } }, dispatch } = this.props;
+    const stocksSymbols = stocks.map((item, index) => {
+      return { 'symbol': item.symbol }
+    });
+
+    console.info('stocksSymbols', stocksSymbols);
+
+    // Service.queryIbSymbolsInfoData(valueTrue)
+    //   .then((res) => {
+    //     if (res && res.success) {
+    //       const { data: { data } } = res;
+    //       this.setState({
+    //         stockData: data,
+    //       })
+    //     } else {
+    //       this.setState({
+    //         stockData: {},
+    //       })
+    //     }
+    //   });
   };
 
   // achieve the stock symbol
   getStockChildren() {
-    const { stockData } = this.state;
-    const { codeList = [] } = stockData;
+    const { Ib: { syncedSymbolsData: { stocks } } } = this.props;
     const children = [];
-    if (codeList.length !== 0) {
-      const len = codeList.length;
-      for (let i = 0; i < len; i += 1) {
-        children.push(<Option
-          title={codeList[i].symbol}
-          className={Styles.stockSelectOption}
-          key={i}
-        >{`[${codeList[i].symbol}]${codeList[i].title}`}
-        </Option>);
+    if (stocks) {
+      const dataSource = stocks;
+      if (dataSource.length !== 0) {
+        const len = dataSource.length;
+        for (let i = 0; i < len; i += 1) {
+          children.push(<Option
+            title={dataSource[i].symbol}
+            className={Styles.stockSelectOption}
+            key={i}
+          >{`[${dataSource[i].symbol}]${dataSource[i].title}`}
+          </Option>);
+        }
+        return children;
       }
-      return children;
     }
+    return false;
   }
 
   // on search stocks
   handleChange = (value) => {
     const { stockData: { codeList } } = this.state;
-    this.setState({
-      searchLoading: true,
-    });
-    const valueTrue = { code: codeList[value].symbol, isFuzzy: 0 };
-    Service.queryIbSymbolsInfoData(valueTrue)
-      .then((res) => {
-        if (res && res.success) {
-          const { data: { data } } = res;
-          this.setState({
-            syncInfo: data,
-            searchLoading: false,
-          })
-        } else {
-          this.setState({
-            syncInfo: {},
-            searchLoading: false,
-          })
-        }
-      });
+    console.info('搜索OnChange', value);
+    // this.setState({
+    //   searchLoading: true,
+    // });
+    // const valueTrue = { code: codeList[value].symbol, isFuzzy: 0 };
+    // Service.queryIbSymbolsInfoData(valueTrue)
+    //   .then((res) => {
+    //     if (res && res.success) {
+    //       const { data: { data } } = res;
+    //       this.setState({
+    //         syncInfo: data,
+    //         searchLoading: false,
+    //       })
+    //     } else {
+    //       this.setState({
+    //         syncInfo: {},
+    //         searchLoading: false,
+    //       })
+    //     }
+    //   });
   };
 
   // Ib sync data button click
@@ -155,31 +176,33 @@ export default class IbForm extends Component {
     });
     if (!stockAchieveJudge) {
       stocksSymbols.push({ 'symbol': achieveSymbol });
+      console.info(9999, stocksSymbols);
+      dispatch({
+        type: 'Ib/fetchAdd',
+        payload: { stocksSymbols, tabsIndex },
+      });
+    } else {
+      message.warning('请重新选择一支股票');
     }
-    console.info(9999, stocksSymbols);
-    dispatch({
-      type: 'Ib/fetchAdd',
-      payload: { stocksSymbols, tabsIndex },
-    });
   };
 
-  getStockChildren = (dataSource) => {
-    // const { stockData } = this.state;
-    // const { codeList = [] } = stockData;
-    const children = [];
-    if (dataSource.length !== 0) {
-      const len = dataSource.length;
-      for (let i = 0; i < len; i += 1) {
-        children.push(<Option
-          title={dataSource[i].symbol}
-          className={Styles.stockSelectOption}
-          key={i}
-        >{`[${dataSource[i].symbol}]${dataSource[i].title}`}
-        </Option>);
-      }
-      return children;
-    }
-  };
+  // getStockChildren = (dataSource) => {
+  //   // const { stockData } = this.state;
+  //   // const { codeList = [] } = stockData;
+  //   const children = [];
+  //   if (dataSource.length !== 0) {
+  //     const len = dataSource.length;
+  //     for (let i = 0; i < len; i += 1) {
+  //       children.push(<Option
+  //         title={dataSource[i].symbol}
+  //         className={Styles.stockSelectOption}
+  //         key={i}
+  //       >{`[${dataSource[i].symbol}]${dataSource[i].title}`}
+  //       </Option>);
+  //     }
+  //     return children;
+  //   }
+  // };
 
   getPopStockChildren = () => {
     const { stockPopData } = this.state;
@@ -247,7 +270,8 @@ export default class IbForm extends Component {
 
   render() {
     const { loading, Ib: { syncData, progressData, syncedSymbolsData: { stocks } } } = this.props;
-    const { tabsIndex, visible } = this.state;
+    const { tabsIndex, visible, stockData } = this.state;
+    // console.info(2222, stockData);
     let progressDataDetail = {};
     let syncLogs = [];
     let histDataSyncProgress = '';
@@ -349,7 +373,6 @@ export default class IbForm extends Component {
         ),
         width: '12%',
       },
-
     ];
 
     // const test = [1, 3, 4, 5, 6];
@@ -508,7 +531,7 @@ export default class IbForm extends Component {
                   onChange={this.handleChange.bind(this)}
                   style={{ width: '100%', marginBottom: 10 }}
                 >
-                  {this.getStockChildren(dataSource)}
+                  {this.getStockChildren()}
                 </Select>
               </Col>
             </Row>
@@ -516,7 +539,7 @@ export default class IbForm extends Component {
               <Row gutter={24}>
                 <Col span={20}>
                   <Table
-                    dataSource={stocks}
+                    dataSource={stockData}
                     columns={columns}
                     pagination={{ showTotal: t => `Total ${t} Items` }}
                   />
