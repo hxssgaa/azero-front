@@ -110,7 +110,7 @@ export default class TdForm extends Component {
     // search column
     const columnSearch = [
       {
-        title: 'Sync Frequency',
+        title: 'Freq',
         dataIndex: 'time',
         render: (text, record) => {
           const { time } = record;
@@ -123,6 +123,7 @@ export default class TdForm extends Component {
           return (<span>{ResultToSign(timeStr)}</span>);
         },
         key: 'time',
+        width: '15%',
       },
       {
         title: 'Sync Datetime range',
@@ -131,6 +132,7 @@ export default class TdForm extends Component {
           return (<a>{ResultToSign(`${record.startDate}-${record.endDate}`)}</a>);
         },
         key: 'startDate',
+        width: '85%',
       }];
 
     // progress column
