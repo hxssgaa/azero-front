@@ -46,25 +46,6 @@ export default class TdForm extends Component {
       });
   };
 
-  // achieve the stock symbol
-  getSearchChildText() {
-    const { stockData } = this.state;
-    const { codeList = [] } = stockData;
-    const children = [];
-    if (codeList.length !== 0) {
-      const len = codeList.length;
-      for (let i = 0; i < len; i += 1) {
-        children.push(<Option
-          title={codeList[i].symbol}
-          className={styles.stockSelectOption}
-          key={i}
-        >{`[${codeList[i].symbol}]${codeList[i].title}`}
-        </Option>);
-      }
-      return children;
-    }
-  }
-
   // on search stocks
   onSearchChangeClick = (value) => {
     const { stockData: { codeList } } = this.state;
@@ -102,6 +83,25 @@ export default class TdForm extends Component {
       });
     }
   };
+
+  // achieve the stock symbol
+  getSearchChildText() {
+    const { stockData } = this.state;
+    const { codeList = [] } = stockData;
+    const children = [];
+    if (codeList.length !== 0) {
+      const len = codeList.length;
+      for (let i = 0; i < len; i += 1) {
+        children.push(<Option
+          title={codeList[i].symbol}
+          className={styles.stockSelectOption}
+          key={i}
+        >{`[${codeList[i].symbol}]${codeList[i].title}`}
+        </Option>);
+      }
+      return children;
+    }
+  }
 
   render() {
     const { loading, Td: { syncData, progressData } } = this.props;
