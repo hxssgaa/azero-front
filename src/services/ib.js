@@ -20,11 +20,17 @@ export async function queryIbSyncProgressData() {
 // query td symbols info data
 export async function queryIbSymbolsInfoData(params) {
   // return request('/td/getSyncProgress');
-  return request('/api/queryFutuData');
+  // return request('/api/queryFutuData');
+  const { code, type } = params;
+  return request(`/ib/getSyncSymbols.do?type=${type}&code=${code}`);
+}
+
+// query td symbols info data
+export async function queryTdSymbolsInfoData(params) {
+  // return request('/td/getSyncProgress');
   const { code, isFuzzy } = params;
   return request(`/td/getSymbolsInfo.do?isFuzzy=${isFuzzy}&code=${code}`);
 }
-
 
 export async function queryIbSyncSymbols() {
   // return request('/td/getSyncProgress');

@@ -29,7 +29,7 @@ export default class TdForm extends Component {
   }
 
   // on search stocks
-  onSearchStocks = (value) => {
+  onSearchClick = (value) => {
     const valueTrue = { code: value.toUpperCase(), isFuzzy: 1 };
     Service.queryTdSymbolsInfoData(valueTrue)
       .then((res) => {
@@ -47,7 +47,7 @@ export default class TdForm extends Component {
   };
 
   // achieve the stock symbol
-  getStockChildren() {
+  getSearchChildText() {
     const { stockData } = this.state;
     const { codeList = [] } = stockData;
     const children = [];
@@ -66,7 +66,7 @@ export default class TdForm extends Component {
   }
 
   // on search stocks
-  handleChange = (value) => {
+  onSearchChangeClick = (value) => {
     const { stockData: { codeList } } = this.state;
     this.setState({
       searchLoading: true,
@@ -90,7 +90,7 @@ export default class TdForm extends Component {
   };
 
   // td sync data button click
-  tdButtonClick = (str) => {
+  onOpenCloseClick = (str) => {
     const { dispatch } = this.props;
     if (str === 'open') {
       dispatch({
@@ -230,13 +230,13 @@ export default class TdForm extends Component {
             >
               <Button
                 type="primary"
-                onClick={this.tdButtonClick.bind(this, 'open')}
+                onClick={this.onOpenCloseClick.bind(this, 'open')}
                 style={{ marginRight: 10 }}
               >open
               </Button>
               <Button
                 type="primary"
-                onClick={this.tdButtonClick.bind(this, 'close')}
+                onClick={this.onOpenCloseClick.bind(this, 'close')}
               >close
               </Button>
             </Col>
@@ -258,11 +258,11 @@ export default class TdForm extends Component {
                 showSearch
                 filterOption={false}
                 placeholder="input search stock text"
-                onSearch={this.onSearchStocks.bind(this)}
-                onChange={this.handleChange.bind(this)}
+                onSearch={this.onSearchClick.bind(this)}
+                onChange={this.onSearchChangeClick.bind(this)}
                 style={{ width: '100%', marginBottom: 10 }}
               >
-                {this.getStockChildren()}
+                {this.getSearchChildText()}
               </Select>
             </Col>
           </Row>

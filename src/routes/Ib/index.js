@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import { Button, Select, Row, Col, Progress, Table, Tabs, Modal, message, Popconfirm } from 'antd';
 import { connect } from 'dva';
-import { ToDecimal, ResultToSign } from '../../components/CommonModal/Common';
+import { ToDecimal } from '../../components/CommonModal/Common';
 import rhombus from '../../assets/sync/rhombus.png';
 import rhombusNo from '../../assets/sync/rhombusNo.png';
 import add from '../../../public/add.png';
 import * as Service from '../../services/ib';
-import * as ServiceApi from '../../services/api';
 import Styles from './index.less';
 
 const { Option } = Select;
-const TabPane = Tabs.TabPane;
-const operations = <Button>Extra Action</Button>;
+const { TabPane } = Tabs;
 
 @connect(({ Ib, loading }) => ({
   Ib,
@@ -25,11 +23,9 @@ export default class IbForm extends Component {
     stockPopData: {},
     tabsIndex: "0",
     syncInfo: {},
-    searchLoading: false,
   };
 
   componentDidMount() {
-    // console.info(1111, this.props.Ib.syncedSymbolsData.stocks);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -45,7 +41,7 @@ export default class IbForm extends Component {
   }
 
   // on search stocks
-  onSearchStocks = (value) => {
+  onSearchClick = (value) => {
     console.info('搜索', value);
     const valueTrue = { code: value.toUpperCase(), isFuzzy: 1 };
     const { Ib: { syncedSymbolsData: { stocks } }, dispatch } = this.props;
@@ -70,87 +66,10 @@ export default class IbForm extends Component {
     //   });
   };
 
-  // achieve the stock symbol
-  getStockChildren() {
-    const { Ib: { syncedSymbolsData: { stocks } } } = this.props;
-    const children = [];
-    if (stocks) {
-      const dataSource = stocks;
-      if (dataSource.length !== 0) {
-        const len = dataSource.length;
-        for (let i = 0; i < len; i += 1) {
-          children.push(<Option
-            title={dataSource[i].symbol}
-            className={Styles.stockSelectOption}
-            key={i}
-          >{`[${dataSource[i].symbol}]${dataSource[i].title}`}
-          </Option>);
-        }
-        return children;
-      }
-    }
-    return false;
-  }
-
-  // on search stocks
-  handleChange = (value) => {
-    const { stockData } = this.state;
-    const achieveSymbol = stockData[value].symbol;
-    console.info('搜索OnChange', achieveSymbol);
-    // this.setState({
-    //   searchLoading: true,
-    // });
-    // const valueTrue = { code: codeList[value].symbol, isFuzzy: 0 };
-    // Service.queryIbSymbolsInfoData(valueTrue)
-    //   .then((res) => {
-    //     if (res && res.success) {
-    //       const { data: { data } } = res;
-    //       this.setState({
-    //         syncInfo: data,
-    //         searchLoading: false,
-    //       })
-    //     } else {
-    //       this.setState({
-    //         syncInfo: {},
-    //         searchLoading: false,
-    //       })
-    //     }
-    //   });
-  };
-
-  // Ib sync data button click
-  IbButtonClick = (str) => {
-    const { dispatch } = this.props;
-    const { tabsIndex } = this.state;
-    if (str === 'open') {
-      dispatch({
-        type: 'Ib/fetchStart',
-        payload: tabsIndex,
-      });
-    } else if (str === 'close') {
-      dispatch({
-        type: 'Ib/fetchStop',
-        payload: tabsIndex,
-      });
-    }
-  };
-
-  // Ib tabs click
-  tabsOnClick = (key) => {
-    const { dispatch } = this.props;
-    this.setState({
-      tabsIndex: key,
-    });
-    dispatch({
-      type: 'Ib/fetch',
-      payload: key,
-    });
-  };
-
+  // on pop search click
   onPopSearchStocks = (value) => {
-    console.info(2222, value);
     const valueTrue = { code: value.toUpperCase(), isFuzzy: 1 };
-    ServiceApi.queryTdSymbolsInfoData(valueTrue)
+    Service.queryTdSymbolsInfoData(valueTrue)
       .then((res) => {
         if (res && res.success) {
           const { data: { data } } = res;
@@ -165,79 +84,15 @@ export default class IbForm extends Component {
       });
   };
 
-  handlePopChange = (value) => {
-    console.info(1111, value);
-    const { stockPopData: { codeList }, tabsIndex } = this.state;
-    const achieveSymbol = codeList[value].symbol;
-    const { Ib: { syncedSymbolsData: { stocks } }, dispatch } = this.props;
-    const stocksSymbols = stocks.map((item, index) => {
-      return { 'symbol': item.symbol }
-    });
-    const stockAchieveJudge = stocksSymbols.some((item, index) => {
-      if (achieveSymbol === item.symbol) return true; else return false;
-    });
-    if (!stockAchieveJudge) {
-      stocksSymbols.push({ 'symbol': achieveSymbol });
-      console.info(9999, stocksSymbols);
-      dispatch({
-        type: 'Ib/fetchAdd',
-        payload: { stocksSymbols, tabsIndex },
-      });
-    } else {
-      message.warning('请重新选择一支股票');
-    }
-  };
-
-  // getStockChildren = (dataSource) => {
-  //   // const { stockData } = this.state;
-  //   // const { codeList = [] } = stockData;
-  //   const children = [];
-  //   if (dataSource.length !== 0) {
-  //     const len = dataSource.length;
-  //     for (let i = 0; i < len; i += 1) {
-  //       children.push(<Option
-  //         title={dataSource[i].symbol}
-  //         className={Styles.stockSelectOption}
-  //         key={i}
-  //       >{`[${dataSource[i].symbol}]${dataSource[i].title}`}
-  //       </Option>);
-  //     }
-  //     return children;
-  //   }
-  // };
-
-  getPopStockChildren = () => {
-    const { stockPopData } = this.state;
-    const { codeList = [] } = stockPopData;
-    const children = [];
-    if (codeList.length !== 0) {
-      const len = codeList.length;
-      for (let i = 0; i < len; i += 1) {
-        children.push(<Option
-          title={codeList[i].symbol}
-          className={Styles.stockSelectOption}
-          key={i}
-        >{`[${codeList[i].symbol}]${codeList[i].title}`}
-        </Option>);
-      }
-      return children;
-    }
-  };
-
-  onImgAdd = () => {
+  // on search add click
+  onSearchAddClick = () => {
     console.info('3333');
     this.setState({
       visible: true,
     });
   };
 
-  handleOk() {
-    console.log('点击了确定');
-    this.setState({
-      visible: false,
-    });
-  }
-
+  // on symbol delete click
   onSymbolStockDelete = (record) => {
     console.info('删除', record);
     const achieveSymbol = record.symbol;
@@ -260,20 +115,142 @@ export default class IbForm extends Component {
     });
   };
 
-  // 取消删除按钮
+  // on symbol cancel click
   onSymbolStockCancelBtn = () => {
   };
 
-  handleCancel() {
+  // Ib sync data button click
+  onOpenCloseClick = (str) => {
+    const { dispatch } = this.props;
+    const { tabsIndex } = this.state;
+    if (str === 'open') {
+      dispatch({
+        type: 'Ib/fetchStart',
+        payload: tabsIndex,
+      });
+    } else if (str === 'close') {
+      dispatch({
+        type: 'Ib/fetchStop',
+        payload: tabsIndex,
+      });
+    }
+  };
+
+  // on pop select click
+  onPopSelectStocks = (value) => {
+    const { stockPopData: { codeList }, tabsIndex } = this.state;
+    const achieveSymbol = codeList[value].symbol;
+    const { Ib: { syncedSymbolsData: { stocks } }, dispatch } = this.props;
+    const stocksSymbols = stocks.map((item, index) => {
+      return { 'symbol': item.symbol }
+    });
+    const stockAchieveJudge = stocksSymbols.some((item, index) => {
+      if (achieveSymbol === item.symbol) return true; else return false;
+    });
+    if (!stockAchieveJudge) {
+      stocksSymbols.push({ 'symbol': achieveSymbol });
+      dispatch({
+        type: 'Ib/fetchAdd',
+        payload: { stocksSymbols, tabsIndex },
+      });
+    } else {
+      message.warning('请重新选择一支股票');
+    }
+  };
+
+  // Ib tabs click
+  onTabsClick = (key) => {
+    const { dispatch } = this.props;
+    this.setState({
+      tabsIndex: key,
+      syncInfo: {},
+    });
+    dispatch({
+      type: 'Ib/fetch',
+      payload: key,
+      syncInfo: {},
+    });
+  };
+
+  // on search stocks
+  onSearchChangeClick = (value) => {
+    const { stockData, tabsIndex } = this.state;
+    // const achieveSymbol = stockData[value].symbol;
+    const valueTrue = { code: stockData[value].symbol, type: tabsIndex };
+    Service.queryIbSymbolsInfoData(valueTrue)
+      .then((res) => {
+        if (res && res.success) {
+          const { data: { syncInfo } } = res;
+          this.setState({
+            syncInfo,
+          })
+        } else {
+          this.setState({
+            syncInfo: {},
+          })
+        }
+      });
+  };
+
+  // on pop model ok
+  onPopModelOk() {
+    console.log('点击了确定');
     this.setState({
       visible: false,
     });
   }
 
+  // on pop model cancel
+  onPopModelCancel() {
+    this.setState({
+      visible: false,
+    });
+  }
+
+  // get search child text
+  getSearchChildText() {
+    const { Ib: { syncedSymbolsData: { stocks } } } = this.props;
+    const children = [];
+    if (stocks) {
+      const dataSource = stocks;
+      if (dataSource.length !== 0) {
+        const len = dataSource.length;
+        for (let i = 0; i < len; i += 1) {
+          children.push(<Option
+            title={dataSource[i].symbol}
+            className={Styles.stockSelectOption}
+            key={i}
+          >{`[${dataSource[i].symbol}]${dataSource[i].title}`}
+          </Option>);
+        }
+        return children;
+      }
+    }
+    return false;
+  }
+
+  // get pop stock child
+  getPopStockChildren = () => {
+    const { stockPopData } = this.state;
+    const { codeList = [] } = stockPopData;
+    const children = [];
+    if (codeList.length !== 0) {
+      const len = codeList.length;
+      for (let i = 0; i < len; i += 1) {
+        children.push(<Option
+          title={codeList[i].symbol}
+          className={Styles.stockSelectOption}
+          key={i}
+        >{`[${codeList[i].symbol}]${codeList[i].title}`}
+        </Option>);
+      }
+      return children;
+    }
+  };
+
   render() {
     const { loading, Ib: { syncData, progressData, syncedSymbolsData: { stocks } } } = this.props;
-    const { tabsIndex, visible, stockData } = this.state;
-    // console.info(2222, stockData);
+    const { tabsIndex, visible, stockData, syncInfo } = this.state;
     let progressDataDetail = {};
     let syncLogs = [];
     let histDataSyncProgress = '';
@@ -298,46 +275,7 @@ export default class IbForm extends Component {
 
     const { status } = syncData;
 
-    const dataSource = [
-      {
-        key: '1',
-        symbol: 'US.APPL',
-        title: '苹果',
-        date: '2018-1-1',
-      },
-      {
-        key: '2',
-        symbol: 'US.HUYA',
-        title: '虎牙',
-        date: '2018-1-1',
-      },
-      {
-        key: '3',
-        symbol: 'US.APPL2',
-        title: '苹果',
-        date: '2018-1-1',
-      },
-      {
-        key: '4',
-        symbol: 'US.HUYA2',
-        title: '虎牙',
-        date: '2018-1-1',
-      },
-      {
-        key: '5',
-        symbol: 'US.APPL3',
-        title: '苹果',
-        date: '2018-1-1',
-      },
-      {
-        key: '6',
-        symbol: 'US.HUYA3',
-        title: '虎牙',
-        date: '2018-1-1',
-      },
-    ];
-
-    const columns = [
+    const columnsSearch = [
       {
         title: 'Symbol',
         dataIndex: 'symbol',
@@ -377,37 +315,6 @@ export default class IbForm extends Component {
       },
     ];
 
-    // const test = [1, 3, 4, 5, 6];
-    // const maxIndex = test.findIndex(val => val === Math.max(...test));
-    //
-    // console.info(111,maxIndex);
-
-    // search column
-    const columnSearch = [
-      {
-        title: 'Sync Frequency',
-        dataIndex: 'time',
-        render: (text, record) => {
-          const { time } = record;
-          let timeStr;
-          if (record.time === '1M') {
-            timeStr = '1min';
-          } else {
-            timeStr = `${time  }ins`;
-          }
-          return (<span>{ResultToSign(timeStr)}</span>);
-        },
-        key: 'time',
-      },
-      {
-        title: 'Sync Datetime range',
-        dataIndex: 'startDate',
-        render: (text, record) => {
-          return (<a>{ResultToSign(`${record.startDate}-${record.endDate}`)}</a>);
-        },
-        key: 'startDate',
-      }];
-
     // histDataSyncTrack column
     const columnLogs = [
       {
@@ -431,14 +338,6 @@ export default class IbForm extends Component {
         dataIndex: 'symbol',
         key: 'symbol',
       }];
-
-    // let syncInfoTrueOk = [];
-    // if (Object.keys(syncInfo).length >= 1) {
-    //   const syncInfoTrue = syncInfo.syncInfo;
-    //   syncInfoTrueOk = Object.keys(syncInfoTrue).map((e) => {
-    //     return { 'time': e, 'startDate': syncInfoTrue[e].startDate, 'endDate': syncInfoTrue[e].endDate }
-    //   });
-    // }
 
     // single sync model for synchronization data details
     const singleSyncModel = (property, detail, propertyStyle) => {
@@ -500,13 +399,13 @@ export default class IbForm extends Component {
               >
                 <Button
                   type="primary"
-                  onClick={this.IbButtonClick.bind(this, 'open')}
+                  onClick={this.onOpenCloseClick.bind(this, 'open')}
                   style={{ marginRight: 20 }}
                 >open
                 </Button>
                 <Button
                   type="primary"
-                  onClick={this.IbButtonClick.bind(this, 'close')}
+                  onClick={this.onOpenCloseClick.bind(this, 'close')}
                 >close
                 </Button>
               </Col>
@@ -535,14 +434,28 @@ export default class IbForm extends Component {
                   showSearch
                   filterOption={false}
                   placeholder="input search stock text"
-                  onSearch={this.onSearchStocks.bind(this)}
-                  onChange={this.handleChange.bind(this)}
+                  onSearch={this.onSearchClick.bind(this)}
+                  onChange={this.onSearchChangeClick.bind(this)}
                   style={{ width: '100%', marginBottom: 10 }}
                 >
-                  {this.getStockChildren()}
+                  {this.getSearchChildText()}
                 </Select>
               </Col>
             </Row>
+            {Object.keys(syncInfo).length >= 1 ? (
+              <Row gutter={24}>
+                <Col
+                  xs={{ span: 24 }}
+                  sm={{ span: 24 }}
+                  md={{ span: 16, offset: 1 }}
+                  lg={{ span: 16, offset: 1 }}
+                  xl={{ span: 16, offset: 1 }}
+                  xxl={{ span: 16, offset: 1 }}
+                >
+                  <div style={{ color: '#3b78e7', marginBottom: 10 }}>{`${syncInfo.startDate  }-${  syncInfo.endDate}`}</div>
+                </Col>
+              </Row>
+            ) : null}
             <div>
               <Row gutter={24}>
                 <Col
@@ -556,7 +469,7 @@ export default class IbForm extends Component {
                   <Table
                     loading={loading}
                     dataSource={stockData}
-                    columns={columns}
+                    columns={columnsSearch}
                     pagination={{ showTotal: t => `Total ${t} Items` }}
                   />
                 </Col>
@@ -572,7 +485,7 @@ export default class IbForm extends Component {
                     alt="0"
                     src={add}
                     style={{ width: 16, cursor: 'pointer' }}
-                    onClick={this.onImgAdd.bind(this)}
+                    onClick={this.onSearchAddClick.bind(this)}
                   />
                 </Col>
               </Row>
@@ -732,7 +645,7 @@ export default class IbForm extends Component {
       <div>
         <Tabs
           defaultActiveKey="0"
-          onChange={this.tabsOnClick.bind(this)}
+          onChange={this.onTabsClick.bind(this)}
         >
           <TabPane tab="1M" key="0">
             {/* first. Ib sync data switch  */}
@@ -761,8 +674,8 @@ export default class IbForm extends Component {
         <Modal
           title=""
           visible={visible}
-          onOk={this.handleOk.bind(this)}
-          onCancel={this.handleCancel.bind(this)}
+          onOk={this.onPopModelOk.bind(this)}
+          onCancel={this.onPopModelCancel.bind(this)}
           footer={false}
           style={{ height: 200 }}
         >
@@ -773,7 +686,7 @@ export default class IbForm extends Component {
                 filterOption={false}
                 placeholder="Please select"
                 onSearch={this.onPopSearchStocks.bind(this)}
-                onSelect={this.handlePopChange.bind(this)}
+                onSelect={this.onPopSelectStocks.bind(this)}
                 style={{ width: '90%' }}
               >
                 {this.getPopStockChildren()}

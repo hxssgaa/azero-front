@@ -241,8 +241,15 @@ export default class FutuForm extends Component {
 
   render() {
 
-    // const array = [1, 2, 55, 5, 3, 1, 2, 3, 2, 2, 2, 3];
-    //
+    // const test = array.some((item, index) => {
+    //   if (item === 1) {
+    //     return true;
+    //   }
+    //   return false;
+    // });
+
+    // console.info(1111, test);
+
     // const result = [];
     // array.forEach((item, index) => {
     //   if (result.indexOf(array[index]) === -1) {
@@ -268,9 +275,9 @@ export default class FutuForm extends Component {
               distanceFromBottom,
               calculatedHeight,
             }) => (
-              <header style={style}>
+            <header style={style}>
               111111111
-              </header>
+            </header>
           )}
         </Sticky>
         <div>22222</div>
