@@ -442,7 +442,7 @@ export default class IbForm extends Component {
                 </Select>
               </Col>
             </Row>
-            {Object.keys(syncInfo).length >= 1 ? (
+            {syncInfo && Object.keys(syncInfo).length >= 1 ? (
               <Row gutter={24}>
                 <Col
                   xs={{ span: 24 }}
