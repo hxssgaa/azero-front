@@ -165,11 +165,13 @@ export default class IbForm extends Component {
       tabsIndex: key,
       syncInfo: {},
     });
-    dispatch({
-      type: 'Ib/fetch',
-      payload: key,
-      syncInfo: {},
-    });
+    if (key !== '4') {
+      dispatch({
+        type: 'Ib/fetch',
+        payload: key,
+        syncInfo: {},
+      });
+    }
   };
 
   // on search stocks
@@ -266,7 +268,7 @@ export default class IbForm extends Component {
         progressDataDetail = progressData.REAL;
       }
       const { histDataSyncTrack } = progressDataDetail;
-      if (Object.keys(histDataSyncTrack).length >= 1) {
+      if (histDataSyncTrack && Object.keys(histDataSyncTrack).length >= 1) {
         syncLogs = histDataSyncTrack.syncLogs;
         histDataSyncProgress = histDataSyncTrack.histDataSyncProgress;
         syncedSymbols = histDataSyncTrack.syncedSymbols;
@@ -650,25 +652,24 @@ export default class IbForm extends Component {
           <TabPane tab="1M" key="0">
             {/* first. Ib sync data switch  */}
             {firstIbSyncData()}
-            {/* second.Ib search stock text */}
-            {secondIbSyncData()}
             {/* third.Ib synchronization data details */}
             {thirdIbSyncData()}
           </TabPane>
           <TabPane tab="1S" key="1">
             {firstIbSyncData()}
-            {secondIbSyncData()}
             {thirdIbSyncData()}
           </TabPane>
           <TabPane tab="TICK" key="2">
             {firstIbSyncData()}
-            {secondIbSyncData()}
             {thirdIbSyncData()}
           </TabPane>
           <TabPane tab="REAL" key="3">
             {firstIbSyncData()}
-            {secondIbSyncData()}
             {thirdIbSyncRealData()}
+          </TabPane>
+          <TabPane tab="OPTION" key="4">
+            {/* second.Ib search stock text */}
+            {secondIbSyncData()}
           </TabPane>
         </Tabs>
         <Modal
