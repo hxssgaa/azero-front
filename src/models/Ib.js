@@ -10,6 +10,8 @@ import {
   queryIbCurrentTime,
 } from '../services/ib';
 
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 export default {
   namespace: 'Ib',
 
@@ -47,7 +49,6 @@ export default {
     },
 
     * fetchProgress({ payload }, { call, put }) {
-      const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
       const response = yield call(queryIbSyncProgressData, payload);
       if (response && response.success) {
         const { data: { data } } = response;
@@ -113,6 +114,18 @@ export default {
         });
       } else {
         message.warning('请求失败,请联系系统管理员');
+      }
+
+      const { pathname } = location;
+      if (pathname.includes('ib')) {
+        // according to the response to judge whether it can send the requests or not
+        if (response && response.data && response.data.time) {
+          // const { data: { data: { currentProgress } } } = response;
+          // if (parseInt(currentProgress, 10) !== 1) {
+          yield delay(60000);
+          yield put({ type: 'fetchCurrent' });
+          // }
+        }
       }
     },
   },

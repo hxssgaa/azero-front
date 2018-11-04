@@ -22,6 +22,7 @@ export default class IbForm extends Component {
     stockData: (this.props.Ib && this.props.Ib.syncedSymbolsData && this.props.Ib.syncedSymbolsData.stocks) ? this.props.Ib.syncedSymbolsData.stocks : [],
     stockPopData: {},
     tabsIndex: "0",
+    searchType: "0",
     syncInfo: {},
   };
 
@@ -176,9 +177,9 @@ export default class IbForm extends Component {
 
   // on search stocks
   onSearchChangeClick = (value) => {
-    const { stockData, tabsIndex } = this.state;
+    const { stockData, searchType } = this.state;
     // const achieveSymbol = stockData[value].symbol;
-    const valueTrue = { code: stockData[value].symbol, type: tabsIndex };
+    const valueTrue = { code: stockData[value].symbol, type: searchType };
     Service.queryIbSymbolsInfoData(valueTrue)
       .then((res) => {
         if (res && res.success) {
@@ -192,6 +193,13 @@ export default class IbForm extends Component {
           })
         }
       });
+  };
+
+  // on type click search
+  onSearchTypeClick = (value) => {
+    this.setState({
+      searchType: value,
+    })
   };
 
   // on pop model ok
@@ -388,7 +396,7 @@ export default class IbForm extends Component {
               >
                 <div>
                   {currentTime ? 'ib server is ok: ' : 'ib server is not ok:'}
-                  {currentTime ? <img style={{ width: 16 }} alt={1} src={rhombusNo} /> : <img style={{ width: 16 }} alt={2} src={rhombus} />}
+                  {currentTime ? <img style={{ width: 16 }} alt={1} src={rhombus} /> : <img style={{ width: 16 }} alt={2} src={rhombusNo} />}
                 </div>
               </Col>
               <Col
@@ -461,12 +469,51 @@ export default class IbForm extends Component {
           <div>
             <Row gutter={24}>
               <Col
-                xs={{ span: 16 }}
-                sm={{ span: 16 }}
-                md={{ span: 16, offset: 1 }}
-                lg={{ span: 16, offset: 1 }}
-                xl={{ span: 16, offset: 1 }}
-                xxl={{ span: 16, offset: 1 }}
+                xs={{ span: 3 }}
+                sm={{ span: 3 }}
+                md={{ span: 2, offset: 1 }}
+                lg={{ span: 2, offset: 1 }}
+                xl={{ span: 2, offset: 1 }}
+                xxl={{ span: 2, offset: 1 }}
+              >
+                <div style={{ width: '100%', height: 32, lineHeight: '32px' }}>type:</div>
+              </Col>
+              <Col
+                xs={{ span: 6 }}
+                sm={{ span: 6 }}
+                md={{ span: 4 }}
+                lg={{ span: 4 }}
+                xl={{ span: 4 }}
+                xxl={{ span: 4 }}
+              >
+                <Select
+                  style={{ width: '100%' }}
+                  defaultValue="1M"
+                  onChange={this.onSearchTypeClick.bind(this)}
+                >
+                  <Option value="0">1M</Option>
+                  <Option value="1">1S</Option>
+                  <Option value="2">TICK</Option>
+                  <Option value="3">REAL</Option>
+                </Select>
+              </Col>
+              <Col
+                xs={{ span: 4 }}
+                sm={{ span: 4 }}
+                md={{ span: 2 }}
+                lg={{ span: 2 }}
+                xl={{ span: 2 }}
+                xxl={{ span: 2 }}
+              >
+                <div style={{ width: '100%', height: 32, lineHeight: '32px' }}>symbol:</div>
+              </Col>
+              <Col
+                xs={{ span: 11 }}
+                sm={{ span: 11 }}
+                md={{ span: 15 }}
+                lg={{ span: 15 }}
+                xl={{ span: 15 }}
+                xxl={{ span: 15 }}
               >
                 <Select
                   showSearch
