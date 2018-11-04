@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Select, Row, Col, Progress, Table, Tabs, Modal, message, Popconfirm } from 'antd';
 import { connect } from 'dva';
-import { ToDecimal } from '../../components/CommonModal/Common';
+import { ToDecimal, FmtDate } from '../../components/CommonModal/Common';
 import rhombus from '../../assets/sync/rhombus.png';
 import rhombusNo from '../../assets/sync/rhombusNo.png';
 import add from '../../../public/add.png';
@@ -251,7 +251,7 @@ export default class IbForm extends Component {
   };
 
   render() {
-    const { loading, Ib: { syncData, progressData, syncedSymbolsData: { stocks } } } = this.props;
+    const { loading, Ib: { syncData, progressData, syncedSymbolsData: { stocks }, currentTime } } = this.props;
     const { tabsIndex, visible, stockData, syncInfo } = this.state;
     let progressDataDetail = {};
     let syncLogs = [];
@@ -367,6 +367,42 @@ export default class IbForm extends Component {
               <div style={Object.assign({}, propertyStyle ? { fontSize: 30, color: '#3b78e7' } : {})}>{detail}</div>
             </Col>
           </Row>
+        </div>
+      );
+    };
+
+    // zero. Ib sync current data
+    const zeroIbSyncData = () => {
+      return (
+        <div>
+          <div className={Styles.subProperty}>Ib sync current time</div>
+          <div>
+            <Row gutter={24}>
+              <Col
+                xs={{ span: 12 }}
+                sm={{ span: 12 }}
+                md={{ span: 9, offset: 1 }}
+                lg={{ span: 9, offset: 1 }}
+                xl={{ span: 9, offset: 1 }}
+                xxl={{ span: 9, offset: 1 }}
+              >
+                <div>
+                  {currentTime ? 'ib server is ok: ' : 'ib server is not ok:'}
+                  {currentTime ? <img style={{ width: 16 }} alt={1} src={rhombusNo} /> : <img style={{ width: 16 }} alt={2} src={rhombus} />}
+                </div>
+              </Col>
+              <Col
+                xs={{ span: 12 }}
+                sm={{ span: 12 }}
+                md={{ span: 14 }}
+                lg={{ span: 14 }}
+                xl={{ span: 14 }}
+                xxl={{ span: 14 }}
+              >
+                <div>{currentTime && FmtDate(currentTime)}</div>
+              </Col>
+            </Row>
+          </div>
         </div>
       );
     };
@@ -645,6 +681,10 @@ export default class IbForm extends Component {
 
     return (
       <div>
+        <div style={{ marginBottom: 10 }}>
+          {zeroIbSyncData()}
+        </div>
+        <div style={{ width: '100%', border: '1px solid #3b78e7' }} />
         <Tabs
           defaultActiveKey="0"
           onChange={this.onTabsClick.bind(this)}

@@ -7,6 +7,7 @@ import {
   queryIbSyncSymbols,
   queryIbStartData,
   queryIbStopData,
+  queryIbCurrentTime,
 } from '../services/ib';
 
 export default {
@@ -17,6 +18,7 @@ export default {
     syncData: {},
     syncedSymbolsData: {},
     progressData: {},
+    currentTime: '',
   },
 
   effects: {
@@ -100,6 +102,19 @@ export default {
         message.warning('请求失败,请联系系统管理员');
       }
     },
+
+    * fetchCurrent({ payload }, { call, put }) {
+      const response = yield call(queryIbCurrentTime, payload);
+      if (response && response.success) {
+        const { data: { time } } = response;
+        yield put({
+          type: 'save',
+          payload: { currentTime: time },
+        });
+      } else {
+        message.warning('请求失败,请联系系统管理员');
+      }
+    },
   },
 
   reducers: {
@@ -122,14 +137,9 @@ export default {
       return history.listen(({ pathname, search }) => {
         const query = queryString.parse(search);
         if (pathname.includes('/ib')) {
-          dispatch({
-            type: 'fetch',
-            payload: query,
-          });
-          dispatch({
-            type: 'fetchProgress',
-            payload: query,
-          });
+          dispatch({ type: 'fetch', payload: query });
+          dispatch({ type: 'fetchProgress', payload: query });
+          dispatch({ type: 'fetchCurrent' });
         }
       });
     },

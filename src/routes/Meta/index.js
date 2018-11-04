@@ -23,7 +23,7 @@ export default class MetaForm extends Component {
     const { Meta: { syncData = {} } } = this.props;
     let usedSizeTrue = 0;
     let totalSizeTrue = 0;
-    if (Object.keys(syncData).length >= 1) {
+    if (syncData && Object.keys(syncData).length >= 1) {
       const { capacity: { usedSize, totalSize } } = syncData;
       usedSizeTrue = usedSize;
       totalSizeTrue = totalSize;

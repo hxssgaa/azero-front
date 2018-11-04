@@ -62,3 +62,8 @@ export async function queryIbStopData(payload) {
   // return request('/api/queryFutuData');
   return request(`/ib/stopSync.do?type=${payload}`);
 }
+
+// query ib current data
+export async function queryIbCurrentTime() {
+  return request('/ib/getCurrentTime.do');
+}

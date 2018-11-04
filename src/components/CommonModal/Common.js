@@ -253,6 +253,17 @@ export function Flatten(arr) {
   return JSON.parse(Array.of(`[${str}]`)[0]);
 }
 
+// 格式化时间戳
+export function FmtDate(obj) {
+  const d = new Date(obj * 1000);    //根据时间戳生成的时间对象
+  return `${d.getFullYear()}-${
+  d.getMonth() + 1}-${
+    d.getDate()} ${
+    d.getHours()}:${
+    d.getMinutes()}:${
+    d.getSeconds()}`;
+}
+
 export default {
   searchPrefix,
   NCRightTitleToShow,
@@ -284,4 +295,5 @@ export default {
   UndefinedToHandleFail,
   SetRowCol,
   Flatten,
+  FmtDate,
 };
