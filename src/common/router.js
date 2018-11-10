@@ -41,7 +41,7 @@ const dynamicWrapper = (app, models, component) => {
       if (!routerDataCache) {
         routerDataCache = getRouterData(app);
       }
-      return component().then((raw) => {
+      return component().then(raw => {
         const Component = raw.default || raw;
         return props =>
           createElement(Component, {
@@ -53,7 +53,7 @@ const dynamicWrapper = (app, models, component) => {
   });
 };
 
-export const getRouterData = (app) => {
+export const getRouterData = app => {
   return {
     '/': {
       component: dynamicWrapper(app, [], () => import('../layouts/BasicLayout')),
@@ -69,6 +69,9 @@ export const getRouterData = (app) => {
     },
     '/futu': {
       component: dynamicWrapper(app, ['Futu'], () => import('../routes/Futu')),
+    },
+    '/jiang': {
+      component: dynamicWrapper(app, ['Jiang'], () => import('../routes/Jiang')),
     },
     '/exception/403': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
