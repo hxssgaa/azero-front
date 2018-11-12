@@ -2,12 +2,6 @@ import React, { Component } from 'react';
 import Styles from './index.less';
 
 export default class JiangForm extends Component {
-  state = {
-    // stockData: {},
-    // syncInfo: {},
-    // visible: false,
-  };
-
   render() {
     return (
       <div>
