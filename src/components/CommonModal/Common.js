@@ -255,13 +255,13 @@ export function Flatten(arr) {
 
 // 格式化时间戳
 export function FmtDate(obj) {
-  const d = new Date(obj * 1000);    //根据时间戳生成的时间对象
+  const d = new Date(obj * 1000);    // 根据时间戳生成的时间对象
   return `${d.getFullYear()}-${
   d.getMonth() + 1}-${
-    d.getDate()} ${
-    d.getHours()}:${
-    d.getMinutes()}:${
-    d.getSeconds()}`;
+    (new Array(2).join('0') + d.getDate()).slice(-2)}
+    ${(new Array(2).join('0') + d.getHours()).slice(-2)}:${
+    (new Array(2).join('0') + d.getMinutes()).slice(-2)}:${(
+      new Array(2).join('0') + d.getSeconds()).slice(-2)}`;
 }
 
 export default {

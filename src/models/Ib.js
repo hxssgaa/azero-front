@@ -64,8 +64,8 @@ export default {
         if (response && response.data && response.data.data) {
           // const { data: { data: { currentProgress } } } = response;
           // if (parseInt(currentProgress, 10) !== 1) {
-          yield delay(1000);
-          yield put({ type: 'fetchProgress' });
+          // yield delay(1000);
+          // yield put({ type: 'fetchProgress' });
           // }
         }
       }

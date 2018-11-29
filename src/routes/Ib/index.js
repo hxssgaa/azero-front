@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { Button, Select, Row, Col, Progress, Table, Tabs, Modal, message, Popconfirm } from 'antd';
 import { connect } from 'dva';
 import { ToDecimal, FmtDate } from '../../components/CommonModal/Common';
+import CountDown from '../../components/CountDown';
 import rhombus from '../../assets/sync/rhombus.png';
 import rhombusNo from '../../assets/sync/rhombusNo.png';
 import add from '../../../public/add.png';
+import ShowTime from './ShowTime';
 import * as Service from '../../services/ib';
 import Styles from './index.less';
 
@@ -260,6 +262,7 @@ export default class IbForm extends Component {
 
   render() {
     const { loading, Ib: { syncData, progressData, syncedSymbolsData: { stocks }, currentTime } } = this.props;
+    // console.info(1111, currentTime);
     const { tabsIndex, visible, stockData, syncInfo } = this.state;
     let progressDataDetail = {};
     let syncLogs = [];
@@ -407,7 +410,8 @@ export default class IbForm extends Component {
                 xl={{ span: 14 }}
                 xxl={{ span: 14 }}
               >
-                <div>{currentTime && FmtDate(currentTime)}</div>
+                <ShowTime currentTime={currentTime} />
+                {/*<CountDown target={currentTime} />*/}
               </Col>
             </Row>
           </div>
@@ -731,7 +735,7 @@ export default class IbForm extends Component {
         <div style={{ marginBottom: 10 }}>
           {zeroIbSyncData()}
         </div>
-        <div style={{ width: '100%', border: '1px solid #3b78e7' }} />
+        <div style={{ width: '100%', border: '1px solid #e8e8e8', borderBottom: '#e8e8e8' }} />
         <Tabs
           defaultActiveKey="0"
           onChange={this.onTabsClick.bind(this)}
@@ -786,3 +790,16 @@ export default class IbForm extends Component {
     );
   }
 }
+
+// javascript实现页面无刷新让时间走动
+const showTime = function () {
+  const date = new Date();  // 获取时间对象
+  const year = date.getFullYear(); // 获取年
+  const month = date.getMonth() + 1;// 获取月份。获取的月份比真实的月份少一个月。所以这里得+1
+  const day = date.getDate();  // 获取日
+  const hours = date.getHours(); // 获取时（24小时制）
+  const minutes = date.getMinutes();  // 获取分
+  const seconds = date.getSeconds();  // 获取秒
+  const milliseconds = date.getMilliseconds();// 获得毫秒
+  return `${ year  }-${  month  }-${  day  } ` + `${hours  }:${  minutes  }:${  seconds  }:${  milliseconds}`;
+};
