@@ -17,7 +17,13 @@ class ShowTimeModel extends Component {
 
   static getDerivedStateFromProps(nextProps, preState) {
     const currentTimeProps = nextProps.currentTime;
-    const currentTimeState = preState.currentTime;
+    let currentTimeState = preState.currentTime;
+    if (!currentTimeState) {
+      currentTimeState = new Date().getTime() / 1000;
+      return {
+        currentTime: currentTimeState,
+      };
+    }
     if (currentTimeProps !== currentTimeState) {
       return {
         currentTime: currentTimeState,
